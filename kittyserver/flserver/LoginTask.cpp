@@ -303,7 +303,10 @@ bool LoginTask::requireLogin(const HelloKittyMsgData::ReqLogin * message)
     else//需要验证
     {
         //里面有检查
-        AccountMgr::getMe().dbInsert(m_accountinfo);
+        if(!AccountMgr::getMe().findAccount(m_accountinfo))
+        {
+            AccountMgr::getMe().dbInsert(m_accountinfo);
+        }
 #if 0
         if(!LoginManager::getMe().SendVertifyToPlat(this))
         {
