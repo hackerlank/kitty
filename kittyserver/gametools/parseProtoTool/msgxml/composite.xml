@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+
+	<import>
+		<member name="common" desc="公共对应的proto"/>
+	</import>
+	
+	<enum name="PlaceStatusType" desc="位置的几种状态">
+		<member name="Place_Status_Empty" value="0" desc="空闲状态"/>
+		<member name="Place_Status_Suppend" value= "1" desc="暂停状态"/>
+		<member name="Place_Status_Work" value="2" desc="工作状态"/>
+		<member name="Place_Status_Wait" value="3" desc="等待客户端领取物品状态"/>
+		<member name="Place_Status_Stop" value="4" desc="暂停工作"/>
+		<member name="Place_Status_Close" value="5" desc="未开通状态"/>
+	</enum>
+	
+	
+	<proto name="CompositeCell" desc="合成功能槽">
+		<member name="placeid" prefix="required" type="uint32" desc="位置id"/>
+		<member name="produceid" prefix="required" type="uint32" desc="产生id(表格中的id)"/>
+		<member name="finishtime" prefix="required" type="uint32" desc="完成系统时间"/>
+		<member name="status" prefix="required" type="PlaceStatusType" desc="状态"/>
+		<member name="puttime" prefix="optional" type="uint32" default="0" desc="放进去的系统时间"/>
+	</proto>
+	
+	<proto name="CompositeInfo" desc="合成信息">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="cell" prefix="repeated" type="CompositeCell" desc="合成功能槽队列"/>
+		<member name="itemlist" prefix="repeated" type="uint32" desc="滞留产品列表"/>
+	</proto>
+	
+	
+	<proto name="ReqCompositeCell" desc="请求合成功能槽队列">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+	</proto>
+	
+	<proto name="AckCompositeInfo" desc="回应合成信息">
+		<member name="compositeinfo" prefix="required" type="CompositeInfo" desc="道具产出信息"/>
+	</proto>
+	
+	<proto name="AckCompositeCell" desc="回应合成功能槽队列">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="cell" prefix="repeated" type="CompositeCell" desc="合成队列"/>
+	</proto>
+	
+	<enum name="BTPOpType" desc="操作类型">
+		<member name="BTP_Op_Purchase" value="0" desc="购买工作槽"/>
+		<member name="BTP_Op_Get_Item" value="1" desc="拿取已经生成好的道具"/>
+		<member name="BTP_Op_Purchase_Cd" value="2" desc="购买cd"/>
+		<member name="BTP_Op_UnLock" value="3" desc="解锁"/>
+	</enum>
+	
+	<proto name="ReqCompositeOp" desc="请求功能槽开始操作">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="placeid" prefix="required" type="uint32" desc="位置id"/>
+		<member name="optype" prefix="required" type="BTPOpType" desc="操作类型"/>
+	</proto>
+	
+	<proto name="AckItemList" desc="更新滞留物品">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="item" prefix="repeated" type="uint32" desc="滞留产品列表"/>
+	</proto>
+	
+	<proto name="ReqCompositeWork" desc="请求开始工作">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="produceid" prefix="required" type="uint32" desc="生产id"/>
+	</proto>
+	
+</protocol>
+

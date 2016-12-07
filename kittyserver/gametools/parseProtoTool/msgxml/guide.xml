@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+    </import>
+    <enum name="GuideResult" desc="引导操作结果">
+        <member name="GuideResult_Suc" value="0" desc="操作"/>
+        <member name="GuideResult_NameTooShort" value="1" desc="名字太短"/>
+        <member name="GuideResult_NameTooLang" value="2" desc="名字太长"/>
+        <member name="GuideResult_Nameillegal" value="3" desc="名字非法"/>
+        <member name="GuideResult_NameMoneyLimit" value="4" desc="修改名字钱不足"/>
+        <member name="GuideResult_Repeated" value="5" desc="名字重复"/>
+
+    </enum>
+    <proto name="ReqSetRoleName" desc="重起名字">
+        <member name="name" prefix="required" type="string" desc="角色昵称"/>
+        <member name="sex" prefix="required" type="SexType" desc="性别"/>
+    </proto>
+    <proto name="AckSetRoleName" desc="重起名字">
+        <member name="result" prefix="required" type="GuideResult" desc="登录结果"/>
+        <member name="name" prefix="optional" type="string" default="" desc="角色昵称"/>
+        <member name="sex" prefix="optional" type="SexType" default="Male" desc="性别"/>
+        <member name="hassetname" prefix="optional" type="uint32" default="0" desc="是否设置名字"/>
+    </proto>
+    <proto name="ReqSetHead" desc="设置头像">
+        <member name="head" prefix="required" type="playerhead" desc="头像"/>
+    </proto>
+    <proto name="AckSetHead" desc="设置头像返回">
+        <member name="result" prefix="required" type="GuideResult" desc="登录结果"/>
+		<member  name="upurl" prefix="optional" type="string" default="" desc="上传url"/>
+        <member name="head" prefix="optional" type="playerhead" desc="头像"/>
+    </proto>
+    <proto name="Reqsetguidefinish" desc="设置完成引导id">
+        <member name="guideid" prefix="required" type="uint32" desc="完成的引导id"/>
+    </proto>
+    <proto name="Acksetguidefinish" desc="设置完成引导id返回">
+        <member name="guideid" prefix="required" type="uint32" desc="完成的引导id"/>
+        <member  name="award" prefix="required" type="vecAward" desc="获得的奖励"/>
+        <member name="nextguideid" prefix="required" type="uint32" desc="下一步引导id"/>
+    </proto>
+    <proto name="ReqsetTaskguidefinish" desc="设置完成任务引导id">
+        <member name="taskguideid" prefix="required" type="uint32" desc="完成的引导id"/>
+        <member name="taskguidestep" prefix="required" type="uint32" desc="引导步"/>
+    </proto>
+    <proto name="Acksettaskguidefinish" desc="设置完成任务引导id返回">
+        <member name="taskguideid" prefix="required" type="uint32" desc="完成的引导id"/>
+        <member name="taskguidestep" prefix="required" type="uint32" desc="引导步"/>
+        <member  name="award" prefix="required" type="vecAward" desc="获得的奖励"/>
+        <member name="nexttaskguidestep" prefix="required" type="uint32" desc="下一步引导步"/>
+    </proto>
+    <proto name="Acknewsettaskguide" desc="任务引导开启">
+        <member name="taskguideid" prefix="required" type="uint32" desc="引导id"/>
+        <member name="taskguidestep" prefix="required" type="uint32" desc="引导步"/>
+    </proto>
+   <proto name="AcknewIcon" desc="开启新的Icon">
+        <member name="funiconid" prefix="required" type="uint32" desc="新的Icon"/>
+    </proto>
+
+
+
+</protocol>
+

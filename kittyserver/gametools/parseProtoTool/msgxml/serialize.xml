@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>
+    <import>
+        <member name="item" desc="道具对应的proto"/>
+        <member name="trade" desc="交易对应的proto"/>
+        <member name="build" desc="建筑对应的proto"/>
+        <member name="kittygarden" desc="地图对应的proto"/>
+        <member name="task" desc="任务对应的proto"/>
+        <member name="achievement" desc="成就对应的proto"/>
+        <member name="event" desc="事件:w对应的proto"/>
+        <member name="email" desc="邮件对应的proto"/>
+        <member name="produce" desc="产出道具对应的proto"/>
+        <member name="usecardbuild" desc="使用卡牌建筑对应的proto"/>
+        <member name="dress" desc="时装对应的proto"/>
+        <member name="divine" desc="占卜对应的proto"/>
+        <member name="paper" desc="图纸对应的proto"/>
+        <member name="burstevent" desc="突发事件对应的proto"/>
+        <member name="littergame" desc="小游戏对应的proto"/>
+        <member name="atlas" desc="图鉴对应的proto"/>
+        <member name="order" desc="订单对应的proto"/>
+        <member name="chat" desc="聊天对应的proto"/>
+        <member name="giftpackage" desc="礼品对应的proto"/>
+        <member name="common" desc="公共对应的proto"/>
+        <member name="room" desc="空间对应的proto"/>
+        <member name="trainorder" desc="火车订单对应的proto"/>
+        <member name="ordersystem" desc="订货系统对应的proto"/>
+        <member name="signin" desc="签到系统对应的proto"/>
+        <member name="composite" desc="合成道具建筑对应的proto"/>
+        <member name="market" desc="黑市及其男仆的proto"/>
+        <member name="unitbuild" desc="合建栏位信息"/>
+        <member name="playeractive" desc="个人活动信息"/>
+
+    </import>
+
+    <proto name="HappyData" desc="愉悦值的历史数据">
+        <member name="grade" prefix="required" type="uint32" default="0" desc="档次"/>
+        <member name="frequency" prefix="required" type="uint32" default="0" desc="愉悦值次数"/>
+        <member name="time" prefix="required" type="uint32" default="0" desc="时间"/>
+    </proto>
+
+    <proto name="DailyData" desc="日常数据">
+        <member name="dailydatatime" prefix="optional" type="uint32" default="0" desc="每天日常数据刷新时间"/>
+        <member name="addgold" prefix="optional" type="uint32" default="0" desc="每天获得的金币数"/>
+        <member name="addgem" prefix="optional" type="uint32" default="0" desc="每天获得的钻石"/>
+        <member name="addexp" prefix="optional" type="uint32" default="0" desc="每天获得的经验"/>
+        <member name="addhappy" prefix="optional" type="uint32" default="0" desc="每天获得的愉悦值"/>
+        <member name="addfriend" prefix="optional" type="uint32" default="0" desc="每天交友数量"/>
+        <member name="vistorother" prefix="optional" type="uint32" default="0" desc="每天访问别人乐园数量"/>
+        <member name="addatlas" prefix="optional" type="uint32" default="0" desc="每天开启的图鉴数量"/>
+        <member name="finishburstevent" prefix="optional" type="uint32" default="0" desc="每天完成的突发事件数量"/>
+        <member name="buildorlevel" prefix="optional" type="uint32" default="0" desc="每天建造或升级建筑的数量"/>
+        <member name="randtoy" prefix="optional" type="uint32" default="0" desc="每天随机抽取toy的数量"/>
+        <member name="divine" prefix="optional" type="DivineData" desc="占卜数据"/>
+        <member name="stardata" prefix="repeated" type="StarData" desc="星座游戏数据"/>
+        <member name="sushidata" prefix="optional" type="SuShiData" desc="寿司游戏数据"/>
+        <member name="todayprivatelmnum" prefix="optional" type="uint32" default="0" desc="今日悄悄话次数"/>
+        <member name="costgem" prefix="optional" type="uint32" default="0" desc="每天消耗钻石数"/>
+        <member name="finishtask" prefix="optional" type="uint32" default="0" desc="每日完成任务数"/>
+        <member name="ordervalue" prefix="optional" type="uint32" default="0" desc="每日订货增加数量"/>
+        <member name="compositeitem" prefix="optional" type="uint32" default="0" desc="每日合成增加数量"/>
+        <member name="tradenum" prefix="optional" type="uint32" default="0" desc="每日交易次数数量"/>
+        <member name="trainget" prefix="optional" type="uint32" default="0" desc="每日火车收获高级材料数量"/>
+        <member name="helptrain" prefix="optional" type="uint32" default="0" desc="每日帮助好友装火车数量"/>
+        <member name="finishdailytask" prefix="optional" type="uint32" default="0" desc="每日完成日常任务数量"/>
+		<member name="orderaccept" prefix="optional" type="uint32" default="0" desc="每日接收订货增加数量"/>
+        <member name="rechargetodayfrist" prefix="optional" type="uint32" default="0" desc="每日首冲值"/>
+        <member name="familyordernum" prefix="optional" type="uint32" default="0" desc="家族捐献次数"/>
+		<member name="cointoytime" prefix="optional" type="uint32" default="0" desc="每天金币扭蛋的次数"/>
+        <member name="rechargetoday" prefix="optional" type="uint32" default="0" desc="每日充值"/>
+
+    </proto>
+
+    <proto name="CharBin" desc="charBin的二进制数据">
+        <member name="happy_low" prefix="optional" type="HappyData" desc="愉悦值超过60的数据"/>
+        <member name="happy_mid" prefix="optional" type="HappyData" desc="愉悦值超过80的数据"/>
+        <member name="happy_hight" prefix="optional" type="HappyData" desc="愉悦值超过100的数据"/>
+        <member name="dailydata" prefix="optional" type="DailyData" desc="日常数据"/>
+        <member name="dress" prefix="optional" type="DressData" desc="身上所穿时装"/>
+        <member name="head" prefix="optional" type="playerhead" desc="头像"/>
+        <member name="taskguidid" prefix="optional" type="uint32" desc="当前任务引导id"/>
+        <member name="taskguidstep" prefix="optional" type="uint32" desc="当前任务引导步"/>
+        <member name="finisnorder" prefix="optional" type="uint32" default="0" desc="完成订单数"/>
+        <member name="carnivalnum" prefix="optional" type="uint32" default="0" desc="开启嘉年华次数"/>
+        <member name="accucoupons" prefix="optional" type="uint32" default="0" desc="累积点券数"/>
+        <member name="contribute" prefix="optional" type="uint32" default="0" desc="累积贡献值"/>
+		<member name="contributeweek" prefix="optional" type="uint32" default="0" desc="周贡献值"/>
+		<member name="contributemonth" prefix="optional" type="uint32" default="0" desc="月贡献值"/>
+        <member name="accpopularnow" prefix="optional" type="uint32" default="0" desc="累积的当前人气值"/>
+        <member name="giftpackflg" prefix="optional" type="bool" default="false" desc="礼品背包标识"/>
+        <member name="cashpackflg" prefix="optional" type="bool" default="false" desc="实物背包标识"/>
+        <member name="funiconid" prefix="repeated" type="uint32" desc="已经开的ICon"/>
+		<member name="charismaweek" prefix="optional" type="uint32" default="0" desc="周魅力值"/>
+		<member name="charismamonth" prefix="optional" type="uint32" default="0" desc="月魅力值"/>
+		<member name="popularnowweek" prefix="optional" type="uint32" default="0" desc="周人气值"/>
+		<member name="popularnowmonth" prefix="optional" type="uint32" default="0" desc="月人气值"/>
+        <member name="buytimelogin" prefix="optional" type="uint32" default="0" desc="购买查看最近登录时间"/>
+        <member name="rechargetotal" prefix="optional" type="uint32" default="0" desc="总计充值"/>
+		<member name="charismalastweekrank" prefix="optional" type="uint32" default="0" desc="上周排名"/>
+		<member name="charismalastmonthrank" prefix="optional" type="uint32" default="0" desc="上月排名"/>
+		<member name="popularlastweekrank" prefix="optional" type="uint32" default="0" desc="上周排名"/>
+		<member name="popularlastmonthrank" prefix="optional" type="uint32" default="0" desc="上月排名"/>
+		<member name="contributelastweekrank" prefix="optional" type="uint32" default="0" desc="上周排名"/>
+		<member name="contributelastmonthrank" prefix="optional" type="uint32" default="0" desc="上月排名"/>
+		<member name="charis" prefix="optional" type="uint32" default="0" desc="魅力值"/>
+        <member name="fisrtjoinstar" prefix="optional" type="bool" default="false" desc="第一次参加星座游戏"/>
+        <member name="gold_gashtimes" prefix="optional" type="uint32" default="0" desc="用户钻石抽奖累计数"/>
+        <member name="coin_gashtimes" prefix="optional" type="uint32" default="0" desc="用户金币抽奖累计数"/>
+        <member name="friendpoint_gashtimes" prefix="optional" type="uint32" default="0" desc="用户友情点抽奖累计数"/>
+		<member name="recharge" prefix="repeated" type="bool" desc="是否为第一次置换"/>
+		<member name="popularnow" prefix="optional" type="uint32" default="0" desc="当前人口值"/>
+		<member name="popularMax" prefix="optional" type="uint32" default="0" desc="当前人口最大值"/>
+        <member name="firstrecharge" prefix="optional" type="uint32" default="0" desc="首冲"/>
+        <member name="activecode" prefix="optional" type="string" desc="激活码"/>
+    </proto>
+
+    <proto name="Serialize" desc="存档的二进制内容">
+        <member name="charbin" prefix="optional" type="CharBin" desc="角色二进制信息"/>
+        <member name="store_items" prefix="repeated" type="PbStoreItem" desc="需要保存的道具信息"/>
+        <member name="saleBooth" prefix="optional" type="PbSaleBooth" desc="摊位"/>
+        <member name="sellpaper" prefix="repeated" type="SellPaperBase" desc="广告报纸信息"/>
+        <member name="kittygarden" prefix="optional" type="KittyGarden" desc="kitty乐园"/>
+        <member name="buildbase" prefix="repeated" type="BuildBase" desc="建筑信息"/>
+        <member name="buildproduce" prefix="repeated" type="BuildProduce" desc="建筑产出信息"/>
+        <member name="compositeinfo" prefix="repeated" type="CompositeInfo" desc="合成建筑产出道具信息"/>
+        <member name="produceinfo" prefix="repeated" type="ProduceInfo" desc="生产建筑产出道具信息"/>
+        <member name="usecard" prefix="repeated" type="UseCardInfo" desc="使用卡牌建筑信息"/>
+        <member name="warebuild" prefix="repeated" type="WareHouseBuildBase" desc="建筑仓库信息"/>
+        <member name="wareproduceinfo" prefix="repeated" type="WareHouseProduceInfo" desc="建筑仓库生产建筑产出道具信息"/>
+        <member name="warecompositeinfo" prefix="repeated" type="WareHouseCompositeInfo" desc="建筑仓库合成建筑产出道具信息"/>
+        <member name="wareotherinfo" prefix="repeated" type="WareHouseOtherInfo" desc="建筑仓库其他产出信息"/>
+        <member name="worker" prefix="repeated" type="Worker" desc="工人数据"/>
+        <member name="task" prefix="repeated" type="Task" desc="任务"/>
+        <member name="atlas" prefix="repeated" type="AtlasData" desc="已经开启了的图鉴数据"/>
+        <member name="achievement" prefix="repeated" type="AchieveMent" desc="成就数据"/>
+        <member name="event" prefix="repeated" type="SaveForEvent" desc="事件"/>
+        <member name="email" prefix="repeated" type="EmailInfo" desc="邮件"/>
+        <member name="dress" prefix="repeated" type="DressData" desc="时装"/>
+        <member name="paper" prefix="repeated" type="PaperData" desc="图纸"/>
+        <member name="burstevent" prefix="repeated" type="BurstEvent" desc="突发事件"/>
+        <member name="suborder" prefix="repeated" type="OrderItem" desc="订单项"/>
+        <member name="leavemessage" prefix="repeated" type="ChatMessage" desc="留言消息"/>
+        <member name="giftpackage" prefix="repeated" type="GiftInfo" desc="礼品背包"/>
+        <member name="giftcash" prefix="repeated" type="GiftCashInfo" desc="实物信息"/>
+        <member name="address" prefix="repeated" type="AddressInfo" desc="地址"/>
+        <member name="cashgift" prefix="repeated" type="CashGiftInfo" desc="兑换礼品信息"/>
+        <member name="unlockbuild" prefix="repeated" type="uint32" desc="已解锁建筑"/>
+        <member name="personalinfo" prefix="optional" type="PersonalInfo" desc="个人资料"/>
+        <member name="trainorder" prefix="repeated" type="Train" desc="火车订单"/>
+        <member name="subOrderSystem" prefix="repeated" type="OrderSystemItem" desc="订货项"/>
+        <member name="signin" prefix="repeated" type="SignInData"  desc="签到数据"/>
+        <member name="bufferdata" prefix="repeated" type="BufferData" desc="全局buffer"/>
+        <member name="visitfriend" prefix="repeated" type="uint64"   desc="最近访问我的玩家，小于等于10个"/>
+        <member name="buildeffect" prefix="repeated" type="BuildEffect" desc="建筑效果"/>
+        <member name="maketdata" prefix="repeated" type="MarketData" desc="黑市数据"/>
+        <member name="servant" prefix="repeated" type="ServantData" desc="男仆数据"/>
+        <member name="contribute" prefix="repeated" type="Key64Val32Pair" desc="贡献值"/>
+        <member name="allselfcol" prefix="repeated" type="UnitPlayerColId" desc="自己的信息"/>
+        <member name="viewwechat" prefix="repeated" type="uint64" desc="自己购买过查看微信的列表"/>
+        <member name="activeinfo" prefix="repeated" type="PlayerActiveSave" desc="个人活动的信息"/>
+		<member name="buywechat" prefix="repeated" type="uint64" desc="被购买购买过查看微信的列表"/>
+		<member name="likelist" prefix="repeated" type="uint64" desc="点赞"/>
+		<member name="charisma" prefix="repeated" type="Key64Val32Pair" desc="收礼魅力值"/>
+        <member name="npcstall" prefix="repeated" type="PbSaleCell" desc="npc摊位"/>
+        <member name="adpaper" prefix="repeated" type="Key64Val32Pair" desc="广告报纸"/>
+        <member name="activerecharge" prefix="repeated" type="Key32Val32Pair" desc="活动充值"/>
+        <member name="sysorderrecord" prefix="repeated" type="Key32Val32Pair" desc="采购系统记录"/>
+        <member name="compositerecord" prefix="repeated" type="Key32Val32Pair" desc="合成记录"/>
+        <member name="producerecord" prefix="repeated" type="Key32Val32Pair" desc="生产记录"/>
+        <member name="activecode" prefix="repeated" type="Key32ValStringPair" desc="激活码"/>
+    </proto>
+
+</protocol>
+

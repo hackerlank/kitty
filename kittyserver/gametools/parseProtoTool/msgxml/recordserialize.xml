@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>
+	<import>
+		<member name="trade" desc="交易对应的proto"/>
+	</import>
+	
+	<proto name="SuShiStepRecordData" desc="寿司关卡历史记录数据">
+		<member name="level" prefix="optional" type="uint32" default="0" desc="关卡id"/>
+		<member name="recorder" prefix="optional" type="uint64" default="0" desc="记录创造者"/>
+		<member name="record" prefix="optional" type="uint32" default="0" desc="分数"/>
+	</proto>
+	
+	<proto name="RecordSerialize" desc="record服务器存档的二进制内容">
+		<member name="advertise" prefix="repeated" type="SellPaperCellBase" desc="角色二进制信息"/>
+		<member name="sushirecorddata" prefix="repeated" type="SuShiStepRecordData" desc="寿司关卡历史记录数据"/>
+		<member name="clearweekrank" prefix="optional" type="uint32" default="0" desc="每周清榜时间"/>
+		<member name="clearmonthrank" prefix="optional" type="uint32" default="0" desc="每月清榜时间"/>
+	</proto>
+	
+</protocol>
+

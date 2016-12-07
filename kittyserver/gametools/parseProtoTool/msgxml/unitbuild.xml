@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+    </import>
+    <enum name="UnitBuildResult" desc="操作结果">
+        <member name="UnitBuildResult_Suc" value="0" desc="成功"/>
+        <member name="UnitBuildResult_HasOpen" value="1" desc="栏位已开"/>
+        <member name="UnitBuildResult_NoOpen" value="2" desc="栏位未开"/>
+        <member name="UnitBuildResult_NoResource" value="3" desc="资源不足"/>
+        <member name="UnitBuildResult_ErrGridId" value="4" desc="没有这个合建ID"/>
+        <member name="UnitBuildResult_ErrColId" value="5" desc="没有这个栏位"/>
+        <member name="UnitBuildResult_GridIdDisMatchColId" value="6" desc="合建ID与栏位不匹配"/>
+        <member name="UnitBuildResult_OtherErr" value="7" desc="服务器内部错误"/>
+        <member name="UnitBuildResult_ServerBusy" value="8" desc="加锁失败"/>
+        <member name="UnitBuildResult_ResetUnityErr" value="9" desc="开启合建栏，要确保当前最大等级大于已经成长的等级:w"/>
+        <member name="UnitBuildResult_NoStopRunning" value="10" desc="该栏位不处于合建停止的状态"/>
+        <member name="UnitBuildResult_GridIdDisMatchBuildId" value="11" desc="合建ID与建筑不匹配"/>
+        <member name="UnitBuildResult_ErrBuildId" value="12" desc="错误的建筑ID"/>
+        <member name="UnitBuildResult_BuildNumMore" value="13" desc="该类型建筑已超上限"/>
+        <member name="UnitBuildResult_ColUse" value="14" desc="栏位已经被占用"/>
+        <member name="UnitBuildResult_FullCol" value="15" desc="对方没有空白栏位"/>
+        <member name="UnitBuildResult_PayTypeErr" value="16" desc="支付方式错误"/>
+        <member name="UnitBuildResult_OtherPlayerERR" value="17" desc="合建对象为自己或者不存在"/>
+        <member name="UnitBuildResult_LessContribute" value="18" desc="你对好友的贡献值不足"/>
+        <member name="UnitBuildResult_ErrOnlyID" value="19" desc="合建唯一ID错误"/>
+        <member name="UnitBuildResult_NotByInvitePlayer" value="20" desc="你不是被邀请方"/>
+        <member name="UnitBuildResult_NotInviteState" value="21" desc="合建不处于邀请状态"/>
+        <member name="UnitBuildResult_NotInvitePlayer" value="22" desc="你不是邀请方"/>
+        <member name="UnitBuildResult_StopErrState" value="23" desc="终止时状态不对"/>
+        <member name="UnitBuildResult_LowLevel" value="24" desc="不到一级不可以终止"/>
+        <member name="UnitBuildResult_NOPower" value="25" desc="你无权操作"/>
+        <member name="UnitBuildResult_NORunning" value="26" desc="合建不在正常成长中"/>
+        <member name="UnitBuildResult_MoreSpeedTimes" value="27" desc="钻石加速超过上限"/>
+        <member name="UnitBuildResult_OtherBuildNumMore" value="28" desc="对方拥有建筑超上限"/>
+        <member name="UnitBuildResult_NotRunningDone" value="29" desc="不在等待激活状态"/>
+        <member name="UnitBuildResult_NoGift" value="30" desc="没有这个礼物"/>
+        <member name="UnitBuildResult_ErrGiftPlayer" value="31" desc="送礼对象不对:w"/>
+
+
+    </enum>
+    <enum name="UnitRunStatePublic" desc="合建栏运行状态，这个是双方的">
+        <member name="UnitRunState_Invite" value="1" desc="邀请状态"/>
+        <member name="UnitRunState_Running" value="2" desc="正在升级状态"/>
+        <member name="UnitRunState_RunningDone" value="3" desc="升级已完成状态,停止增长，等待激活"/>
+        <member name="UnitRunState_RunningStop" value="4" desc="申请方因为时间到，停止增长，等待重新激活"/>
+    </enum>
+    <enum name="PayType" desc="合建栏运行状态，这个是双方的">
+        <member name="PayType_Self" value="0" desc="自己付"/>
+        <member name="PayType_Other" value="1" desc="被邀请者付"/>
+    </enum>
+
+    <proto name="UnitRunInfo" desc="正在合建的栏位">
+        <member name="UnitOnlyId" prefix="required" type="uint64" desc="合建唯一id"/>
+        <member name="paytype" prefix="required" type="PayType" desc="支付方式"/>
+        <member name="InvitePlayer" prefix="required" type="uint64" desc="发起方ID"/>
+        <member name="InvitePlayerColId" prefix="required" type="uint32" desc="发起方的栏位"/>
+        <member name="InviteSpeedTimes" prefix="required" type="uint32" desc="今日加速次数"/>
+        <member name="ByInvitePlayer" prefix="required" type="uint64" desc="被动方ID"/>
+        <member name="ByInvitePlayerColId" prefix="required" type="uint32" desc="被动方的栏位"/>
+        <member name="ByInviteSpeedTimes" prefix="required" type="uint32" desc="今日加速次数"/>
+        <member name="LastSpeedTimer" prefix="required" type="uint32" desc="上次加速时间"/>
+        <member name="InviteUnitGridId" prefix="required" type="uint32" desc="以发起方的合建Id为主"/>
+        <member name="TimerOut" prefix="required" type="uint32" desc="栏位到期时间"/>
+        <member name="UnitBuildId" prefix="required" type="uint32" desc="合建的建筑id"/>
+        <member name="UnitScore" prefix="required" type="uint32" desc="当前合建成长值"/>
+        <member name="UnitLevel" prefix="required" type="uint32" desc="已激活的等级"/>
+        <member name="UnitLastCheckTimer" prefix="required" type="uint32" desc="上次检测合建进度的时间，邀请状态时表示开启邀请时间"/>
+        <member name="state" prefix="required" type="UnitRunStatePublic" desc="当前运行状态"/>
+        <member name="vecAward" prefix="required" type="vecAward" desc="当前送礼的状况"/>
+    </proto>
+    <proto name="UnitPlayerColId" desc="个人栏位">
+        <member name="PlayerColId" prefix="required" type="uint32" desc="栏位"/>
+        <member name="SelfUnitGridId" prefix="required" type="uint32" desc="自己开启的合建ID"/>
+        <member name="Usetimes" prefix="required" type="uint32" desc="使用次数"/>
+        <member name="TimerOut" prefix="required" type="uint32" desc="到期时间"/>
+    </proto>
+    <proto name="UnitRunInfoForCli" desc="客户端展示的合建栏位">
+        <member name="serverinfo" prefix="required" type="UnitRunInfo" desc="服务器数据"/>
+        <member name="othershow" prefix="required" type="playerShowbase" desc="其他玩家的信息"/>
+    </proto>
+    <enum name="UnitColInfoForCliState" desc="展示给客户端的状态">
+        <member name="UnitColInfoForCliState_None" value="0" desc="未开启"/>
+        <member name="UnitColInfoForCliState_Open" value="1" desc="已开启未合建"/>
+        <member name="UnitColInfoForCliState_Invite" value="2" desc="正在邀请别人"/>
+        <member name="UnitColInfoForCliState_ByInvite" value="3" desc="正在被别人邀请"/>
+        <member name="UnitColInfoForCliState_Running" value="4" desc="正在成长"/>
+        <member name="UnitColInfoForCliState_RunningDone" value="5" desc="成长已经完成，等待激活"/>
+        <member name="UnitColInfoForCliState_RunningStop" value="6" desc="成长停止，等待激活"/>
+    </enum>
+
+    <proto name="UnitColInfoForCli" desc="客户端栏位详情">
+        <member name="PlayerColId" prefix="required" type="uint32" desc="栏位"/>
+        <member name="state" prefix="required" type="UnitColInfoForCliState" desc="UnitColInfoForCliState_None ：selfinfo 空，unitinfo空 ，UnitColInfoForCliState_Open unitinfo空，其他 selfinfo 空"/>
+        <member name="selfinfo" prefix="optional" type="UnitPlayerColId" desc="自己信息"/>
+        <member name="unitinfo" prefix="optional" type="UnitRunInfoForCli" desc="合建信息"/>
+    </proto>
+
+
+    <!-- 服务器客户端通信协议-->
+    <!--请求当前栏位信息-->
+    <proto name="ReqAllUnitBuildInfo" desc="请求所有栏位">
+    </proto>
+    <proto name="ACKAllUnitBuildInfo" desc="返回所有栏位">
+        <member name="allcolinfo" prefix="repeated" type="UnitColInfoForCli" desc="所有栏位信息"/>
+    </proto>
+    <!--请求开启栏位-->
+    <proto name="ReqOpenColId" desc="请求激活栏位">
+        <member name="PlayerColId" prefix="required" type="uint32" desc="栏位"/>
+        <member name="UnitGridId" prefix="required" type="uint32" desc="自己开启的合建ID"/>
+    </proto>
+    <proto name="ACKOpUnitBuild" desc="返回操作结果">
+        <member name="Result" prefix="required" type="UnitBuildResult" desc="开启结果"/>
+        <member name="param" prefix="optional" type="uint32" default="0"  desc=" 相关参数"/>
+
+
+    </proto>
+    <!--请求栏位续费，等待超时激活-->
+    <proto name="ReqResetColId" desc="请求激活栏位">
+        <member name="PlayerColId" prefix="required" type="uint32" desc="栏位"/>
+        <member name="UnitGridId" prefix="required" type="uint32" desc="自己开启的合建ID"/>
+    </proto>
+    <!--请求合建-->
+    <proto name="ReqUnitBuild" desc="请求合建">
+        <member name="PlayerColId" prefix="required" type="uint32" desc="栏位"/>
+        <member name="UnitBuildId" prefix="required" type="uint32" desc="合建的建筑id"/>
+        <member name="ByInvitePlayer" prefix="required" type="uint64" desc="被动方ID"/>
+        <member name="paytype" prefix="required" type="PayType" desc="支付方式"/>
+    </proto>
+    <!--回应邀请-->
+    <proto name="ReqAgreeUnitBuild" desc="被邀请方是否同意合建">">
+        <member name="ColId" prefix="required" type="uint32" desc="栏位Id"/>
+        <member name="isagree" prefix="required" type="bool" desc="同意或者不同意"/>
+    </proto>
+    <!--撤销邀请-->
+    <proto name="ReqCancelInvite" desc="撤销邀请">
+        <member name="ColId" prefix="required" type="uint32" desc="栏位Id"/>
+    </proto>
+    <!--停止合建-->
+    <proto name="ReqStopBuild" desc="请求终止合建">
+        <member name="ColId" prefix="required" type="uint32" desc="栏位Id"/>
+    </proto>
+    <!--钻石加速-->
+    <proto name="ReqAddSpeedBuild" desc="请求加速合建">
+        <member name="ColId" prefix="required" type="uint32" desc="栏位Id"/>
+    </proto>
+    <!--激活等级-->
+    <proto name="ReqActiveBuild" desc="请求建筑激活">
+        <member name="ColId" prefix="required" type="uint32" desc="栏位Id"/>
+    </proto>
+    <!--更新栏位-->
+    <proto name="ACKUpdateUnitBuild" desc="更新栏位的信息">
+        <member name="colinfo" prefix="required" type="UnitColInfoForCli" desc="栏位信息更新"/>
+    </proto>
+
+</protocol>
+

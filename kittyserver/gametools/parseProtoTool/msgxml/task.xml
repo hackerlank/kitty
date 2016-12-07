@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>
+	<enum name="TaskStatus" desc="任务状态">
+		<member name="Task_Accept" value="0" desc="进行"/>
+		<member name="Task_Finish" value="1" desc="完成"/>
+		<member name="Task_Award"  value="2" desc="已提交"/>
+	</enum>
+	
+	<proto name="Task" desc="任务">
+		<member name="id" prefix="required" type="uint64" desc="任务id"/>
+		<member name="status" prefix="required" type="TaskStatus" desc="任务状态"/>
+		<member name="current" prefix="required" type="uint32" desc="任务进度"/>
+		<member name="total" prefix="required" type="uint32" desc="总任务"/>
+	</proto>
+	
+	<enum name="TaskType" desc="任务类型">
+		<member name="Task_Type_Default" value="0" desc="默认"/>
+		<member name="Task_Type_Main" value="1" desc="主线任务"/>
+		<member name="Task_Type_Day" value="2" desc="日常任务"/>
+	</enum>
+	
+	<proto name="ReqAllTask" desc="请求任务">
+		<member name="tasktype" prefix="optional" type="TaskType" default="Task_Type_Default" desc="任务类型"/>
+	</proto>
+	
+	<proto name="AckAllTask" desc="任务">
+		<member name="tasktype" prefix="optional" type="TaskType" default="Task_Type_Default" desc="任务类型"/>
+		<member name="task" prefix="repeated" type="Task" desc="任务"/>
+	</proto>
+	
+	<proto name="ReqSubmitTask" desc="提交任务">
+		<member name="id" prefix="required" type="uint64" desc="提交任务"/>
+	</proto>
+	
+	<proto name="AckUpdateTask" desc="更新任务">
+		<member name="task" prefix="required" type="Task" desc="任务"/>
+	</proto>
+	
+</protocol>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>
+	<import>
+		<member name="task" desc="任务对应的proto"/>
+	</import>
+	
+	<proto name="AchieveMent" desc="成就">
+		<member name="id" prefix="required" type="uint64" desc="成就id"/>
+		<member name="stars" prefix="required" type="uint32" desc="当前星级"/>
+		<member name="status" prefix="required" type="TaskStatus" desc="成就状态"/>
+		<member name="current" prefix="required" type="uint32" desc="成就进度"/>
+		<member name="total" prefix="required" type="uint32" desc="总进度"/>
+	</proto>
+	
+	<proto name="ReqAllAchieve" desc="请求成就">
+	</proto>
+	
+	<proto name="AckAllAchieve" desc="成就">
+		<member name="achieve" prefix="repeated" type="AchieveMent" desc="成就"/>
+	</proto>
+	
+	<proto name="ReqSubmitAchieve" desc="提交成就">
+		<member name="id" prefix="required" type="uint64" desc="提交成就"/>
+	</proto>
+	
+	<proto name="AckUpdateAchieve" desc="更新成就">
+		<member name="achieve" prefix="required" type="AchieveMent" desc="任务"/>
+	</proto>
+</protocol>
+

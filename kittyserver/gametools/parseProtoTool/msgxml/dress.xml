@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+
+	<import>
+		<member name="build" desc="建筑对应的proto"/>
+	</import>
+	
+	
+	<proto name="DressData" desc="刷新图鉴信息">
+		<member name="id" prefix="required" type="uint32" default="0" desc="时装id"/>
+		<member name="level" prefix="required" type="uint32" default="0" desc="时装等级"/>
+	</proto>
+	
+	<proto name="ReqDress" desc="请求时装信息">
+	</proto>
+	
+	<proto name="AckDress" desc="刷新时装信息">
+		<member name="dress" prefix="repeated" type="DressData" desc="所有获得时装"/>
+	</proto>
+	
+	<proto name="AckUpdateDress" desc="刷新时装信息">
+		<member name="dress" prefix="required" type="DressData" desc="单刷时装"/>
+	</proto>
+	
+	<enum name="DressOpType" desc="时装类型操作">
+		<member name="DOT_Change" value="0" desc="请求换装"/>
+		<member name="DOT_UpLevel" value="1" desc="请求时装升级"/>
+	</enum>
+	
+	<proto name="ReqOpDress" desc="请求时装操作">
+		<member name="id" prefix="required" type="uint32" desc="时装id"/>
+		<member name="optype" prefix="required" type="DressOpType" desc="操作类型"/>
+	</proto>
+	
+	<proto name="AckBodyDress" desc="角色身上穿着的时装">
+		<member name="dress" prefix="required" type="DressData" desc="时装"/>
+	</proto>
+	
+</protocol>
+

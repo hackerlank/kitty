@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+
+	<enum name="OpToyType" desc="建筑的几种状态，这里用位表示">
+		<member name="OTT_One_Time" value="0" desc="请求扭蛋(一次)"/>
+		<member name="OTT_Ten_Time" value="1" desc="请求扭蛋（10次)"/>
+	</enum>
+	
+	<proto name="ReqOpToy" desc="请求操作扭蛋">
+		<member name="activeid" prefix="required" type="uint32" desc="活动id"/>
+		<member name="optype" prefix="required" type="OpToyType" desc="操作类型"/>
+	</proto>
+	
+	<proto name="AckRandToy" desc="返回随机扭蛋">
+		<member name="activeid" prefix="required" type="uint32" desc="活动id"/>
+		<member name="toyid" prefix="repeated" type="uint32" desc="扭蛋id"/>
+	</proto>
+    
+    <proto name="AckToyCnt" desc="返回随机扭蛋次数">
+		<member name="cnt" prefix="repeated" type="uint32" desc="扭蛋次数"/>
+	</proto>
+	
+	<proto name="AckCoinToyDailyCnt" desc="返回每天金币扭蛋次数">
+		<member name="cnt" prefix="repeated" type="uint32" desc="扭蛋次数"/>
+	</proto>
+	
+
+	
+</protocol>
+

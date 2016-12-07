@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+	<import>
+        <member name="trade" desc="交易对应的proto"/>
+        <member name="common" desc="common对应的proto"/>
+	</import>
+	
+	<enum name="EmailStatusType" desc="邮件状态类型">
+		<member name="Email_Status_Accept" value="0" desc="新邮件"/>
+		<member name="Email_Status_Read" value="1" desc="已读"/>
+		<member name="Email_Status_Delete" value="2" desc="删除"/>
+	</enum>
+	
+	<proto name="EmailBase" desc="邮件">
+		<member name="accepter" prefix="optional" type="uint64" default="0" desc="接收人id"/>
+		<member name="acceptername" prefix="optional" type="string" default="" desc="接收人昵称"/>
+		<member name="title" prefix="optional" type="string" default="" desc="标题"/>
+		<member name="conten" prefix="optional" type="string" default="" desc="内容"/>
+		<member name="argvec" prefix="repeated" type="ReplaceWord" desc="内容参数"/>
+		<member name="item" prefix="repeated" type="PbStoreItem" desc="附件"/>
+	</proto>
+	
+	<proto name="EmailInfo" desc="邮件">
+		<member name="id" prefix="optional" type="uint64" default="0" desc="邮件id"/>
+		<member name="sender" prefix="optional" type="uint64" default="0" desc="发送者"/>
+		<member name="sendername" prefix="optional" type="string" default="" desc="发送者昵称"/>
+		<member name="emailbase" prefix="optional" type="EmailBase" desc="邮件基本信息"/>
+		<member name="createtime" prefix="optional" type="uint64" default="0" desc="创建时间"/>	
+		<member name="status" prefix="optional" type="EmailStatusType" default="Email_Status_Accept" desc="状态"/>
+		<member name="popup" prefix="optional" type="bool" default="false" desc="默认不需要弹窗"/>
+	</proto>
+	
+	<proto name="ReqEmail" desc="请求邮件">
+		<member name="id" prefix="optional" type="uint64" default="0" desc="邮件id,如果不填，则请求所有邮件列表"/>
+	</proto>
+	
+	<proto name="ReqSendEmail" desc="请求发送邮件">
+		<member name="emailbase" prefix="required" type="EmailBase" desc="邮件基本信息"/>
+	</proto>
+	
+	<proto name="AckEmail" desc="刷新所有邮件">
+		<member name="email" prefix="repeated" type="EmailInfo" desc="邮件"/>
+	</proto>
+	
+	<proto name="AckUpdateEmail" desc="刷新所有邮件">
+		<member name="email" prefix="required" type="EmailInfo" desc="邮件"/>
+	</proto>
+	
+	<enum name="EmailOpType" desc="邮件操作类型">
+		<member name="Email_Op_Read" value="0" desc="读取邮件"/>
+		<member name="Email_Status_Close" value="1" desc="关闭邮件"/>
+		<member name="Email_Op_Get_Item" value="2" desc="获取附件"/>
+		<member name="Email_Op_Get_Item_All" value="3" desc="全部提取"/>
+		<member name="Email_Op_Delete" value="4" desc="删除"/>
+	</enum>
+	
+	<proto name="ReqOpEmail" desc="请求操作邮件">
+		<member name="id" prefix="required" type="uint64" desc="邮件id"/>
+		<member name="optype" prefix="required" type="EmailOpType" desc="操作类型"/>
+	</proto>
+		
+</protocol>
+

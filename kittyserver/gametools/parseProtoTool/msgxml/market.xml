@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+    </import>
+    <enum name="MarketResult" desc="操作结果">
+        <member name="MarketResult_Suc" value="0" desc="操作成功"/>
+        <member name="MarketResult_MoneyLimit" value="1" desc="钱不足"/>
+        <member name="MarketResult_BuyDone" value="2" desc="物品已售"/>
+        <member name="MarketResult_Parketfull" value="3" desc="包裹不足"/>
+        <member name="MarketResult_FluseTimeClose" value="4" desc="离刷新时间太近"/>
+        <member name="MarketResult_ServantActive" value="5" desc="男仆已经激活"/>
+        <member name="MarketResult_ServantNoActive" value="6" desc="男仆未激活"/>
+        <member name="MarketResult_ServantNoClass" value="7" desc="男仆眼镜id_err"/>
+        <member name="MarketResult_ServantCool" value="8" desc="男仆不处于ServantState_Active"/>
+        <member name="MarketResult_ServantIdOrItemErr" value="9" desc="男仆购买ID与物品ID不匹配"/>
+        <member name="MarketResult_ServantNoAutoOK" value="10" desc="男仆 不处于挂机结束状态"/>
+        <member name="MarketResult_NoBox" value="11" desc="男仆无箱子可开"/>
+        <member name="MarketResult_ServantTimerOut" value="12" desc="获得挂机物品时，已经过期"/>
+        <member name="MarketResult_BoxHasOpen" value="13" desc="获得挂机物品时，已经过期"/>
+        <member name="MarketResult_OtherErr" value="14" desc="其它错误"/>
+        <member name="MarketResult_NoOpenMarket" value="15" desc="黑市未开"/>
+
+    </enum>
+    <enum name="MarketItemState" desc="黑市刷出项状态">
+        <member name="MarketItem_None" value="0" desc="未买"/>
+        <member name="MarketItem_Buy" value="1" desc="已买"/>
+    </enum>
+
+    <proto name="MarketItem" desc="黑市刷出项">
+        <member name="lineid" prefix="required" type="uint32" desc="行号"/>
+        <member name="rowid" prefix="required" type="uint32" desc="列号"/>
+        <member name="state" prefix="required" type="MarketItemState" desc="列号"/>
+        <member name="itemid" prefix="required" type="uint32" desc="物品id"/>
+        <member name="itemnum" prefix="required" type="uint32" desc="物品数量"/>
+        <member name="moneytype" prefix="required" type="AttrType" desc="货币类型"/>
+        <member name="moneynum" prefix="required" type="uint32" desc="货币数量"/>
+        <member name="off" prefix="required" type="uint32" desc="折扣"/>
+        </proto>
+    <proto name="MarketData" desc="黑市数据">
+        <member name="lastFlushTimer" prefix="required" type="uint32" default="0" desc="上次定点刷新时间"/>
+        <member name="submaketitem" prefix="repeated" type="MarketItem" desc="黑市刷出项"/>
+    </proto>
+
+    <enum name="ServantState" desc="男仆状态">
+        <member name="ServantState_None" value="0" desc="未激活"/>
+        <member name="ServantState_Active" value="1" desc="已激活"/>
+        <member name="ServantState_FindCoolDwown" value ="2" desc ="寻找冷却"/>
+        <member name="ServantState_AutoCoolDwown" value ="3" desc ="挂机冷却"/>
+        <member name="ServantState_AutoOK" value ="4" desc ="挂机成功"/>
+    </enum>
+    <proto name="ServantData" desc="男仆数据">
+        <member name="state" prefix="required" type="ServantState" default="ServantState_None" desc="男仆状态"/>
+        <member name="servanttime" prefix="required" type="uint32" default="0"  desc="男仆服务时间，客户端来说是倒计时"/>
+        <member name="cooltime" prefix="required" type="uint32" default="0" desc="男仆休息醒来时间，客户端来说是倒计时"/>
+        <member name="servantId" prefix="required" type="uint32" default="0" desc="男仆表id"/>
+        <member name="itemid" prefix="required" type="uint32" default="0" desc="挂机等待物品id,或则上次寻找物品Id"/>
+        <member name="openbox" prefix="repeated" type="bool" desc="宝箱开启状态"/>
+        <member name="classid" prefix="required" type="uint32" default="0" desc="男仆眼镜"/>
+		<member name="firstflg" prefix="optional" type="bool" default="true" desc="是否为第一次"/>
+		<member name="boxid" prefix="repeated" type="uint32" desc="宝箱id"/>
+    </proto>
+    <proto name="ReqMarketAndServantInfo" desc="请求黑市及其男仆数据">
+    </proto>
+    <proto name="AckMarketAndServantInfo" desc="请求订单列表返回">
+        <member name="maket" prefix="required" type="MarketData" desc="黑市刷出项"/>
+        <member name="servant" prefix="required" type="ServantData" desc="男仆数据"/>
+    </proto>
+
+    <proto name="ReqBuyMarketItem" desc="请求购买黑市产品">
+        <member name="lineid" prefix="required" type="uint32" desc="行号"/>
+        <member name="rowid" prefix="required" type="uint32" desc="列号"/>
+    </proto>
+    <proto name="AckBuyMarketItem" desc="求购买黑市产品返回">
+        <member name="result" prefix="required" type="MarketResult" desc="处理结果"/>
+        <member name="lineid" prefix="required" type="uint32" desc="行号"/>
+        <member name="rowid" prefix="required" type="uint32" desc="列号"/>
+    </proto>
+    <proto name="ReqFlushMarket" desc="请求刷新黑市">
+    </proto>
+    <proto name="AckFlushMarket" desc="求刷新返回">
+        <member name="result" prefix="required" type="MarketResult" desc="处理结果"/>
+    </proto>
+    <proto name="AckUpdateMarketOne" desc="单个数据数据更新">
+        <member name="submaketitem" prefix="required" type="MarketItem" desc="黑市刷出项"/>
+    </proto>
+    <proto name="AckUpdateMarketAll" desc="单个数据数据更新">
+        <member name="maket" prefix="required" type="MarketData" desc="黑市刷出项"/>
+    </proto>
+
+    <proto name="ReqBuyServant" desc="请求雇佣男仆">
+        <member name="glassid" prefix="required" type="uint32" desc="眼镜id"/>
+    </proto>
+    <proto name="AckBuyServant" desc="男仆雇佣返回">
+        <member name="result" prefix="required" type="MarketResult" desc="处理结果"/>
+    </proto>
+    <proto name="ReqBuyServantItem" desc="请求购买男仆商品">
+        <member name="servantId" prefix="required" type="uint32" desc="男仆表id"/>
+        <member name="Itemid" prefix="required" type="uint32" desc="物品id"/>
+    </proto>
+    <proto name="AckBuyServantItem" desc="返回请求购买男仆返回">
+        <member name="result" prefix="required" type="MarketResult" desc="处理结果"/>
+        <member name="servantId" prefix="required" type="uint32" desc="男仆表id"/>
+        <member name="Itemid" prefix="required" type="uint32" desc="物品id"/>
+    </proto>
+    <proto name="ReqGetServantAutoItem" desc="请求获得挂机物品">
+    </proto>
+    <proto name="AckGetServantAutoItem" desc="返回请求获得挂机物品">
+        <member name="result" prefix="required" type="MarketResult" desc="处理结果"/>
+    </proto>
+    <proto name="ReqOpenServantBox" desc="请求开一个男仆箱子">
+        <member name="index" prefix="required" type="uint32" desc="箱子序号"/>
+    </proto>
+    <proto name="AckOpenServantBox" desc="返回求开一个男仆箱子">
+        <member name="result" prefix="required" type="MarketResult" desc="处理结果"/>
+        <member name="award" prefix="required" type="vecAward" desc="奖励物品"/>
+    </proto>
+
+    <proto name="AckUpdateServant" desc="更新男仆数据">
+        <member name="servant" prefix="required" type="ServantData" desc="男仆数据"/>
+    </proto>
+
+	
+</protocol>
+

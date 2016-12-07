@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+
+	<import>
+        <member name="common" desc="公共对应的proto"/>
+	</import>
+    <enum name="ReChargeResult" desc="摊位单元格状态类型">
+        <member name="ReChargeResult_Suc" value="0" desc="成功"/>
+        <member name="ReChargeResult_ErrId" value="1" desc="请求ID无法识别"/>
+        <member name="ReChargeResult_LowSource" value="2" desc="源货币不足"/>
+    </enum>
+    <proto name="ItemChangeMoneyList" desc="置换详情">
+        <member name="changeid" prefix="required" type="uint32" desc="置换id"/>
+		<member name="icon" prefix="required" type="string" desc="icon"/>
+        <member name="name" prefix="required" type="string" desc="名字"/>
+		<member name="price" prefix="required" type="Key32Val32Pair" desc="价格"/>
+		<member name="firstnum" prefix="required" type="Key32Val32Pair" desc="首冲获得"/>
+		<member name="gainnum" prefix="required" type="Key32Val32Pair" desc="获得数量"/>
+		<member name="givenum" prefix="required" type="Key32Val32Pair" desc="赠送数量"/>
+		<member name="proportion" prefix="required" type="uint32" desc="加送比例"/>
+		<member name="first" prefix="required" type="bool" desc="是否为第一次"/>
+    </proto>
+
+    <proto name="ReqChangeMoney" desc="货币置换请求">
+        <member name="changeid" prefix="required" type="uint32" desc="置换id"/>
+    </proto>
+    <proto name="AckChangeMoney" desc="返回货币置换请求">
+        <member name="result" prefix="required" type="ReChargeResult" desc="处理结果"/>
+        <member name="changeid" prefix="required" type="uint32" desc="反馈客户端传来传来的置换id"/>
+    </proto>
+    <proto name="ReqChangeMoneyList" desc="置换列表请求">
+    </proto>
+    <proto name="AckChangeMoneyList" desc="置换列表请求返回">
+        <member name="item" prefix="repeated" type="ItemChangeMoneyList" desc="单条详情"/>
+    </proto>
+
+
+</protocol>

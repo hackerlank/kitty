@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+
+    <enum name="ActiveStatus" desc="活动状态">
+        <member name="Active_Close" value="0" desc="当前活动关闭"/>
+        <member name="Active_Open" value="1" desc="当前活动开启"/>
+    </enum>
+
+    <enum name="ActiveType" desc="活动类型">
+        <member name="Active_Type_Toy" value="1" desc="扭蛋"/>
+        <member name="Active_Type_Sign" value="2" desc=" 签到"/>
+		<member name="Active_Type_Recharge" value="3" desc="充值"/>
+		<member name="Active_Type_Discount" value="4" desc="折扣"/>
+        <member name="Active_Type_MAX" value="5" desc="边界，用来判定非法"/>
+
+    </enum>
+    <enum name="ActivePublic" desc="活动类型">
+        <member name="ActivePublic_Private" value="0" desc="个人活动"/>
+        <member name="ActivePublic_Public" value="1" desc=" 全局活动"/>
+
+    </enum>
+    <enum name="ActiveShowType" desc="活动显示方式">
+        <member name="ActiveShowType_None" value="0" desc="不显示于活动切页"/>
+        <member name="ActiveShowType_Page" value="1" desc="显示于活动切页"/>
+
+    </enum>
+    <enum name="ActiveOpenType" desc="活动显示方式">
+        <member name="ActiveOpenType_Close" value="0" desc="被关闭 "/>
+        <member name="ActiveOpenType_AlreadyOpen" value="1" desc="始终开启"/>
+        <member name="ActiveOpenType_ByTimer" value="2" desc="按绝对时间开启，openparam 如： 20160301091100，20180301091100"/>
+        <member name="ActiveOpenType_ByWeek" value="3" desc="按周时分开启，openparam 如：5_9_0 ，1_0_0 周五早上9点开，周日晚上12关闭"/>
+        <member name="ActiveOpenType_ByDay" value="4" desc="每日活动 按时分开启，openparam 如：9_0 ，0_0 早上9点开，晚上12点开闭 8_0,6_0 早上8点开，第二天早上6点关闭"/>
+
+    </enum>
+    <proto name="ActiveInfo" desc="活动信息">
+        <member name="activeid" prefix="required" type="uint32" desc="活动id"/>
+        <member name="status" prefix="required" type="ActiveStatus" desc="活动状态"/>
+        <member name="type" prefix="required" type="ActiveType" desc="活动类型"/>
+        <member name="publictype" prefix="required" type="ActivePublic" desc="活动公开程度"/>
+        <member name="showtype" prefix="required" type="ActiveShowType" desc="活动显示方式"/>
+        <member name="Order" prefix="required" type="uint32" desc="显示顺序"/>
+        <member name="name" prefix="required" type="string" desc="活动名字"/>
+        <member name="starttimer" prefix="required" type="string" desc="有效时间，0表示始终有效，非0 如 20160301091100 2016年3月1日9时11分00秒开始有效"/>
+        <member name="endtimer" prefix="required" type="string" desc="有效时间结束，0表示始终有效，非0 如 20180301091100 2018年3月1日9时11分00秒有效截止"/>
+        <member name="opentype" prefix="required" type="ActiveOpenType" desc="开启方式"/>
+        <member name="openparam" prefix="required" type="string" desc="开启参数"/>
+        <member name="level" prefix="required" type="uint32" desc="玩家加入等级要求0,表示无要求"/>
+    </proto>
+    <proto name="UpdateActiveInfo" desc="活动运行状态变更">
+        <member name="activeid" prefix="required" type="uint32" desc="活动id"/>
+        <member name="status" prefix="required" type="ActiveStatus" desc="活动状态"/>
+    </proto>
+
+    <proto name="ReqAckActiveInfo" desc="请求活动信息">
+    </proto>
+    <proto name="AckActiveInfo" desc="反馈活动信息，包括活动配置表变更，如Gm命令">
+        <member name="activeinfo" prefix="repeated" type="ActiveInfo" desc="活动信息"/>
+    </proto>
+    <!---活动运行状态变更-->
+    <proto name="AckUpdateActiveInfo" desc="活动运行状态变更">
+        <member name="updateactiveinfo" prefix="repeated" type="UpdateActiveInfo" desc="活动信息"/>
+    </proto>
+
+    <proto name="ReqJoinActive" desc="进行活动">
+        <member name="activeid" prefix="required" type="uint32" desc="活动id"/>
+    </proto>
+
+    <enum name="BrocastType" desc="广播类型">
+        <member name="Brocast_Type_Toy" value="0" desc="活动扭蛋"/>
+    </enum>
+
+    <proto name="AckBroadCast" desc="活动扭蛋广播">
+        <member name="who" prefix="required" type="string" desc="角色昵称"/>
+        <member name="where" prefix="required" type="BrocastType" desc="哪里"/>
+        <member name="getitem" prefix="required" type="uint32" desc="获得道具"/>
+        <member name="itemnum" prefix="required" type="uint32" desc="获得道具数量"/>
+    </proto>
+
+</protocol>
+

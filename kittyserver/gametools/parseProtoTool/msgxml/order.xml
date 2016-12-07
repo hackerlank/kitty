@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+    </import>
+
+    <enum name="OrderResult" desc="操作结果">
+        <member name="OrderResult_Suc" value="0" desc="操作成功"/>
+        <member name="OrderResult_errCol" value="1" desc="无此订单栏位"/>
+        <member name="OrderResult_NoDone" value="2" desc="订单条件不满足"/>
+        <member name="OrderResult_NoPaket" value="3" desc="包裹满"/>
+        <member name="OrderResult_CoolDwon" value="4" desc="该栏位正在冷却"/>
+        <member name="OrderResult_NoBuild" value="5" desc="无订单建筑"/>
+        <member name="OrderResult_MoneyLimit" value="6" desc="钱不足"/>
+        <member name="OrderResult_NoCoolDwon" value="7" desc="该栏没有冷却"/>
+    </enum>
+    <proto name="OrderItem" desc="订单项">
+        <member name="colid" prefix="required" type="uint32" desc="栏位id"/>
+        <member name="danweiid" prefix="required" type="uint32" des="订单显示的企业名，在数字前面加入danwei,见Localization表"/>
+        <member name="desid" prefix="required" type="uint32" des="订单说明,在数字前面加入order_f_,见Localization表"/>
+        <member name="buildid" prefix="optional" type="uint64" default="0" des="建筑id"/>
+        <member name="iteminfo" prefix="repeated" type="Key32Val32Pair" desc="物品ID，数量"/>
+        <member name="baseaward" prefix="repeated" type="Key32Val32Pair" desc="基础奖励"/>
+        <member name="extraaward" prefix="repeated" type="Key32Val32Pair" desc="额外奖励"/>
+        <member name="flushtime" prefix="optional" type="uint32" default="0" desc="该栏上次刷新时间，0表示，已经刷好"/>
+        <member name="endtime" prefix="optional" type="uint32" default="0" desc="初始化时间"/>
+    </proto>
+
+    <proto name="ReqOrderList" desc="请求订单列表">
+    </proto>
+    <proto name="AckOrderList" desc="请求订单列表返回">
+        <member name="result" prefix="required" type="OrderResult" desc="处理结果"/>
+        <member name="suborder" prefix="repeated" type="OrderItem" desc="订单项"/>
+        <member name="cdtime" prefix="optional" type="uint32" default="0" desc="cd时间"/>
+    </proto>
+
+    <proto name="ReqFinishOrder" desc="请求完成订单">
+        <member name="colid" prefix="required" type="uint32" desc="栏位id"/>
+        <member name="finishtype" prefix="required" type="uint32" desc="0,提交物品完成，1，用钱直接完成"/>
+    </proto>
+    <proto name="AckFinishOrder" desc="请求完成订单返回">
+        <member name="result" prefix="required" type="OrderResult" desc="处理结果"/>
+        <member name="colid" prefix="required" type="uint32" desc="栏位id"/>
+        <member name="finishtype" prefix="required" type="uint32" desc="0,提交物品完成，1，用钱直接完成"/>
+        <member name="suborder" prefix="optional" type="OrderItem" desc="订单项"/>
+        <member name="cdtime" prefix="optional" type="uint32" default="0" desc="cd时间"/>
+    </proto>
+    <proto name="ReqFlushOrder" desc="请求刷新订单">
+        <member name="colid" prefix="required" type="uint32" desc="栏位id"/>
+    </proto>
+    <proto name="AckFlushOrder" desc="请求刷新订单返回">
+        <member name="result" prefix="required" type="OrderResult" desc="处理结果"/>
+        <member name="suborder" prefix="optional" type="OrderItem" desc="订单项"/>
+        <member name="cdtime" prefix="optional" type="uint32" default="0" desc="cd时间"/>
+    </proto>
+    <proto name="AckUpdateOrder" desc="更新订单">
+        <member name="suborder" prefix="repeated" type="OrderItem" desc="订单项"/>
+        <member name="cdtime" prefix="optional" type="uint32" default="0" desc="cd时间"/>
+    </proto>
+    <proto name="ReqClearCD" desc="请求清除CD">
+        <member name="colid" prefix="required" type="uint32" desc="栏位id"/>
+    </proto>
+    <proto name="AckClearCD" desc="请求刷新订单返回">
+        <member name="result" prefix="required" type="OrderResult" desc="处理结果"/>
+        <member name="suborder" prefix="optional" type="OrderItem" desc="订单项"/>
+    </proto>
+
+
+</protocol>
+

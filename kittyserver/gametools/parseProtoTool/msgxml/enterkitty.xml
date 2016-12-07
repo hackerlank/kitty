@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+    <import>
+        <member name="trade" desc="交易对应的proto"/>
+        <member name="kittygarden" desc="地图对应的proto"/>
+        <member name="build" desc="建筑对应的proto"/>
+        <member name="common" desc="公共对应的proto"/>
+        <member name="event" desc="事件对应的proto"/>
+        <member name="dress" desc="时装使用对应的proto"/>
+        <member name="trainorder" desc="火车订单使用对应的proto"/>
+		<member name="room" desc="角色空间的proto"/>
+    </import>
+
+    <proto name="EnterGardenInfo" desc="请求进入玩家的乐园">
+        <member name="playershow" prefix="required" type="playerShowbase" desc="玩家显示结构"/>
+        <member name="exp" prefix="required" type="uint64" desc="经验"/>
+        <member name="buildinfo" prefix="repeated" type="BuildBase" desc="建筑基本信息"/>
+        <member name="kittygarden" prefix="required" type="KittyGarden" desc="kitty乐园"/>
+        <member name="rubbish" prefix="repeated" type="RubbishData" desc="垃圾和糖果信息"/>
+        <member name="eventinit" prefix="optional" type="Evententer" desc="事件"/>
+        <member name="dress" prefix="required" type="DressData" desc="身上所穿时装"/>
+        <member name="trainorder" prefix="repeated" type="TrainForClient"  desc="火车订单"/>
+		<member name="roominfo" prefix="optional" type="RoomInfo" desc="空间信息"/>
+    </proto>
+
+
+    <proto name="ReqEnterGarden" desc="请求进入玩家的乐园">
+        <member name="charid" prefix="required" type="uint64" desc="charid 1~10静态npc 11~100 动态npc"/>
+    </proto>
+
+    <proto name="AckEnterGarden" desc="请求进入玩家的乐园">
+        <member name="gardenInfo" prefix="required" type="EnterGardenInfo" desc="乐园信息"/>
+    </proto>
+	
+	<proto name="PersonInfo" desc="角色基础信息">
+		 <member name="whohome" prefix="optional" type="uint64" default="0" desc="谁的家"/>
+        <member name="charID" prefix="optional" type="uint64" default="0" desc="id"/>
+		<member name="nickname" prefix="optional" type="string" dafualt="" desc="昵称"/>
+		<member name="flag" prefix="optional" type="bool" dafualt="false" desc="为真表示charID上线，否则表示，charID进入我家"/>
+    </proto>
+	
+	<proto name="AckNotifyGarden" desc="家园通知">
+        <member name="person" prefix="optional" type="PersonInfo" desc="角色信息"/>
+    </proto>
+
+</protocol>
+

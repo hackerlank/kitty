@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>
+	<import>
+		<member name="build" desc="建筑对应的proto"/>
+		<member name="common" desc="公共对应的proto"/>
+	</import>
+	
+	<enum name="AreaGridStatus" desc="扩地格子的状态">
+		<member name="AGS_Close" value="0" desc="未开放"/>
+		<member name="AGS_CD" value="1" desc="cd中"/>
+		<member name="AGS_Open" value="2" desc="已开放"/>
+	</enum>
+	
+	<proto name="AreaGrid" desc="地图格子">
+		<member name="point" prefix="required" type="Point" desc="坐标"/>
+		<member name="status" prefix="required" type="AreaGridStatus" desc="状态"/>
+		<member name="parsetime" prefix="required" type="uint32" desc="购买时间"/>
+		<member name="lastsec" prefix="required" type="uint32" desc="剩余秒数"/>
+		<member name="totalsec" prefix="required" type="uint32" desc="总秒数"/>
+	</proto>
+	
+	<proto name="GateGrid" desc="地图GateGrid">
+		<member name="point" prefix="required" type="Point" desc="坐标"/>
+	</proto>
+	
+	<proto name="KittyGarden" desc="kitty乐园">
+		<member name="mapid" prefix="optional" type="uint64" default = "0" desc="地图id"/>
+		<member name="mapname" prefix="optional" type="string" default ="" desc="地图名称"/>
+		<member name="areagrid" prefix="repeated" type="AreaGrid" desc="需要保存的道具信息"/>
+		<member name="gategrid" prefix="repeated" type="GateGrid" desc="坐标"/>
+	</proto>
+	
+	<proto name="ReqKittyGarden" desc="请求kitty乐园">
+		<member name="charid" prefix="required" type="uint64" desc="角色id"/>
+	</proto>
+	
+	<proto name="AckKittyGarden" desc="返回kitty乐园">
+		<member name="charid" prefix="required" type="uint64" desc="角色id"/>
+		<member name="kittygarden" prefix="required" type="KittyGarden" desc="kitty乐园"/>
+	</proto>
+	
+	<proto name="ReqOpenArea" desc="请求开放区域">
+		<member name="point" prefix="required" type="Point" desc="区域坐标"/>
+	</proto>
+	
+	<proto name="AckFlushArea" desc="刷新开放区域">
+		<member name="areagrid" prefix="required" type="AreaGrid" desc="区域坐标"/>
+	</proto>
+	
+	<enum name="GardenSuccessCodeType" desc="乐园操作成功类型">
+		<member name="Garden_Parse_Area" value="0" desc="购买区域成功"/>
+		<member name="Garden_Open_Area" value="1" desc="扩展区域成功（cd跑完)"/>
+	</enum>
+	
+	<proto name="AckGardenOpSuccess" desc="乐园操作成功返回">
+		<member name="code" prefix="required" type="GardenSuccessCodeType" desc="乐园失败操作类型"/>
+		<member name="areagrid" prefix="required" type="AreaGrid" desc="区域坐标"/>
+	</proto>
+	
+	<enum name="GardenFailCodeType" desc="乐园操作失败类型">
+		<member name="Garden_Occupy" value="0" desc="占位，跟别的原因配合使用"/>
+		<member name="Garden_Area_Close" value="1" desc="此区域暂未开放"/>
+		<member name="Garden_Point_Barrier" value="3" desc="为障碍点"/>
+		<member name="Garden_Area_Illeag" value="4" desc="区域点非法"/>
+		<member name="Garden_Area_Around_Close" value="5" desc="区域点附近都没有开放"/>
+		<member name="Garden_Area_Open_Again" value="6" desc="此区域已经开放了"/>
+	</enum>
+	
+	<proto name="AckGardenOpFail" desc="乐园操作失败返回">
+		<member name="commoncode" prefix="required" type="ErrorCodeType" desc="乐园失败操作类型(公共错误)"/>
+		<member name="code" prefix="required" type="GardenFailCodeType" desc="乐园失败操作类型"/>
+	</proto>
+	
+	<proto name="ReqParseAreaGridCD" desc="购买cd">
+		<member name="point" prefix="required" type="Point" desc="区域点"/>
+	</proto>
+	
+</protocol>
+

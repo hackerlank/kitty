@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+	
+	<enum name="ResourceType" desc="资源类型">
+        <member name="RT_Head" value="0" desc="头像"/>
+        <member name="RT_Picture" value="1" desc="照片墙"/>
+    </enum>
+	
+    <proto name="ReqResourceAddress" desc="请求资源地址">
+		<member name="charid" prefix="optional" type="uint64" desc="角色ID"/>
+        <member name="resource" prefix="optional" type="ResourceType" desc="资源类型"/>
+		<member name="resourceid" prefix="optional" type="uint32" desc="资源编号"/>
+        <member name="key" prefix="optional" type="uint32" default="0" desc="唯一键"/>
+        <member name="time" prefix="optional" type="uint32" default="0" desc="时间戳"/>
+    </proto>
+	
+	 <proto name="AckResourceAddress" desc="回应资源地址">
+		<member name="charid" prefix="optional" type="uint64" desc="角色ID"/>
+        <member name="resource" prefix="optional" type="ResourceType" desc="资源类型"/>
+		<member name="resourceid" prefix="optional" type="uint32" desc="资源编号"/>
+        <member name="key" prefix="optional" type="uint32" desc="唯一键"/>
+        <member name="time" prefix="optional" type="uint32" desc="时间戳"/>
+		<member name="url" prefix="optional" type="string" desc="资源url地址"/>
+		<member name="commit" prefix="optional" type="uint32" default="0" desc="确认上传（0，表示请求上传，1上传反馈成功，2表示上传反馈失败"/>
+    </proto>
+</protocol>
+

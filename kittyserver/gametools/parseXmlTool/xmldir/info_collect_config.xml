@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2005 sp2 U (http://www.altova.com) by any (Ru-Board) -->
+<config>
+	<!--性能监控时间配置(每轮收集时间)-->
+	<timer startTime="20081104 13:50:00" last="120" interval="300" time="0"/>
+
+	<!--监控模块配置 name:模块名 interval:一轮两次收集间隔(秒) times:一轮监控内收集次数 type:0表示以物理服务器为单位，1表示以进程为单位-->
+	<Modules>
+		<!-- cpu要取平均值 收集多次-->
+		<module name="cpu" interval="25" times="3" type="0"/>
+		<!-- 内存占用，日志，在线人数等只需要收集一次,interval，配成5是为了和其他模块错开收集-->
+		<module name="memory" interval="5" times="1" type="1"/>
+		<!-- 网卡流量收集多次 取最大值-->
+		<module name="netif" interval="12" times="8" type="0"/>
+		<module name="log" interval="10" times="1" type="1"/>			
+		<module name="online" interval="6" times="1" type="1"/>	
+	</Modules>			
+	<collectitem maxsize="1024">
+		<item id = "10001"/>
+		<item id ="10002" />
+		<item id="655"/>
+		<item id="799"/>
+		<baoxian id="800"/>
+	</collectitem>
+</config>

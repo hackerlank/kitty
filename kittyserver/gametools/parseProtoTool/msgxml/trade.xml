@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+	<import>
+		<member name="common" desc="公共对应的proto"/>
+	</import>
+	
+	<proto name="PbStoreItem" desc="需要保存的道具信息">
+		<member name="itemId" prefix="required" type="uint32" desc="道具类型id"/>
+		<member name="itemCount" prefix="required" type="uint32" desc="道具数量"/>
+	</proto>
+	
+	<enum name="SaleCellStatusType" desc="摊位单元格状态类型">
+		<member name="Sale_Status_Empty" value="0" desc="空闲"/>
+		<member name="Sale_Status_For_Sale" value="1" desc="待售"/>
+		<member name="Sale_Status_Sale_End" value="2" desc="已售"/>
+		<member name="Sale_Status_Close" value="3" desc="未开放状态"/>
+	</enum>
+	
+	<proto name="PbSaleCell" desc="摊位单元格">
+		<member name="cellId" prefix="required" type="uint32" default="0" desc="格子id"/>
+		<member name="itemId" prefix="required" type="uint32" default="0" desc="道具id"/>
+		<member name="itemCount" prefix="required" type="uint32" default="0" desc="道具数量"/>
+		<member name="price" prefix="required" type="uint32" default="0" desc="价格"/>
+		<member name="status" prefix="required" type="SaleCellStatusType" default="Sale_Status_Empty" desc="状态"/>
+		<member name="purchaser" prefix="required" type="uint64" default="0" desc="购买者id"/>
+		<member name="advertise" prefix="required" type="bool" default="false" desc="是否打广告"/>
+		<member name="time" prefix="optional" type="uint32" default="0" desc="上架时间"/>
+	</proto>
+	
+	
+	<proto name="PbSaleCellDetail" desc="摊位单元格详细信息">
+		<member name="salecell" prefix="required" type="PbSaleCell" desc="单元格信息"/>
+		<member name="usebaseinfo" prefix="required" type="playerShowbase" desc="角色头像"/>
+	</proto>
+	
+	
+	<proto name="AckPbSaleCeilFlush" desc="对摊位某个cell进行刷新">
+		<member name="charid" prefix="required" type="uint64" desc="乐园主人id"/>
+		<member name="saledetail" prefix="repeated" type="PbSaleCellDetail" desc="摊位cell详细信息"/>
+	</proto>
+	
+	<proto name="PbSaleBooth" desc="摊位">
+		<member name="saleCell" prefix="repeated" type="PbSaleCell" desc="摊位"/>
+		<member name="lastadvertisetime" prefix="optional" default="0" type="uint32" desc="上一次打广告时间"/>
+	</proto>
+	
+	<proto name="ReqSallPutItem" desc="请求摊位单元格放置道具">
+		<member name="cellId" prefix="required" type="uint32" desc="格子id"/>
+		<member name="itemId" prefix="required" type="uint32" desc="道具id"/>
+		<member name="itemCount" prefix="required" type="uint32" desc="道具数量"/>
+		<member name="price" prefix="required" type="uint32" desc="价格"/>
+		<member name="advertise" prefix="required" type="bool" desc="是否打广告"/>
+	</proto>
+	
+	<enum name="OpCellType" desc="摊位单元格操作类型">
+		<member name="Op_Type_Open_Cell" value="0" desc="开通摊位格子"/>
+		<member name="Op_Type_Down_Item" value="1" desc="下架道具"/>
+		<member name="Op_Type_Get_Money" value="2" desc="取钱"/>
+	</enum>
+	
+	<proto name="ReqOpCell" desc="请求操作摊位单元格">
+		<member name="cellId" prefix="required" type="uint32" desc="格子id"/>
+		<member name="optype" prefix="required" type="OpCellType" desc="操作类型"/>
+	</proto>
+	
+	<enum name="RandPaperType" desc="随机刷新报纸类型">
+		<member name="Rand_Passer_By" value="0" desc="路人"/>
+		<member name="Rand_Friend" value="1" desc="好友"/>
+	</enum>
+	
+	<proto name="ReqSellPaper" desc="请求寄售行报纸">
+		<member name="randtype" prefix="required" type="RandPaperType" desc="请求类型"/>
+	</proto>
+	
+	<proto name="SellPaperCell" desc="寄售行报纸单元格">
+		<member name="head" prefix="required" type="playerShowbase"  desc="基本信息"/>
+		<member name="salecell" prefix="required" type="PbSaleCell" desc="简介"/>
+	</proto>
+	
+	<proto name="SellPaperCellBase" desc="寄售行报纸单元格">
+		<member name="charid" prefix="required" type="uint64" desc="charid"/>
+		<member name="salecell" prefix="required" type="PbSaleCell" desc="简介"/>
+	</proto>
+	
+	<proto name="AckSellPaper" desc="生成寄售行报纸返回">
+		<member name="sellpaper" prefix="required" type="SellPaper" desc="每个格子的信息"/>
+	</proto>
+	
+	<proto name="SellPaper" desc="生成寄售行报纸返回">
+		<member name="randtype" prefix="required" type="RandPaperType" desc="类型"/>
+		<member name="createTime" prefix="required" type="uint32" desc="生成时间"/>
+		<member name="paperCell" prefix="repeated" type="SellPaperCell" desc="每个格子的信息"/>
+	</proto>
+	
+	<proto name="AckSellPaperBase" desc="内部生成寄售行报纸返回">
+		<member name="sellpaper" prefix="required" type="SellPaperBase" desc="每个格子的信息"/>
+	</proto>
+	
+	<proto name="SellPaperBase" desc="服务器内部生成寄售行报纸返回">
+		<member name="randtype" prefix="required" type="RandPaperType" desc="类型"/>
+		<member name="createTime" prefix="required" type="uint32" desc="生成时间"/>
+		<member name="paperCell" prefix="repeated" type="SellPaperCellBase" desc="每个格子的信息"/>
+	</proto>
+	
+	<enum name="TradeFailCodeType" desc="失败类型">
+		<member name="Trade_Occupy" value="0" desc="占位，跟别的原因配合使用"/>
+		<member name="Trade_Op_Close" value="1" desc="(上架)摊位没有开放"/>
+		<member name="Trade_Op_Not_Empty" value="2" desc="(上架)摊位上已经有物品"/>
+		<member name="Trade_Op_Item_Not_Enough" value="3" desc="(上架)物品不够"/>
+		<member name="Trade_Op_Empty" value="4" desc="(下架)摊位为空"/>
+		<member name="Trade_Op_Full" value="5" desc="(下架)仓库已满"/>
+		<member name="Trade_Op_Open" value="6" desc="(开通格子)格子已开通"/>
+		<member name="Trade_Advertise_Again" value="7" desc="已经打过一次广告了"/>
+	</enum>
+	
+	<proto name="AckTradeOpFail" desc="摊位操作失败返回">
+		<member name="commoncode" prefix="required" type="ErrorCodeType" desc="建筑失败操作类型(公共错误)"/>
+		<member name="code" prefix="required" type="TradeFailCodeType" desc="建筑失败操作类型"/>
+	</proto>
+	
+	<proto name="ReqAdvertise" desc="打广告">
+		<member name="cellId" prefix="required" type="uint32" desc="格子id"/>
+	</proto>
+	
+	<proto name="ReqSallSystem" desc="请求出售给系统">
+		<member name="itemid" prefix="required" type="uint32" desc="道具id"/>
+		<member name="itemCount" prefix="required" type="uint32" default="0" desc="道具数量"/>
+	</proto>
+	
+	<proto name="ReqPurchase" desc="请求购买">
+		<member name="charid" prefix="required" type="uint64" desc="被购买者ID"/>
+		<member name="cellid" prefix="required" type="uint32" desc="摊位格子ID"/>
+	</proto>
+	
+	<proto name="ReqPurchaseItem" desc="请求购买道具">
+		<member name="iteminfo" prefix="repeated" type="PbStoreItem" desc="道具信息"/>
+	</proto>
+	
+	<proto name="ReqAdvertiseTime" desc="请求广告cd">
+	</proto>
+	
+	<proto name="AckAdvertiseTime" desc="回应广告cd">
+		<member name="advertisetime" prefix="required" type="uint32" desc="上次打广告时间"/>
+	</proto>
+	
+	<proto name="ReqPurchaseAdvertiseCD" desc="请求购买广告cd">
+	</proto>
+	
+</protocol>
+

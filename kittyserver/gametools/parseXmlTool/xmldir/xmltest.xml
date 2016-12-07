@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+	
+	<teee1 var="teee1" >123</teee1>
+	<teee2 var="teee2" >123</teee2>
+	<teee3 var="teee3" >   </teee3>
+
+	<obj1 var="abc" att="100" />
+	<obj2 var="abc" att="100" />
+	<obj3 var="abc" att="100" />
+	<obj4 var="abc" att="100" />
+
+	<st_obj_123>
+		<ttti var="ttti" bb="222"/>
+		<ttti var="ttti1" bb="222"/>
+		<ttti var="ttti2" bb="222"/>
+		<ttti var="ttti3" bb="222"/>
+		<ttti var="ttti4" dd="222"/>
+	</st_obj_123>
+	<st_obj var="11">
+		<ttti var="t1" bb="222"/>
+		<ttti var="t2" bb="222"/>
+	</st_obj>
+
+	<map var="fields" key="ID">
+		<field ID="1" name="ID"/>
+		<field ID="2" name="武将名称"/>
+		<field ID="3" name="经验值"/>
+		<field ID="4" name="攻击力"/>
+		<field ID="5" name="体力值"/>
+		<field ID="6" name="速度"/>
+		<field ID="7" name="是否是BOSS"/>
+	</map>		
+
+	<vector var="vecbase">
+		<vecbase>fdsa</vecbase>
+		<vecbase>fdsa</vecbase>
+		<vecbase>f423</vecbase>
+		<vecbase>bv</vecbase>
+		<vecbase>gfds</vecbase>
+	</vector>
+<!--
+	<vector var="chengxie">
+		<vector>
+			<ttti_e var="t1" bb="222"/>
+			<ttti_e var="t2" bb="222"/>
+		</vector>
+		<vector>
+			<ttti_x var="t1" bb="222"/>
+			<ttti_x var="t2" bb="222"/>
+		</vector>
+		<vector>
+			<ttti_c var="t1" bb="222"/>
+			<ttti_c var="t2" bb="222"/>
+		</vector>
+
+	</vector>
+	-->
+
+
+	<vector var="test_stvec">
+		<stvec>
+			<test var="fff" ff="11"/>
+			<vector var="test_vec">
+				<ttti var="t1" bb="222"/>
+				<ttti var="t2" bb="222"/>
+			</vector>
+		</stvec>
+		<stvec>
+			<test ff="11"/>
+		</stvec>
+		<stvec>
+			<test ff="11"/>
+		</stvec>
+	</vector>
+
+	<obj var="gfd" fgd="" ss="">
+		<fff/>
+	</obj>
+	
+	<obj var="" sbb="" ss="">
+		<fff/>
+	</obj>
+
+	<table var="eee" pro="de" giftid="1001">
+		
+		<map var="fields" key="ID">
+			<field ID="1" var="ID">
+
+				<sss0 />
+				<sss1 />
+				<sss2 />
+				<sss3 />
+
+
+				<obj_pk var="abc" att="100/s2383/000:fjkds" />
+
+				<obj_pk var="abc" att="100" />
+				<obj_pk var="abc" att="100" />
+				<obj_pk var="abc" att="100" />
+
+				<vector var="vecbase">
+						<field2 var="ID"/>
+						<field2 var="武将名称"/>
+						<field2 var="经验值"/>
+				</vector>
+
+			</field>
+
+			<field ID="2" var="武将名称"/>
+			<field ID="3" var="经验值"/>
+			<field ID="4" var="攻击力"/>
+			<field ID="5" var="体力值"/>
+			<field ID="6" var="速度"/>
+			<field ID="7" var="是否是BOSS"/>
+		</map>		
+
+		<vector var="vecbase">
+				<field var="ID"/>
+				<field var="武将名称"/>
+				<field var="经验值"/>
+		</vector>
+
+	</table>
+</database>
+

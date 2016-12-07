@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+	<!--初始化英雄-->
+	<map var="inithero" key="itemid">
+		<hero itemid="1005" star="1" level="10" pos="2" leader="1"/>
+	</map>
+	<!--初始化金币-->
+	<gold money="15000"/>
+	<!--初始化灵石-->
+	<renminbi num="250"/>
+	<!--初始化体力-->
+	<power num="120"/>
+	<!--初始化友情点数-->
+	<friendship num="50"/>
+	<!--初始化角色灵气-->
+	<lingqi num="3000"/>
+</Config>

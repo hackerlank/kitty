@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+	<proto name="UseCardInfo" desc="使用卡牌信息">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="cardid" prefix="required" type="uint32" desc="卡牌类型id"/>
+		<member name="usecardtime" prefix="required" type="uint32" desc="开始作用时间"/>
+	</proto>
+	
+	<enum name="BuildCardOpType" desc="操作类型">
+		<member name="BCO_Req" value="0" desc="请求"/>
+		<member name="BCO_Del" value="1" desc="删除"/>
+	</enum>
+	
+	<proto name="ReqOpCard" desc="请求操作卡牌信息">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="optype" prefix="required" type="BuildCardOpType" desc="操作类型"/>
+	</proto>
+	
+	<proto name="AckUpdateCard" desc="使用卡牌信息">
+		<member name="cardinfo" prefix="required" type="UseCardInfo" desc="卡牌信息"/>
+	</proto>
+	
+	<proto name="ReqUserCard" desc="请求使用卡牌信息">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="item" prefix="required" type="uint32" desc="道具id"/>
+	</proto>
+	
+</protocol>
+

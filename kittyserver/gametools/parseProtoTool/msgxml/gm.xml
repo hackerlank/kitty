@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	gm指令类型
+	给道具类型 additem 道具id 道具数量(包含金钱，经验等属性) 
+	更改角色升级 level 等级
+
+	获得pid pid
+	建筑升级 buildlevel 建筑类型id 建筑等级
+	
+	开启图鉴 addatlas 图鉴类型 图鉴id
+	删除图鉴 delatlas 图鉴类型 图鉴id
+	清空图鉴 clearatlas 
+	
+	开启任务 opentask 任务id
+	完成任务 finishtask 任务id
+	
+	增加愉悦值持续天数 happyday 愉悦值 天数
+    完成成就 finishachieve 成就id
+	
+    打印当前时间 now
+	更改游戏时间 time 20150904121212
+	清空时装 cleardress
+	
+	改变嘉年华数值 carnival 数值
+	重置角色所有数据 clear
+	重新随机刷新报纸 paper 类型(0:路人 1:好友)
+	增加访问乐园次数 addvistor 数值
+	发送系统邮件 email 角色ID 标题 内容 道具id 道具数量
+	发送系统邮件(全服) emailsys 标题 内容 道具id 道具数量
+	清空时装 cleardress
+	清空图纸 clearpaper
+	超级指令 god (所有建筑升级到10级，给予很多金币，钻石，经验)
+	重置日常数据 clearday
+	重新加载配置 reloadconf
+	进入或退出拍卖大厅 auctioncenter 标识(1:进入 0：退出)
+	进入或退出拍卖房间 auctionroom 标识(1:进入 0：退出)
+	拍卖举牌 auction 拍卖id
+	拍卖日志 auctionlog 拍卖id
+	打印全球等级排行榜 logrank 榜id 区域id
+	获得玩家角色id getcharid 账号
+	增加buffer addbuffer id 时间(秒数)
+    充值 recharge rmb activeID
+-->
+<!--
+    增加好友 addfriend 玩家id
+    删除好友 delfriend 玩家id
+    得到好友列表 getfriendlist 起始页 每页大小
+    得到粉丝列表 getfanslist  起始页 每页大小
+    得到推荐列表 getotherlist 数量
+    进入别人家园 entergarden 玩家id
+
+-->    
+<protocol>	
+	
+	<proto name="ReqGM" desc="gm请求命令">
+		<member name="command" prefix="required" type="string" desc="命令类型"/>
+	</proto>
+	<proto name="ReqGMSession" desc="gm请求命令,好友，进家园">
+		<member name="command" prefix="required" type="string" desc="命令类型"/>
+	</proto>
+
+	<proto name="AckGM" desc="gm请求命令返回">
+		<member name="ret" prefix="required" type="string" desc="返回结果"/>
+	</proto>
+	
+</protocol>
+

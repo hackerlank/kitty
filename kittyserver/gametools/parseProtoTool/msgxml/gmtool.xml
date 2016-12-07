@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+        <member name="email" desc="邮件对应的proto"/>
+        <member name="chat" desc="聊天对应的proto"/>
+        <member name="playeractive" desc="活动的proto"/>
+		<member name="giftpackage" desc="礼品的proto"/>
+
+    </import>
+
+    <proto name="ReqGmLogin" desc="gm登录">
+        <member name="account" prefix="required" type="string" desc="账号"/>
+        <member name="passwd" prefix="required" type="string" desc="密码"/>
+    </proto>
+
+    <proto name="ReqGmModifypasswd" desc="修改GM密码">
+        <member name="account" prefix="required" type="string" desc="账号"/>
+        <member name="passwd" prefix="required" type="string" desc="密码"/>
+        <member name="newpasswd" prefix="required" type="string" desc="新密码"/>
+    </proto>
+
+    <proto name="AckGmModifypasswd" desc="修改GM密码回应">
+        <member name="ret" prefix="required" type="bool" default="false" desc="是否成功"/>
+    </proto>
+
+    <proto name="ReqGmShowGmAccount" desc="显示所有gm用户">
+    </proto>
+
+    <proto name="GmInfo" desc="GM信息">
+        <member name="account" prefix="required" type="string" desc="账号"/>
+        <member name="passwd" prefix="required" type="string" desc="密码"/>
+        <member name="permission" prefix="required" type="uint32" desc="权限"/>
+        <member name="modify" prefix="required" type="uint32" desc="修改标识位操作运算(1:删除，2:修改密码，4：修改权限)"/>
+    </proto>
+
+    <proto name="ReqModityGmData" desc="修改GM信息">
+        <member name="gmInfo" prefix="repeated" type="GmInfo" desc="批量修改"/>
+    </proto>
+
+    <proto name="AttrInfo" desc="角色基本属性值">
+        <member name="attrtype" prefix="required" type="uint32" desc="属性ID"/>
+        <member name="optype" prefix="required" type="uint32" default="1" desc="操作类型(1:增加 2:减少 4:设置)"/>
+        <member name="attrval" prefix="required" type="uint32" desc="属性值"/>
+        <member name="num" prefix="optional" type="uint32" default="1" desc="属性值(数量，只对建筑才有用)"/>
+        <member name="ret" prefix="optional" type="bool" default="false" desc="操作结果"/>
+    </proto>
+
+    <proto name="AccountInfo" desc="角色账号信息">
+        <member name="charid" prefix="optional" type="uint64" default="0" desc="角色ID"/>
+        <member name="account" prefix="optional" type="string" default="" desc="账号"/>
+        <member name="acctype" prefix="optional" type="uint32" default="0" desc="平台类型"/>
+        <member name="usetype" prefix="optional" type="uint32" default="1" desc="使用类型(1:charid生效 2:account生效)"/>
+    </proto>
+
+    <proto name="UserAttrValInfo" desc="角色基本属性值">
+        <member name="account" prefix="required" type="AccountInfo" desc="账号信息"/>
+        <member name="attrinfo" prefix="repeated" type="AttrInfo" desc="操作属性"/>
+    </proto>
+
+    <proto name="ReqModifyUserAttr" desc="批量更改修改角色属性">
+        <member name="opattr" prefix="repeated" type="UserAttrValInfo" desc="批量修改"/>
+    </proto>
+
+    <proto name="AckModifyUserAttr" desc="批量更改修改角色属性返回">
+        <member name="opattr" prefix="repeated" type="UserAttrValInfo" desc="批量修改"/>
+    </proto>
+
+
+    <proto name="ReqModifyUserBuild" desc="批量更改修改角色建筑">
+        <member name="opattr" prefix="repeated" type="UserAttrValInfo" desc="批量修改"/>
+    </proto>
+
+    <proto name="AckModifyUserBuild" desc="批量更改修改角色建筑返回">
+        <member name="opattr" prefix="repeated" type="UserAttrValInfo" desc="批量修改"/>
+    </proto>
+
+
+    <proto name="UserForbidInfo" desc="角色禁言封号解封值">
+        <member name="account" prefix="required" type="AccountInfo" desc="账号信息"/>
+        <member name="endtime" prefix="optional" type="uint32" default="0" desc="时间,小时"/>
+        <member name="reason" prefix="optional" type="string" default="" desc="原因"/>
+        <member name="optype" prefix="optional" type="uint32" default="0" desc="操作类型(0:封号 1:解封 2:禁言 3:解禁言)"/>
+        <member name="ret" prefix="optional" type="bool" default="false" desc="操作结果"/>
+    </proto>
+
+    <proto name="ReqForbid" desc="请求禁言或者封号或者解封">
+        <member name="opattr" prefix="repeated" type="UserForbidInfo" desc="批量封号"/>
+    </proto>
+
+    <proto name="AckForbid" desc="返回禁言或者封号或者解封">
+        <member name="opattr" prefix="repeated" type="UserForbidInfo" desc="批量封号"/>
+    </proto>
+
+    <proto name="UserEmailInfo" desc="角色邮件信息">
+        <member name="account" prefix="required" type="AccountInfo" desc="账号信息"/>
+        <member name="emailbase" prefix="required" type="EmailBase" desc="邮件基本信息"/>
+        <member name="ret" prefix="optional" type="bool" default="false" desc="操作结果"/>
+    </proto>
+
+    <proto name="ReqGmToolSendEmail" desc="请求发送邮件">
+        <member name="email" prefix="repeated" type="UserEmailInfo" desc="邮件基本信息"/>
+    </proto>
+
+    <proto name="AckSendEmail" desc="返回邮件操作结果">
+        <member name="email" prefix="repeated" type="UserEmailInfo" desc="邮件基本信息"/>
+    </proto>
+
+    <proto name="NoticeInfo" desc="公告信息">
+        <member name="sysinfo" prefix="required" type="sysNotice" desc="公告信息"/>
+        <member name="optype" prefix="required" type="uint32" desc="操作类型 0:增加 1:删除"/>
+        <member name="ret" prefix="optional" type="bool" default="false" desc="操作结果"/>
+    </proto>
+
+    <proto name="ReqOpNotice" desc="请求操作公告">
+        <member name="sysinfo" prefix="repeated" type="NoticeInfo" desc="公告信息"/>
+    </proto>
+
+    <proto name="AckOpNotice" desc="返回操作公告">
+        <member name="sysinfo" prefix="repeated" type="NoticeInfo" desc="公告信息"/>
+    </proto>
+
+
+    <proto name="DeliveryInfo" desc="实物投递">
+        <member name="cashid" prefix="required" type="uint64" desc="订单ID"/>
+        <member name="status" prefix="required" type="GiftStatus" desc="订单状态"/>
+        <member name="deliverycompany" prefix="required" type="string" desc="快递公司"/>
+        <member name="deliverynum" prefix="required" type="string" desc="快递单号"/>
+        <member name="ret" prefix="optional" type="bool" default="false" desc="操作结果"/>
+    </proto>
+
+    <proto name="CashDelivery" desc="实物投递">
+        <member name="account" prefix="required" type="AccountInfo" desc="账号信息"/>
+        <member name="deliveryinfo" prefix="repeated" type="DeliveryInfo" desc="订单信息"/>
+    </proto>
+
+    <proto name="ReqModifyCash" desc="请求操作礼品状态">
+        <member name="cashdelivery" prefix="repeated" type="CashDelivery" desc="订单信息"/>
+    </proto>
+
+    <proto name="AckModifyCash" desc="返回操作礼品状态">
+        <member name="cashdelivery" prefix="repeated" type="CashDelivery" desc="订单信息"/>
+    </proto>
+
+	<proto name="OpGiftInfo" desc="请求操作礼品库存信息">
+		<member name="optype" prefix="required" type="uint32" desc="操作礼品信息(0:增加 1:删除 2:修改)"/>
+        <member name="giftconfig" prefix="required" type="GiftConfig" desc="操作礼品信息"/>
+		<member name="ret" prefix="required" type="bool" desc="操作结果"/>
+    </proto>
+	
+	<proto name="ReqModifyGiftInfo" desc="请求操作礼品信息">
+        <member name="giftinfo" prefix="repeated" type="OpGiftInfo" desc="操作礼品信息"/>
+    </proto>
+	
+	<proto name="AckModifyGiftInfo" desc="请求操作礼品信息">
+        <member name="OpGiftInfo" prefix="repeated" type="OpGiftInfo" desc="操作礼品信息"/>
+    </proto>
+
+	
+    <proto name="GiftStoreInfo" desc="操作礼品库存信息">
+        <member name="id" prefix="required" type="uint32" desc="id"/>
+        <member name="num" prefix="required" type="uint32" desc="数量"/>
+        <member name="optype" prefix="required" type="uint32" default="1" desc="操作类型(1:增加 2:减少 4:设置)"/>
+        <member name="ret" prefix="required" type="bool" default="false" desc="操作结果"/>
+    </proto>
+
+    <proto name="ReqModifyGiftStore" desc="请求操作礼品库存信息">
+        <member name="opgiftstore" prefix="repeated" type="GiftStoreInfo" desc="操作礼品库存"/>
+    </proto>
+
+    <proto name="AckModifyGiftStore" desc="返回操作礼品状态">
+        <member name="opgiftstore" prefix="repeated" type="GiftStoreInfo" desc="操作礼品库存"/>
+    </proto>
+        <!--以下为pHP与服务器之间的协议-->
+    <proto name="ReqAddPlayerActive" desc="增加一个活动,f_id为0">
+        <member name="activeinfo" prefix="required" type="PlayerActive" desc="数据结构"/>
+    </proto>
+    <proto name="AckAddPlayerActive" desc="返回增加一个活动">
+        <member name="f_id" prefix="required" type="uint32" desc="返回0，表示失败 非0，表示插入成功"/>
+    </proto>
+    <proto name="ReqModifyPlayerActive" desc="修改一个活动，已经开启的活动，f_condition，f_conditionparam，f_award，f_begintime这几个参数不可变更，f_endtime 原来的和即将改变的，只能与当前时间相比，10分钟后可以，f_id非0">
+        <member name="activeinfo" prefix="required" type="PlayerActive" desc="数据结构"/>
+    </proto>
+    <proto name="AckModifyPlayerActive" desc="返回增加一个活动">
+        <member name="result" prefix="required" type="ActiveResult" desc="活动修改返回"/>
+    </proto>
+    <proto name="ReqOpenActive" desc="活动开启、关闭">
+        <member name="f_id" prefix="required" type="uint32" desc="活动id"/>
+        <member name="f_open" prefix="required" type="uint32" desc="0,关闭，1.开启 ,2 删除，已经开启状态的的活动不可删除，可关闭："/>
+        <member name="result" prefix="required" type="ActiveResult" desc="活动开启关闭"/>
+    </proto>
+    <proto name="AckOpenActive" desc="活动开启，关闭">
+        <member name="result" prefix="required" type="ActiveResult" desc="活动修改返回"/>
+    </proto>
+	
+	<proto name="UserPictureInfo" desc="角色照片信息">
+        <member name="account" prefix="required" type="AccountInfo" desc="账号信息"/>
+        <member name="picture" prefix="repeated" type="Key32ValStringPair" desc="照片信息"/>
+        <member name="ret" prefix="optional" type="bool" default="false" desc="操作结果"/>
+    </proto>
+	
+	<proto name="ReqDelUserPicture" desc="请求删除角色照片">
+        <member name="oplist" prefix="repeated" type="UserPictureInfo" desc="操作列表"/>
+    </proto>
+	
+	<proto name="AckDelUserPicture" desc="回应删除角色照片">
+        <member name="oplist" prefix="repeated" type="UserPictureInfo" desc="操作列表"/>
+    </proto>
+	
+	<proto name="ReqSendGlobalEmail" desc="请求发送全服邮件">
+		<member name="title" prefix="optional" type="string" desc="标题"/>
+		<member name="content" prefix="optional" type="string" desc="内容"/>
+		<member name="item" prefix="repeated" type="Key32Val32Pair" desc="附件"/>
+    </proto>
+
+    <proto name="AckSendGlobalEmail" desc="返回发送全服邮件">
+		<member name="title" prefix="optional" type="string" desc="标题"/>
+		<member name="content" prefix="optional" type="string" desc="内容"/>
+		<member name="item" prefix="repeated" type="Key32Val32Pair" desc="附件"/>
+        <member name="ret" prefix="optional" type="bool" desc="结果"/>
+    </proto>
+	
+	<proto name="VerifyInfo" desc="认证消息">
+        <member name="account" prefix="required" type="AccountInfo" desc="账号信息"/>
+        <member name="verifylist" prefix="repeated" type="Key32Val32Pair" desc="操作属性"/>
+		 <member name="ret" prefix="optional" type="bool" desc="操作结果"/>
+    </proto>
+	
+	<proto name="ReqModifyUserVerify" desc="批量更改修改角色认证">
+        <member name="verifyinfo" prefix="repeated" type="VerifyInfo" desc="批量修改"/>
+    </proto>
+	
+	<proto name="AckModifyUserVerify" desc="回应批量更改修改角色认证">
+        <member name="verifyinfo" prefix="repeated" type="VerifyInfo" desc="批量修改"/>
+    </proto>
+    
+    <proto name="ActiveCode" desc="激活码">
+        <member name="key" prefix="required" type="uint32" desc="激活码id"/>
+        <member name="name" prefix="required" type="string" desc="激活码名称"/>
+        <member name="acctype" prefix="required" type="string" desc="平台"/>
+        <member name="overtime" prefix="required" type="uint32" desc="失效时间"/>
+        <member name="code" prefix="required" type="string" desc="激活码"/>
+        <member name="item" prefix="repeated" type="Key32Val32Pair" desc="道具列表"/>
+        <member name="num" prefix="required" type="uint32" desc="数量"/>
+        <member name="type" prefix="required" type="uint32" desc="类型"/>
+    </proto>
+    
+    <proto name="ReqAddActiveCode" desc="增加一个激活码,key为0">
+        <member name="activecode" prefix="required" type="ActiveCode" desc="数据结构"/>
+    </proto>
+    
+    <proto name="AckAddActiveCode" desc="返回一个激活码">
+        <member name="acctype" prefix="repeated" type="string" desc="返回0，表示失败 非0，表示插入成功"/>
+    </proto>
+
+</protocol>
+

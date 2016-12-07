@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>
+	<enum name="BurstEventStatus" desc="突发事件状态状态">
+		<member name="BES_Accept" value="0" desc="接收"/>
+		<member name="BES_Del_Finish" value="1" desc="删除(因为完成)"/>
+		<member name="BES_Del_Road"  value="2" desc="删除(因为道路)"/>
+		<member name="BES_Del_Other"  value="3" desc="删除(因为其他)"/>
+	</enum>
+	
+	<proto name="BurstEvent" desc="突发事件">
+		<member name="tempid" prefix="required" type="uint64" desc="路零时id"/>
+		<member name="npckey" prefix="required" type="uint32" desc="npc"/>
+		<member name="rewardkey" prefix="required" type="uint32" desc="奖励"/>
+		<member name="status" prefix="required" type="BurstEventStatus" desc="状态"/>
+		<member name="begintime" prefix="required" type="uint32" desc="开始时间"/>
+	</proto>
+	
+	<proto name="ReqBurstEvent" desc="请求突发事件">
+		<member name="tempid" prefix="optional" type="uint64" default="0" desc="路零时id"/>
+	</proto>
+	
+	<proto name="AckUpdateBurstEvent" desc="更新任务">
+		<member name="eventList" prefix="repeated" type="BurstEvent" desc="任务"/>
+	</proto>
+	
+	<enum name="BurstEventOpType" desc="突发事件状态状态">
+		<member name="BEOT_Submit" value="0" desc="提交"/>
+		<member name="BEOT_Object" value="1" desc="拒绝"/>
+	</enum>
+	
+	<proto name="ReqOpBurstEvent" desc="请求操作突发事件">
+		<member name="tempid" prefix="required" type="uint64" desc="路零时id"/>
+		<member name="optype" prefix="required" type="BurstEventOpType" desc="操作类型"/>
+	</proto>
+	
+</protocol>
+

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+        <member name="giftpackage" desc="公共对应的proto"/>
+    </import>
+
+    <!---聊天定义-->
+    <enum name="ChatResult" desc="操作结果">
+        <member name="ChatResult_Suc" value="0" desc="操作成功"/>
+        <member name="ChatResult_Nofamily" value="1" desc="没有家庭不能发言"/>
+        <member name="ChatResult_Offline" value="2" desc="私聊对方不在线"/>
+        <member name="ChatResult_ErrChannel" value="3" desc="错误的频道"/>
+        <member name="ChatResult_TooLong" value="4" desc="聊天文字太长"/>
+        <member name="ChatResult_ChatSelf" value="5" desc="不能对自己私聊"/>
+        <member name="ChatResult_SourceLimit" value="6" desc="金钱不足"/>
+        <member name="ChatResult_MessageTooLong" value="7" desc="留言太长"/>
+        <member name="ChatResult_Noperson" value="8" desc="玩家不存在"/>
+        <member name="ChatResult_sysbusy" value="9" desc="其他错误"/>
+        <member name="ChatResult_messagefull" value="10" desc="消息数满"/>
+        <member name="ChatResult_messageiderr" value="11" desc="消息id不存在"/>
+        <member name="ChatResult_NoItem" value="12" desc="需要对应道具"/>
+
+    </enum>
+    <enum name="ChatChannel" desc="聊天频道">
+        <member name="ChatChannel_Private" value="0" desc="私人聊天"/> 
+        <member name="ChatChannel_World" value="1" desc="世界聊天"/>
+        <member name="ChatChannel_Family" value="2" desc="家庭聊天"/>
+        <member name="ChatChannel_Map" value="3" desc="地图聊天"/>
+        <member name="ChatChannel_City" value="4" desc="同城聊天"/>
+
+    </enum>
+
+    <enum name="ChatRelation" desc="聊天频道">
+        <member name="ChatRelation_None" value="0" desc="陌生人"/> 
+        <member name="ChatRelation_Family" value="1" desc="家族成员"/>
+        <member name="ChatRelation_Friend" value="2" desc="好友"/>
+    </enum>
+    <proto name ="voiceinfo" desc="聊天类容">
+        <member  name="timer" prefix="optional" type="uint32"  default="0" desc="音频时间"/>
+        <member  name="data" prefix="optional" type="bytes"  default="" desc="音频内容"/>
+    </proto>
+
+    <proto name ="chatinfo" desc="聊天类容">
+        <member name="txt" prefix="optional" type="string" desc="聊天内容"/>
+        <member name="voice" prefix="optional" type="voiceinfo"   desc="上传音频"/>
+    </proto>
+    <proto name ="guestinfo" desc="访客信息">
+        <member name="guest" prefix="required" type="playerShowbase" desc="访客"/>
+        <member name="visittimer" prefix="required" type="uint32"   desc="访客进入时间"/>
+    </proto>
+
+    <!---聊天定义结束-->
+    <!---系统公告定义-->
+    <proto name="sysNotice" desc="系统公告">
+        <member name="ID" prefix="required" type="uint64" desc="公告编号"/>
+        <member name="chattxt" prefix="required" type="string"  desc="公告内容"/>
+        <member name="sendtime" prefix="required" type="uint32" desc="发起时间"/>
+        <member name="adtype" prefix="optional" type="AdType" default="AT_Marquee" desc="广播类型"/>
+    </proto>
+    <!---系统公告定义结束-->
+
+    <proto name="ChatMessage" desc="留言">
+        <member name="messgeid" prefix="required" type="uint32" desc="留言Id"/>
+        <member name="sendid" prefix="required" type="uint64" desc="发送者"/>
+        <member name="chattxt" prefix="required" type="string" desc="留言内容"/>
+        <member name="timer" prefix="required" type="uint32"  desc="留言时间"/>
+    </proto>
+    <proto name="ClientChatMessage" desc="留言">
+        <member name="message" prefix="required" type="ChatMessage" desc="留言存档"/>
+        <member name="sendplayer" prefix="required" type="playerShowbase"  desc="基本信息"/>
+    </proto>
+    <!---留言定义结束-->
+    <!---聊天消息-->
+    <proto name="ReqChat" desc="请求聊天">
+        <member name="chattxt" prefix="required" type="chatinfo" desc="聊天内容"/>
+        <member name="channel" prefix="required" type="ChatChannel" desc="聊天频道"/>
+        <member name="friendid" prefix="optional" type="uint64" default ="0" desc="聊天对象，私人聊天id，其余频道0"/>
+    </proto>
+    <proto name="AckChat" desc="聊天请求返回">
+        <member name="result" prefix="required" type="ChatResult" desc="处理结果"/>
+    </proto>
+    <proto name="AckNoticeChat" desc="聊天信息通告">
+        <member name="chattxt" prefix="required" type="chatinfo" desc="聊天内容"/>
+        <member name="channel" prefix="required" type="ChatChannel" desc="聊天频道"/>
+        <member name="senddate" prefix="required" type="uint64" desc="发送时间"/>
+        <member name="sendplayer" prefix="required" type="playerShowbase"  desc="基本信息"/>
+    </proto>
+    <proto name="AckSynPerson" desc="同步当前家园在线人数">
+        <member name="charid" prefix="required" type="uint64" desc="家园拥有者"/>
+        <member name="num" prefix="required" type="uint32"  desc="在线人数"/>
+    </proto>
+    <proto name="AckAllGuest" desc="推送当前的访客">
+        <member name="charid" prefix="required" type="uint64" desc="家园拥有者"/>
+        <member name="guardguest" prefix="repeated" type="guestinfo" desc="访客信息"/>
+    </proto>
+    <proto name="AckAddGuest" desc="访客 增加">
+        <member name="charid" prefix="required" type="uint64" desc="家园拥有者"/>
+        <member name="guardguest" prefix="required" type="guestinfo" desc="访客信息"/>
+    </proto>
+    <proto name="AckDelGuest" desc="访客 增加">
+        <member name="charid" prefix="required" type="uint64" desc="家园拥有者"/>
+        <member name="guestid" prefix="required" type="uint64" desc="访客删除"/>
+    </proto>
+
+    <!---聊天消息结束-->
+    <!---留言消息-->
+    <proto name="ReqLeaveMessage" desc="请求留言">
+        <member name="recvid" prefix="required" type="uint64"  desc="接受者"/>
+        <member name="chattxt" prefix="required" type="string" desc="留言内容"/>
+    </proto>
+    <proto name="AckLeaveMessage" desc="请求留言返回">
+        <member name="result" prefix="required" type="ChatResult" desc="处理结果"/>
+    </proto>
+
+    <proto name="ReqDelMessage" desc="删除留言请求">
+        <member name="messgeid" prefix="required" type="uint32" desc="留言Id"/>
+    </proto>
+
+    <proto name="AckDelMessage" desc="留言删除">
+        <member name="messgeid" prefix="required" type="uint32" desc="留言Id"/>
+    </proto> 
+
+    <proto name="AckAddMessage" desc="留言增加">
+        <member name="message" prefix="required" type="ClientChatMessage" desc="对应的留言"/> 
+    </proto> 
+
+
+    <!--留言消息结束-->
+    <!---系统公告消息-->
+    <proto name="ReqServerNotice" desc="请求系统公告">
+    </proto>
+
+    <proto name="AckServerNotice" desc="请求系统公告">
+        <member name="sysinfo" prefix="repeated" type="sysNotice" desc="公告信息"/>  
+    </proto>
+
+    <proto name="AckAddServerNotice" desc="增加系统公告">
+        <member name="sysinfo" prefix="required" type="sysNotice" desc="公告信息"/>  
+    </proto>
+
+    <proto name="AckDelServerNotice" desc="删除系统公告">
+        <member name="ID" prefix="required" type="uint64" desc="公告编号"/>
+    </proto>
+    <!---系统公告消息结束-->
+    <!---系统提示-->
+    <proto name="AckSysNotice" desc="系统提示">
+        <member name="noticeid" prefix="required" type="uint32" desc="SystemNotice.xlsx的id"/>
+        <member name="strreplace" prefix="repeated" type="ReplaceWord" desc="填充字符串"/>
+    </proto>
+
+
+</protocol>
+

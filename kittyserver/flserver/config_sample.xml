@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--所有各种服务器参数-->
+<Fir>
+	<flserver>
+		<!-- Specify the log level[debug,info,warning,error,fatal,always]. -->
+		<log>debug</log>
+		<!-- 网关最大连接数量 0表示无限制 -->
+		<maxGatewayUser>10000</maxGatewayUser>
+		<!-- Specify the log filename. -->
+        <logfilename>/home/flyer/newWorkPlace/kittyserver/log/flserver.log</logfilename>
+		<mysql>mysql://kitty:123456@192.168.2.24:3306/flserver</mysql>
+		<!-- 区信息列表数据库 -->
+		<zoneInfo_mysql hashcode="20">mysql://kitty:123456@192.168.2.24:3306/flserver</zoneInfo_mysql>
+		<!-- 邀请码数据库 -->
+                <invitcode_mysql hashcode="10">mysql://kitty:123456@192.168.2.24:3306/flserver</invitcode_mysql>
+		<!-- 客户端登陆端口，外部使用 -->
+		<login_port>8000</login_port>
+		<!-- 内部使用端口，用于服务器之间数据传输 -->
+		<inside_port2>1501</inside_port2>
+		<!-- PHP登陆端口，外部使用 -->
+		<php_port>1502</php_port>
+	</flserver>
+</Fir>

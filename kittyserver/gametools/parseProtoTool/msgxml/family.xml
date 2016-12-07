@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+    </import>
+    <enum name="FamilyPublicType" desc="家族公开程度">
+        <member name="PublicForAll" value="0" desc="完全公开"/>
+        <member name="NoPublic" value="1" desc="对好友公开"/>
+        <member name="Needapply" value="2" desc="需要验证"/>
+        <member name="MAXPublicType" value="3" desc="最大值"/>
+    </enum>
+
+    <enum name="FamilyJob" desc="家族职位">
+        <member name="Family_Leader" value="0" desc="族长"/>
+        <member name="Family_Member" value="1" desc="族员"/>
+    </enum>
+
+    <enum name="FamilyOpResult" desc="操作返回值">
+        <member name="FamilyOpResult_Suc" value="0" desc="成功"/>
+        <member name="FamilyOpResult_Suc2" value="1" desc="请求成功，待批准"/>
+        <member name="FamilyOpResult_FamilyNoExist" value="2" desc="没有这个家族"/>
+        <member name="FamilyOpResult_HasFamily" value="3" desc="已经加入家族"/>
+        <member name="FamilyOpResult_ApplyMax" value="4" desc="申请已达上限"/>
+        <member name="FamilyOpResult_NoFamilyBuild" value="5" desc="没有家族建筑"/>
+        <member name="FamilyOpResult_HasApply" value="6" desc="这个家族已经申请过"/>
+        <member name="FamilyOpResult_SourceLimit" value="7" desc="创建家族资源不足"/>  
+        <member name="FamilyOpResult_NoLeader" value="8" desc="你不是族长"/>  
+        <member name="FamilyOpResult_NoApply" value="9" desc="该玩家没有提出申请"/>
+        <member name="FamilyOpResult_NoFamily" value="10" desc="玩家没有家族"/>
+        <member name="FamilyOpResult_LeaderCanNotQuit" value="11" desc="族长不可以退出"/>
+        <member name="FamilyOpResult_OpSelf" value="12" desc="不可对自己操作"/>
+        <member name="FamilyOpResult_NameTooLong" value="13" desc="家族名字太长"/>
+        <member name="FamilyOpResult_Nameillegal" value="14" desc="家族名字不合法"/>
+        <member name="FamilyOpResult_NoticeToLong" value="15" desc="家族公告太长"/>
+        <member name="FamilyOpResult_Noticeillegal" value="16" desc="家族公告不合法"/>
+        <member name="FamilyOpResult_LevelLimitErr" value="17" desc="等级限制设置不合法"/>
+        <member name="FamilyOpResult_FamilyFull" value="18" desc=" 该家族人数已满"/>
+        <member name="FamilyOpResult_NoPublic" value="19" desc=" 该家族禁止加入"/>
+        <member name="FamilyOpResult_NameTooShort" value="20" desc=" 家族名字太短"/>
+        <member name="FamilyOpResult_NoIcon" value="21" desc="没有设置图标"/>
+        <member name="FamilyOpResult_PublicSetErr" value="22" desc="公开程度不合法"/>
+        <member name="FamilyOpResult_JoinLevelErr" value="23" desc="加入等级不足"/>
+        <member name="FamilyOpResult_ServerBusy" value="24" desc="服务器忙"/>
+        <member name="FamilyOpResult_OrderSource" value="25" desc="提交订单资源不足"/>
+        <member name="FamilyOpResult_OrderPacket" value="26" desc="提交订单背包不足"/>
+        <member name="FamilyOpResult_awardPacket" value="27" desc="领取奖励背包不足"/>
+        <member name="FamilyOpResult_noaward" value="28" desc="没有奖励可领"/>
+        <member name="FamilyOpResult_awarddone" value="29" desc="奖励已领"/>
+        <member name="FamilyOpResult_OrderErr" value="30" desc="订单错误"/>
+        <member name="FamilyOpResult_OtherErr" value="31" desc="其他错误"/>
+        <member name="FamilyOpResult_TooMoreOrder" value="32" desc="订单提交太多"/>
+
+    </enum>
+
+    <proto name="BaseFamilyInfo" desc="客户端显示成员">
+        <member name="familyid" prefix="required" type="uint64" desc="家族id"/>
+        <member name="familyname" prefix="required" type="string" desc="家族名称"/>
+        <member name="familyicon" prefix="required" type="uint32" desc="家族图标"/>
+        <member name="personnum" prefix="required" type="uint32" desc="当前人数"/>
+        <member name="relation" prefix="required" type="uint32" desc="与家族关系0，无关系，1是成员，2,我在申请中"/>
+        <member name="pulictype" prefix="required" type="FamilyPublicType" desc="公开程度"/>
+        <member name="lowlevel" prefix="required" type="uint32" desc="最低需求等级，0 表示无限制"/>
+        <member name="highlevel" prefix="required" type="uint32" desc="最高需求等级，0 表示无限制"/>
+        <member name="totalscore" prefix="required" type="uint32" desc="家庭总积分"/>
+        <member name="familylevel" prefix="required" type="uint32" desc="家族等级"/>
+        <member name="ranking" prefix="required" type="uint32" desc="家族排名"/>
+        <member name="lastranking" prefix="required" type="uint32" desc="家族上次排名"/>
+        <member name="familynotice" prefix="required" type="string" desc="家族公告"/>
+        <member name="leadershow" prefix="required" type="playerShowbase" desc="族长显示"/>
+
+    </proto>
+    <!---家族成员定义-->
+    <proto name="FamilyMember" desc="家族成员定义">
+        <member name="playershow" prefix="required" type="playerShowbase" desc="玩家显示结构"/>
+        <member name="job" prefix="optional" type="FamilyJob" default = "Family_Member" desc="职位"/>
+        <member name="todaycontribution" prefix="optional" type="uint32" default = "0" desc="今日贡献点"/>
+        <member name="contributionlastrank" prefix="optional" type="uint32" default = "0" desc="昨日贡献排名,无贡献，无排名0"/>
+        <member name="contributionlast" prefix="optional" type="uint32" default = "0" desc="昨日贡献点"/>
+    </proto>
+    <!--家族详情定义-->
+    <proto name="FamilyInfo" desc="家族详情定义">
+        <member name="baseinfo" prefix="required" type="BaseFamilyInfo" desc="基本信息"/>
+        <member name="vecmember" prefix="repeated" type="FamilyMember" desc="成员"/>
+        <member name="vecappy" prefix="repeated" type="FamilyMember" desc="申请列表"/>
+        <member name="vecorder" prefix="repeated" type="uint32" desc="订单列表"/>
+        <member name="totalcontributionlast" prefix="optional" type="uint32" default = "0" desc="家庭昨日总贡献"/>
+        <member name="selfcontributionlastrank" prefix="optional" type="uint32" default = "0" desc="昨日贡献排名,无贡献，无排名0"/>
+        <member name="selfcontributionlast" prefix="optional" type="uint32" default = "0" desc="昨日贡献点"/>
+        <member name="selfisgetaward" prefix="optional" type="uint32" default = "0" desc="0表示未领奖，1表示已领奖"/>
+    </proto>
+
+    <!-- 服务器客户端通信协议-->
+    <!--客户端请求家族列表-->
+    <proto name="ReqGetFamilyList" desc="客户端请求获得推荐家族列表">
+        <member name="familyid" prefix="required" type="uint64" desc="非0 表示搜索指定家族,优先自己申请列表，否则随机10个家族"/>
+    </proto>
+    <proto name="AckReqGetFamilyList" desc="返回客户端请求获得推荐家族列表">
+        <member name="familyid" prefix="required" type="uint64" desc="非0 表示搜索指定家族"/>
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+        <member name="vecfamily" prefix="repeated" type="BaseFamilyInfo" desc="家族列表"/>
+    </proto>
+
+    <!--加入请求 -->
+    <proto name="ReqAddFamily" desc="请求加家族">
+        <member name="familyid" prefix="required" type="uint64" desc="家族id"/>
+    </proto>
+    <proto name="AckReqAddFamily" desc="返回请求加家族">
+        <member name="familyid" prefix="required" type="uint64" desc="家族id"/>
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+        <member name="familyname" prefix="optional" type="string" default = "" desc="家族名称"/>
+    </proto>
+    <!--撤销申请加入家族-->
+    <proto name="ReqCancelApply" desc="撤销申请">
+        <member name="familyid" prefix="required" type="uint64" desc="家族id"/>
+    </proto>
+    <proto name="AckReqCancelApply" desc="返回请求加家族">
+        <member name="familyid" prefix="required" type="uint64" desc="家族id"/>
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+
+    </proto>
+    <!--创建请求-->
+    <proto name="ReqCreateFamily" desc="请求创建家族">
+        <member name="familyname" prefix="required" type="string" desc="家族名称"/>
+        <member name="familyicon" prefix="required" type="uint32" desc="家族图标"/>
+        <member name="pulictype" prefix="required" type="FamilyPublicType" desc="公开程度"/>
+        <member name="lowlevel" prefix="required" type="uint32" desc="最低需求等级，0 表示无限制"/>
+        <member name="highlevel" prefix="required" type="uint32" desc="最高需求等级，0 表示无限制"/>
+    </proto>
+    <proto name="AckReqCreateFamily" desc="返回请求创建家族">
+
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+    </proto>
+    <!--对于玩家请求作出响应-->
+    <proto name="ReqAgreeJoin" desc="请求创建家族">
+        <member name="charid" prefix="required" type="uint64" desc="申请玩家"/>
+        <member name="isagree" prefix="required" type="uint32" desc="0,不通过，非0 通过"/>
+    </proto>
+    <proto name="AckReqAgreeJoin" desc="返回请求创建家族">
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+        <member name="charid" prefix="required" type="uint64" desc="申请玩家"/>
+        <member name="isagree" prefix="required" type="uint32" desc="0,不通过，非0 通过"/>
+    </proto>
+    <!--请求自己的家族的家族信息-->
+    <proto name="ReqselfFamilyInfo" desc="请求自己家族信息">
+    </proto>
+    <proto name="AckReqselfFamilyInfo" desc="返回请求自己家族信息">
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+        <member name="selfinfo" prefix="optional" type="FamilyInfo"  desc="详细情况"/>
+    </proto>
+    <!--请求退出家族-->
+    <proto name="ReqQuitFamily" desc="请求退出家族">
+    </proto>
+    <proto name="AckReqQuitFamily" desc="返回请求退出家族">
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+    </proto>
+    <!--请求提升职位-->
+    <proto name="ReqUpdateOtherFamilyJob" desc="请求提升某人职位">
+        <member name="charid" prefix="required" type="uint64" desc="id"/>
+    </proto>
+    <proto name="AckUpdateOtherFamilyJob" desc="返回请求提升某人职位">
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+    </proto>
+    <!--请求开除其他玩家-->
+    <proto name="ReqKickFamilyMember" desc="请求开除其他玩家">
+        <member name="charid" prefix="required" type="uint64" desc="id"/>
+    </proto>
+    <proto name="AckReqKickFamilyMember" desc="返回请求开除其他玩家">
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+    </proto>
+    <!--请求更改基本信息-->
+    <proto name="ReqSetFamilyBaseInfo" desc="请求更改基本信息">
+        <member name="familyicon" prefix="required" type="uint32" desc="家族图标"/>
+        <member name="pulictype" prefix="required" type="FamilyPublicType" desc="公开程度"/>
+        <member name="lowlevel" prefix="required" type="uint32" desc="最低需求等级，0 表示无限制"/>
+        <member name="highlevel" prefix="required" type="uint32" desc="最高需求等级，0 表示无限制"/>
+        <member name="familynotice" prefix="required" type="string" desc="家族公告"/>
+    </proto>
+    <proto name="AckReqSetFamilyBaseInfo" desc="返回请求更改基本信息">
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+    </proto>
+    <!--请查看排名-->
+    <proto name="ReqFamilyRanking" desc="请求查看排名">
+    </proto>
+    <proto name="AckReqFamilyRanking" desc="请求查看排名">
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+        <member name="vecfamily" prefix="repeated" type="BaseFamilyInfo" desc="家族列表"/>
+    </proto>
+    <!--请求提交订单-->
+    <proto name="ReqFinishFamilyOrder" desc="请求提交家庭订单">
+        <member name="orderid" prefix="required" type="uint32" desc="订单id"/>
+    </proto>
+    <proto name="AckFinishFamilyOrder" desc="返回提交家庭订单">
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+        <member name="orderid" prefix="required" type="uint32" desc="订单id"/>
+        <member name="award" prefix="repeated" type="Award" desc="获得的奖励"/>
+        <member name="familyordernum" prefix="optional" type="uint32" default="0" desc="家族捐献次数"/>
+
+    </proto>
+    <!--请求领取奖励-->
+    <proto name="ReqGetlastFamilyAward" desc="请求领取昨日奖励">
+    </proto>
+    <proto name="AckGetlastFamilyAward" desc="返回请求领取昨日奖励">
+        <member name="Result" prefix="required" type="FamilyOpResult" desc="返回结果"/>
+        <member name="allaward" prefix="repeated" type="Award" desc="获得的奖励,全员奖励"/>
+        <member name="selfaward" prefix="repeated" type="Award" desc="获得的奖励，个人排名奖励"/>
+    </proto>
+    <!---额外奖励-->
+    <proto name="AckGetAdditionalRewards" desc="额外奖励">
+         <member name="additionalid" prefix="required" type="uint32" desc="奖励原因：AdditionalRewards.xlsx 对应的id"/>
+        <member name="additionalaward" prefix="repeated" type="Award" desc="额外奖励"/>
+    </proto>
+    <proto name="AckSelfFamilyInfo" desc="更新自己家族信息">
+        <member name="selfinfo" prefix="optional" type="FamilyInfo"  desc="详细情况"/>
+    </proto>
+    <proto name="AcKKickFamily" desc="被踢出家族">
+    </proto>
+
+
+</protocol>
+

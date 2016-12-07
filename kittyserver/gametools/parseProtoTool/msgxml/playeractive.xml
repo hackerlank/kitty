@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+    </import>
+    <enum name="ActiveResult" desc="操作结果">
+        <member name="ActiveResult_Suc" value="0" desc="成功"/>
+        <member name="ActiveResult_Running" value="1" desc="活动中，不可修改"/>
+        <member name="ActiveResult_NotFind" value="2" desc="没有这个活动"/>
+        <member name="ActiveResult_HasGetAward" value="3" desc="奖励已经领取"/>
+        <member name="ActiveResult_PacketFull" value="4" desc="背包满"/>
+        <member name="ActiveResult_CaNNotGetAward" value="5" desc="没有达到领取条件"/>
+        <member name="ActiveResult_AwardOut" value="6" desc="奖励领取完毕"/>
+    </enum>
+    <enum name="ActiveConditionType" desc="条件枚举">
+        <member name="ActiveConditionType_None" value = "0" desc="默认"/>
+        <member name="ActiveConditionType_First_Charge" value = "101" desc="首冲"/>
+        <member name="ActiveConditionType_Daily_Charge" value = "102" desc="每日充值,2,每日清0"/>
+        <member name="ActiveConditionType_Daily_Charge_Sum" value = "103" desc="每日累计,2,每日清0"/>
+        <member name="ActiveConditionType_All_Charge_Sum" value = "105" desc="累计总充值,2,"/>
+        <member name="ActiveConditionType_Active_Charge" value = "106" desc="活动充值"/>
+        <member name="ActiveConditionType_Popular_Building" value = "201" desc="人气建筑,2,"/>
+        <member name="ActiveConditionType_Decorations" value = "202" desc="装饰物,2,"/>
+        <member name="ActiveConditionType_Max_Popular" value = "301" desc="人气上限,2,"/>
+        <member name="ActiveConditionType_Current_Popular" value = "302" desc="人气值,2,"/>
+        <member name="ActiveConditionType_All_Popular" value = "303" desc="人气总值,2,上限+人气"/>
+        <member name="ActiveConditionType_Unite_Building_Number" value = "401" desc="合建建筑总数,2,"/>
+        <member name="ActiveConditionType_Unite_Building_Level_All" value = "402" desc="合建建筑总等级,2,"/>
+        <member name="ActiveConditionType_Unite_Building_Level6_Number" value = "403" desc="合建建筑6级数量,2,"/>
+        <member name="ActiveConditionType_Unite_Building_Level10_Number" value = "404" desc="合建建筑10级数量,2,"/>
+        <member name="ActiveConditionType_Unite_Building__Attributes" value = "405" desc="合建建筑总属性,2,"/>
+        <member name="ActiveConditionType_Unite_Building_All_Current_Popular" value = "406" desc="合建建筑人气总值,2,"/>
+        <member name="ActiveConditionType_Unite_Building_All_Max_Popular" value = "407" desc="合建建筑人气上限总值,2,"/>
+        <member name="ActiveConditionType_Park_level" value = "501" desc="乐园等级,2,"/>
+        <member name="ActiveConditionType_Composite_Number" value = "601" desc="合成总数,1,合成动作：除了庄园，其他11建筑的合成"/>
+        <member name="ActiveConditionType_Fruit_Production_Number" value = "602" desc="水果生产总数,1,庄园生产"/>
+        <member name="ActiveConditionType_Friends_Number" value = "701" desc="好友总数,2,"/>
+        <member name="ActiveConditionType_Fans_Number" value = "702" desc="粉丝总数,2,"/>
+        <member name="ActiveConditionType_Pal_Number" value = "801" desc="小伙伴总数,2,"/>
+        <member name="ActiveConditionType_Pal_Attributes" value = "802" desc="小伙伴总属性,2,"/>
+        <member name="ActiveConditionType_Pal_Level" value = "803" desc="小伙伴等级,2,"/>
+        <member name="ActiveConditionType_Pal_Grow" value = "804" desc="小伙伴成长值,2,"/>
+        <member name="ActiveConditionType_Pal_Battle_Power" value = "805" desc="小伙伴战斗力,2,"/>
+        <member name="ActiveConditionType_4Star_Pal" value = "806" desc="四星小伙伴,2,"/>
+        <member name="ActiveConditionType_Charm_List" value = "901" desc="魅力榜,2,查总榜排名"/>
+        <member name="ActiveConditionType_Contribution_List" value = "902" desc="贡献榜,2,查总榜排名"/>
+        <member name="ActiveConditionType_Popular_list" value = "903" desc="人气榜,2,查总榜排名"/>
+        <member name="ActiveConditionType_Level_List" value = "904" desc="等级榜,2,查总榜排名"/>
+        <member name="ActiveConditionType_Unite_Building_List" value = "905" desc="合建榜,2,查总榜排名"/>
+        <member name="ActiveConditionType_Family_Level" value = "1001" desc="家族等级,2,查总榜排名"/>
+        <member name="ActiveConditionType_Family_Experience" value = "1002" desc="家族经验,2,"/>
+        <member name="ActiveConditionType_Family_Trust" value = "1003" desc="家族委托,1,"/>
+        <member name="ActiveConditionType_Family_Compete" value = "1004" desc="家族比拼,1,"/>
+        <member name="ActiveConditionType_Family_Order" value = "1005" desc="家族订单,1,"/>
+        <member name="ActiveConditionType_Regular_Order_Number" value = "1101" desc="普通订单数,1,"/>
+        <member name="ActiveConditionType_Helicopter_Order_Number" value = "1102" desc="直升机订单数,1,"/>
+        <member name="ActiveConditionType_Family_Order_Number" value = "1103" desc="家族订单数,1,"/>
+        <member name="ActiveConditionType_Airship_Order_Number" value = "1104" desc="飞艇订单数,1,"/>
+        <member name="ActiveConditionType_Train_Order_Number" value = "1105" desc="火车订单数,1,"/>
+        <member name="ActiveConditionType_Expand_Materials" value = "1201" desc="扩地材料,1,"/>
+        <member name="ActiveConditionType_Warehouse_Material" value = "1202" desc="扩仓材料,1,"/>
+        <member name="ActiveConditionType_Activate_Material" value = "1203" desc="激活材料,1,"/>
+        <member name="ActiveConditionType_Star_Upgrade_aterial" value = "1204" desc="升星材料,1,"/>
+        <member name="ActiveConditionType_Pal_Materials" value = "1205" desc="小伙伴材料,1,"/>
+        <member name="ActiveConditionType_Charm_All" value = "1301" desc="魅力总值,2,"/>
+        <member name="ActiveConditionType_Charm_Current_Month" value = "1302" desc="本月魅力值,1,只看增加，不看减少,每月清0"/>
+        <member name="ActiveConditionType_Charm_Current_Week" value = "1303" desc="本周魅力值,1,只看增加，不看减少,每周清0"/>
+        <member name="ActiveConditionType_Contribution_All" value = "1304" desc="贡献总值,2,"/>
+        <member name="ActiveConditionType_Contribution_Current_Month" value = "1305" desc="本月贡献值,1,只看增加，不看减少,每月清0"/>
+        <member name="ActiveConditionType_Contribution_Current_Week" value = "1306" desc="本周贡献值,1,只看增加，不看减少,每周清0"/>
+        <member name="ActiveConditionType_Purchase_All" value = "1401" desc="采购总量,1,"/>
+        <member name="ActiveConditionType_Give_Gift_Worth" value = "1501" desc="送礼总价值,2,物品总价值：限于代币"/>
+        <member name="ActiveConditionType_Accept_Gift_Worth" value = "1502" desc="收礼总价值,2,物品总价值：限于代币"/>
+        <member name="ActiveConditionType_Give_Gift_Number" value = "1503" desc="送礼总数量,2,"/>
+        <member name="ActiveConditionType_Accept_Gift_Number" value = "1504" desc="收礼总数量,2,"/>
+        <member name="ActiveConditionType_Coin_Total" value = "1601" desc="金币总数,1,"/>
+        <member name="ActiveConditionType_Diamond_Total" value = "1602" desc="钻石总数,1,"/>
+        <member name="ActiveConditionType_Token_Total" value = "1603" desc="代币总数,1,"/>
+        <member name="ActiveConditionType_Ticket_Total" value = "1604" desc="点券总数,1,"/>
+        <member name="ActiveConditionType_Friendship_Point_Total" value = "1605" desc="友情点总数,1,"/>
+        <member name="ActiveConditionType_Sushi_Game" value = "1701" desc="寿司游戏,1,完成游戏的次数"/>
+        <member name="ActiveConditionType_Constellation_Lines" value = "1702" desc="星座连线,1,完成游戏的次数"/>
+        <member name="ActiveConditionType_Gashapon_Diamond_Consumption_Total" value = "1801" desc="扭蛋总钻石消耗,1,"/>
+        <member name="ActiveConditionType_Gashapon_Friendship_Point_Consumption_Total" value = "1802" desc="扭蛋总友情点消耗,1,"/>
+        <member name="ActiveConditionType_Divination_Number" value = "1901" desc="占卜总数,1,"/>
+        <member name="ActiveConditionType_Bidding_Join_Number" value = "2001" desc="竞拍参与次数,1,"/>
+        <member name="ActiveConditionType_Auction_Success_Number" value = "2002" desc="竞拍成功次数,1,"/>
+        <member name="ActiveConditionType_Coin_Consumption_Total" value = "2101" desc="消费总金币,1,"/>
+        <member name="ActiveConditionType_Diamond_Consumption_Total" value = "2102" desc="消费总钻石,1,"/>
+        <member name="ActiveConditionType_Employment_Number_All" value = "2201" desc="雇用总次数,1,"/>
+        <member name="ActiveConditionType_Employment_Consumption_All" value = "2202" desc="雇用总花费,1,"/>
+        <member name="ActiveConditionType_Find_Number_All" value = "2203" desc="寻物总次数,1,"/>
+        <member name="ActiveConditionType_Hangup_Number_All" value = "2204" desc="挂机总次数,1,"/>
+
+    </enum>
+    <enum name="ActiveState" desc="活动状态">
+        <member name="ActiveState_NoBegin" value="1" desc="活动未开始"/>
+        <member name="ActiveState_Start" value="2" desc="活动已开始"/>
+        <member name="ActiveState_Finish" value="3" desc="活动已结束"/>
+        <member name="ActiveState_Del" value="4" desc="活动已经删除"/>
+    </enum>
+    
+    <enum name="ActiveOpType" desc="运活动类型">
+        <member name="AT_None" value="0" desc="默认"/>
+        <member name="AT_Recharge" value="1" desc="充值活动"/>
+        <member name="AT_TimeLimit" value="2" desc="限时活动"/>
+        <member name="AT_GiftExchange" value="3" desc="礼包兑换"/>
+        <member name="AT_LimitDiscount" value="4" desc="限时折扣"/>
+    </enum>
+    
+    <enum name="ActiveSubType" desc="活动子类型">
+        <member name="AST_None" value="0" desc="默认"/>
+        <member name="AST_FirstRecharge" value="1" desc="首冲送大礼"/>
+        <member name="AST_FirstRechargePresent" value="2" desc="首冲翻倍送"/>
+        <member name="AST_DailyRecharge" value="3" desc="每日首冲"/>
+        <member name="AST_AccuRecharge" value="4" desc="累计充值"/>
+        <member name="AST_TimeLimit_Level" value="10" desc="限时活动升级"/>
+        <member name="AST_TimeLimit_Order" value="11" desc="限时活动订单"/>
+        <member name="AST_GiftExchage" value="20" desc="礼包兑换"/>
+        <member name="AST_Discount" value="30" desc="限时折扣"/>
+    </enum>
+    
+    
+    <proto name="PlayerActive" desc="活动信息">
+        <member name="f_type" prefix="required" type="ActiveOpType" desc="活动类型"/>
+        <member name="f_subtype" prefix="required" type="ActiveSubType" desc="活动子类型"/>
+        <member name="f_id" prefix="required" type="uint32" desc="活动id"/>
+        <member name="f_begintime" prefix="required" type="uint32" desc="开始时间"/>
+        <member name="f_endtime" prefix="required" type="uint32" desc="结束时间"/>
+        <member name="f_condition" prefix="required" type="ActiveConditionType" desc="条件"/>
+        <member name="f_conditionparam" prefix="required" type="uint32" desc="参数"/>
+        <member name="f_preactive" prefix="required" type="uint32" desc="前置活动"/>
+        <member name="f_award" prefix="required" type="string" desc="0_20,1_1000,3006_1"/>
+        <member name="f_title" prefix="required" type="string" desc="活动标题"/>
+        <member name="f_desc" prefix="required" type="string" desc="活动描述"/>
+        <member name="f_open" prefix="required" type="uint32" desc="0,关闭，1.开启"/>
+        <member name="f_platemsg" prefix="optional" type="string" desc="360_1(平台商品信息)"/>
+        <member name="f_rewardmaxcnt" prefix="optional" type="uint32" desc="奖励数量"/>
+        <member name="f_rewardcurcnt" prefix="optional" type="uint32" desc="已领取奖励数量"/>
+        <member name="f_subcondition" prefix="optional" type="uint32" desc="子条件"/>
+    </proto>
+    <proto name="PlayerActiveSave" desc="服务器信息">
+        <member name="f_id" prefix="required" type="uint32" desc="活动id"/>
+        <member name="getaward" prefix="required" type="bool" desc="真，已经领奖"/>
+        <member name="currentparam" prefix="required" type="uint32" desc="活动参数，查询类：始终为0"/>
+        <member name="lastchecktimer" prefix="required" type="uint32" desc="上次刷新时间:针对定期刷新的活动:"/>
+
+    </proto>   
+    <proto name="PlayerActiveForClient" desc="客户端信息显示">
+        <member name="baseinfo" prefix="required" type="PlayerActive" desc="活动配置"/>
+        <member name="state" prefix="required" type="ActiveState" desc="活动状态"/>
+        <member name="getaward" prefix="required" type="bool" desc="真，已经领奖"/>
+        <member name="currentparam" prefix="required" type="uint32" desc="活动参数"/>
+    </proto>
+    <proto name="ReqgetPlayerActiveList" desc="获得当前所有活动">
+    </proto>
+    <proto name="Ackgetplayeractivelist" desc="获得当前所有活动">
+        <member name="init" prefix="required" type="bool" desc="是否为初始化"/>
+        <member  name="info" prefix="repeated" type="PlayerActiveForClient" desc="活动列表"/>
+    </proto>
+    <proto name="ReqgetActiveAward" desc="获得活动奖励">
+        <member name="f_id" prefix="required" type="uint32" desc="活动id"/>
+    </proto>
+    <proto name="AckgetActiveAward" desc="获得活动奖励">
+        <member name="result" prefix="required" type="ActiveResult" desc="活动奖励返回"/>
+    </proto>
+    
+    <proto name="ReqRewardActiveCode" desc="兑换激活码">
+        <member name="activecode" prefix="required" type="string" desc="激活码"/>
+    </proto>
+    
+    
+    <enum name="AckRewardType" desc="兑换激活码成功">
+        <member name="ART_False" value="0" desc="失败"/>
+        <member name="ART_True" value="1" desc="成功"/>
+    </enum>
+
+    <proto name="AckRewardActiveCode" desc="兑换激活码">
+        <member name="ret" prefix="required" type="AckRewardType" desc="领取结果"/>
+    </proto>
+
+    
+</protocol>
+

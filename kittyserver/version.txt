@@ -1,0 +1,6 @@
+#版本1.0
+#需要删除字段
+#时间  文件名   结构体名            字段名  
+2016-10-31      order.xml           OrderItem colid,danweiid,endtime
+2016-11-07      serialize.xml       CharBin (愉悦值相关)happy_low,happy_mid,happy_hight 
+2016-11-24      serialize.xml       CharBin(激活码)   activecode

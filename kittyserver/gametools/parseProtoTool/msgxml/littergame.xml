@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+
+	<import>
+		<member name="trade" desc="交易对应的proto"/>
+		<member name="common" desc="公共对应的proto"/>
+	</import>
+	
+	 <enum name="StarType" desc="星座模式">
+        <member name="ST_Single" value="0" desc="单人模式"/>
+        <member name="ST_Operator" value="1" desc="协作模式"/>
+		<member name="ST_Sports" value="2" desc="竞技模式"/>
+    </enum>
+	
+	<proto name="StarStepData" desc="星座关卡数据">
+		<member name="begintime" prefix="optional" type="uint64" default="0" desc="开始时间"/>
+		<member name="step" prefix="optional" type="uint32" default="0" desc="关卡id"/>
+		<member name="sec" prefix="optional" type="float" default="0" desc="时间"/>
+		<member name="history" prefix="optional" type="float" default="0" desc="历史最高分"/>
+	</proto>
+	
+	<proto name="StarData" desc="星座游戏数据">
+		<member name="cnt" prefix="optional" type="uint32" default="0" desc="次数"/>
+		<member name="curstep" prefix="optional" type="uint32" default="0" desc="当前关卡id"/>
+		<member name="stepdata" prefix="repeated" type="StarStepData" desc="关卡历史数据"/>
+		<member name="history" prefix="optional" type="float" default="0" desc="历史总关卡最高分"/>
+		<member name="startype" prefix="optional" type="StarType" default="ST_Single" desc="模式"/>
+	</proto>
+	
+	 <proto name="StarDetailedInfo" desc="星座详细">
+        <member  name="value" prefix="optional" type="bytes"  default="" desc="内容"/>
+    </proto>
+	
+	<proto name="ReqBeginStar" desc="请求开始星座游戏">
+		<member name="step" prefix="optional" type="uint32" default="0" desc="开始关卡id"/>
+	</proto>
+	
+	<proto name="AckBeginStar" desc="请求开始星座游戏">
+		<member name="charid" prefix="optional" type="uint64" default="0" desc="charid"/>
+		<member name="step" prefix="optional" type="uint32" default="0" desc="开始关卡id"/>
+		<member name="hard" prefix="repeated" type="uint32" desc="难度"/>
+	</proto>
+	
+	<proto name ="ReqSyncStar" desc="同步星座游戏">
+        <member name="charid" prefix="optional" type="uint64" default="0" desc="角色ID"/>
+        <member name="value" prefix="optional" type="bytes"  default="" desc="游戏内容"/>
+    </proto>
+	
+	<proto name="ReqStartGame" desc="请求开始星座游戏">
+		<member name="startype" prefix="optional" type="StarType" default="ST_Single" desc="模式"/>
+		<member name="friendid" prefix="optional" type="uint64" default="0" desc="朋友ID"/>
+	</proto>
+	
+	<proto name="AckJoinStartGameInvite" desc="向好友请求开始星座游戏">
+		<member name="startype" prefix="optional" type="StarType" default="ST_Single" desc="模式"/>
+		<member name="friendid" prefix="optional" type="uint64" default="0" desc="朋友ID"/>
+		<member name="friender" prefix="optional" type="string" default="" desc="朋友昵称"/>
+		
+		<member name="groupid" prefix="optional" type="uint64" default="0" desc="组id"/>
+	</proto>
+	
+	<proto name="ReqJoinStartGame" desc="回应好友请求开始星座游戏">
+		<member name="groupid" prefix="optional" type="uint64" default="0" desc="组id"/>
+		<member name="response" prefix="optional" type="bool" default="true" desc="回应"/>
+		<member name="guess" prefix="optional" type="bool" default="true" desc="我猜"/>
+	</proto>
+	
+	<proto name="AckStartGame" desc="回应请求者">
+		<member name="ret" prefix="optional" type="bool" default="false" desc="结果"/>
+		<member name="startype" prefix="optional" type="StarType" default="ST_Single" desc="模式"/>
+		<member name="friendid" prefix="optional" type="uint64" default="0" desc="朋友ID"/>
+		<member name="guess" prefix="optional" type="bool" default="true" desc="我猜"/>
+	</proto>
+
+	
+	<proto name="AckWaitStartGame" desc="等待好友同意">
+		<member name="time" prefix="optional" type="uint32" default="0" desc="时间"/>
+	</proto>
+	
+	<proto name="ReqCancelStar" desc="取消星座游戏">
+		<member name="reason" prefix="optional" type="CanleReason" default="CR_Client" desc="0:客户端主动,：其他服务器主动"/>
+	</proto>
+	
+	<enum name="CanleReason" desc="取消原因">
+        <member name="CR_Client" value="0" desc="取消邀请"/>
+        <member name="CR_Game_End" value="1" desc="游戏时间到"/>
+		<member name="CR_Wait_End" value="2" desc="等待超时"/>
+        <member name="CR_Client_Quit" value="3" desc="中途退出游戏"/>		
+    </enum>
+	
+	<proto name="AckCancelStar" desc="回应取消星座游戏">
+		<member name="invite" prefix="optional" type="uint64" default="0" desc="邀请者"/>
+		<member name="invited" prefix="optional" type="uint64" default="0" desc="被邀请者"/>
+		<member name="cancleer" prefix="optional" type="uint64" default="0" desc="取消者ID"/>
+		<member name="reason" prefix="optional" type="CanleReason" default="CR_Client" desc="0:客户端主动,：其他服务器主动"/>
+	</proto>
+	
+	 <enum name="GruopStatus" desc="组状态">
+		<member name="GS_Wait_Response" value="0" desc="等待回应状态"/>
+		<member name="GS_In_Response" value="1" desc="以回应状态"/>
+        <member name="GS_In_Game" value="2" desc="游戏状态"/>
+        <member name="GS_Destroy" value="3" desc="销毁状态"/>
+    </enum>
+	
+	<proto name="StarGroupInfo" desc="星座组信息">
+		<member name="id" prefix="optional" type="uint64" default="0" desc="组id"/>
+		<member name="startype" prefix="optional" type="StarType" default="ST_Single" desc="模式"/>
+		<member name="status" prefix="optional" type="GruopStatus" default="GS_Wait_Response" desc="状态"/>
+		<member name="createtime" prefix="optional" type="uint32" default="0" desc="创建时间"/>
+		<member name="mempair" prefix="repeated" type="Key64Val32Pair" desc="成员信息"/>
+		<member name="invite" prefix="optional" type="uint64" default="0" desc="邀请方"/>
+		<member name="guess" prefix="optional" type="uint64" default="0" desc="猜测方id"/>
+		<member name="waitresptime" prefix="optional" type="uint32" default="0" desc="等待回应时间"/>
+		<member name="begintime" prefix="optional" type="uint32" default="0" desc="游戏开始时间"/>
+		<member name="lasttime" prefix="optional" type="uint32" default="0" desc="游戏持续时间"/>
+		<member name="memplay" prefix="repeated" type="Key64Val32Pair" desc="成员进度"/>
+		<member name="hard" prefix="repeated" type="uint32" desc="难度"/>
+	</proto>
+	
+	<proto name="ReqReadyGame" desc="已经准备好游戏">
+	</proto>
+	
+	<proto name="AckReadyGame" desc="都准备好游戏">
+	</proto>
+	
+	<proto name="ReqStarCommitStep" desc="请求结算星座关卡数据">
+		<member name="step" prefix="required" type="uint32" desc="关卡id"/>
+		<member name="pass" prefix="required" type="bool" desc="是否通关(真为通关)"/>
+	</proto>
+	
+	<proto name="AckStarCommitStep" desc="回应结算星座关卡数据">
+		<member name="charid" prefix="optional" type="uint64" default="0" desc="charid"/>
+		<member name="newrecord" prefix="required" type="bool" desc="是否为新纪录(真表示新纪录)"/>
+		<member name="stepdata" prefix="required" type="StarStepData" desc="关卡数据"/>
+		<member name="pass" prefix="required" type="bool" desc="是否通关(真为通关)"/>
+		<member name="randreward" prefix="repeated" type="Key32Val32Pair" desc="随机奖励"/>
+	</proto>
+	
+	<proto name="AckEndStar" desc="回应结束星座游戏">
+		<member name="charid" prefix="optional" type="uint64" default="0" desc="charid"/>
+		<member name="newrecord" prefix="required" type="bool" desc="是否为新纪录(真表示新纪录)"/>
+		<member name="sec" prefix="required" type="float" default="0" desc="总时间"/>
+		<member name="history" prefix="optional" type="float" default="0" desc="历史最小时间"/>	
+	</proto>
+	
+	<proto name="AckStarOver" desc="星座游戏结束">
+		<member name="charid" prefix="optional" type="uint64" default="0" desc="赢家ID"/>
+		<member name="finishstep" prefix="optional" type="uint32" default="0" desc="完成关卡数"/>
+		<member name="winreward" prefix="repeated" type="Key32Val32Pair" desc="赢家随机奖励"/>
+		<member name="failreward" prefix="repeated" type="Key32Val32Pair" desc="输家随机奖励"/>
+		<member name="losser" prefix="optional" type="uint64" default="0" desc="输家ID"/>
+		<member name="step" prefix="optional" type="uint32" default="0" desc="输家完成关卡数"/>
+		<member name="ret" prefix="optional" type="bool" default="true" desc="true:赢 false:平"/>
+	</proto>
+	
+	<proto name="AckStarInfo" desc="回应星座游戏信息">
+		<member name="starinfo" prefix="repeated" type="StarData" desc="开始时间"/>
+	</proto>
+	
+	<proto name="ReqBeginSlot" desc="请求开始老虎机摇杆">
+		<member name="rate" prefix="required" type="uint32" desc="倍数"/>
+	</proto>
+	
+	<proto name="AckSlot" desc="老虎机摇杆结果">
+		<member name="id" prefix="required" type="uint32" desc="结果id"/>
+	</proto>
+	
+	<proto name="MacroData" desc="请求开始万家乐">
+		<member name="id" prefix="required" type="uint32" desc="id"/>
+		<member name="rate" prefix="required" type="uint32" desc="倍数"/>
+	</proto>
+	
+	<proto name="ReqBeginMacro" desc="请求开始万家乐">
+		<member name="macro" prefix="repeated" type="MacroData" desc="下注信息"/>
+	</proto>
+	
+	<proto name="AckMacro" desc="回应万家乐结果">
+		<member name="id" prefix="required" type="uint32" desc="结果id"/>
+	</proto>
+	
+	<proto name="SuShiStepData" desc="寿司关卡数据">
+		<member name="step" prefix="optional" type="uint32" default="0" desc="关卡id"/>
+		<member name="gole" prefix="optional" type="uint32" default="0" desc="分数"/>
+		<member name="history" prefix="optional" type="uint32" default="0" desc="历史最高分"/>
+	</proto>
+	
+	<proto name="SuShiData" desc="寿司游戏数据">
+		<member name="cnt" prefix="optional" type="uint32" default="0" desc="次数"/>
+		<member name="curstep" prefix="optional" type="uint32" default="0" desc="当前关卡id"/>
+		<member name="stepdata" prefix="repeated" type="SuShiStepData" desc="关卡历史数据"/>
+		<member name="history" prefix="optional" type="uint32" default="0" desc="历史总关卡最高分"/>
+		<member name="firstjoin" prefix="optional" type="bool" default="true" desc="第一次参加寿司游戏"/>
+	</proto>
+		
+	<proto name="ReqBeginSuShi" desc="请求开始寿司游戏">
+	</proto>
+	
+	<proto name="ReqCommitStep" desc="请求结算寿司关卡数据">
+		<member name="stepdata" prefix="required" type="SuShiStepData" desc="关卡数据"/>
+	</proto>
+	
+	<proto name="AckCommitStep" desc="回应结算寿司关卡数据">
+		<member name="newrecord" prefix="required" type="bool" desc="是否为新纪录(真表示新纪录)"/>
+		<member name="stepdata" prefix="required" type="SuShiStepData" desc="关卡数据"/>
+		<member name="spceaward" prefix="repeated" type="Award" desc="特殊奖励"/>
+		
+	</proto>
+	
+	<proto name="AckSuShiInfo" desc="回应寿司游戏信息">
+		<member name="sushiinfo" prefix="optional" type="SuShiData" desc="寿司数据"/>
+	</proto>
+	
+	<proto name="AckEndSushi" desc="回应结算寿司游戏">
+		<member name="newrecord" prefix="required" type="bool" desc="是否为新纪录(真表示新纪录)"/>
+		<member name="gole" prefix="required" type="uint32" default="0" desc="5个关卡总成绩"/>
+		<member name="history" prefix="optional" type="uint32" default="0" desc="历史最好成就"/>
+		<member name="stepdata" prefix="required" type="SuShiStepData" desc="关卡数据"/>
+	</proto>
+</protocol>
+

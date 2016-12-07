@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+	<import>
+		<member name="trade" desc="交易对应的proto"/>
+		<member name="build" desc="建筑对应的proto"/>
+	</import>
+	
+	<enum name="StoreItemType" desc="道具容器类型">
+		<member name="Store_Type_Ware_House" value="0" desc="仓库道具"/>
+		<member name="Store_Type_Build" value="1" desc="仓库建筑"/>
+		<member name="Store_Type_Sale" value="2" desc="摊位"/>
+	</enum>
+	
+	<proto name="ReqStoreItem" desc="请求道具容器信息">
+		<member name="type" prefix="required" type="StoreItemType" desc="容器类型"/>
+		<member name="charid" prefix="required" type="uint64" desc="角色id"/>
+	</proto>
+	
+	<proto name="AckFlushWareHouse" desc="刷新仓库信息">
+		<member name="store_items" prefix="repeated" type="PbStoreItem" desc="道具信息"/>
+	</proto>
+		
+	<proto name="ReqAddItem" desc="请求仓库增加道具">
+		<member name="item" prefix="required" type="PbStoreItem" desc="添加道具"/>
+	</proto>
+	
+	<proto name="AckUpdateItem" desc="更新单个道具信息">
+		<member name="item" prefix="required" type="PbStoreItem" desc="添加道具"/>
+	</proto>
+	
+	<proto name="AckAddItemReturn" desc="仓库增加道具返回">
+		<member name="ret" prefix="required" type="bool" desc="true表示成功，失败只能是空间不足"/>
+	</proto>
+	
+	<proto name="AckFlushWareBuild" desc="刷新仓库信息建筑">
+		<member name="warebuild" prefix="repeated" type="WareHouseBuildBaseForCli" desc="建筑基本信息"/>
+	</proto>
+	
+	<proto name="AckUpdateWareBuid" desc="更新单个仓库信息">
+		<member name="warebuild" prefix="required" type="WareHouseBuildBaseForCli" desc="添加道具"/>
+	</proto>
+	
+	<proto name="ReqPayGrid" desc="购买仓库格子">
+		<member name="grid" prefix="required" type="uint32" desc="购买购买格子数"/>
+	</proto>
+	
+</protocol>
+

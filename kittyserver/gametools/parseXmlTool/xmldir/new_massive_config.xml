@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<stFriendConfig dwgiveStrengthPowerTimes="1" dwgivePowerTimes="5"  dwacceptStrengthPowerTimes="5" dwacceptPowerTimes="15">
+		<mapGivePower>
+			<stPower dwID="0" dwMaxLevel="0" dwNumber="2" dwStrenthNum="10"/>
+			<stPower dwID="1" dwMaxLevel="10" dwNumber="2" dwStrenthNum="10"/>
+			<stPower dwID="11" dwMaxLevel="20" dwNumber="3" dwStrenthNum="10"/>
+			<stPower dwID="21" dwMaxLevel="200" dwNumber="4" dwStrenthNum="10"/>
+		</mapGivePower>
+	</stFriendConfig>
+	
+	<septConfig iniMemberLimit="15" joinSeptLevel="17" secondSeptMasterNum="4" addNums="5" createSeptNeedLevel="17" createSeptNeedMoney="500">
+		<addLimitSeptNum times="1" cost="100"/>
+		<addLimitSeptNum times="2" cost="200"/>
+		<addLimitSeptNum times="3" cost="400"/>
+		<addLimitSeptNum times="4" cost="700"/>
+		<addLimitSeptNum times="5" cost="1000"/>
+		<addLimitSeptNum times="6" cost="1500"/>
+	</septConfig>
+	
+	<!-- 每日登录系统 wdIndex="物品唯一标识" dwNeedNum="需求登录天数" dwResType=0:英雄 1:英雄碎片 2:装备 3:资源(银子、灵气、元宝) 4:道具 dwID="英雄表ID 或者装备 碎片ID" dwNum="实际数目"-->
+	<stSignTaskConfig>
+		<vecSignList>
+			<stSign tmStartTime="20140310 00:00:00" tmEndTime="20261206 23:59:59">
+				<vecItemList>
+					<stItem wdIndex="1" dwNeedNum="1" dwResType="3" dwID="60001" dwNum="5000"/>
+					<stItem wdIndex="2" dwNeedNum="2" dwResType="3" dwID="60006" dwNum="800"/>
+					<stItem wdIndex="3" dwNeedNum="3" dwResType="4" dwID="2001" dwNum="8"/>
+					<stItem wdIndex="4" dwNeedNum="3" dwResType="3" dwID="60007" dwNum="2"/>
+					<stItem wdIndex="5" dwNeedNum="5" dwResType="3" dwID="60006" dwNum="1600"/>
+					<stItem wdIndex="6" dwNeedNum="5" dwResType="3" dwID="60001" dwNum="12000"/>
+					<stItem wdIndex="7" dwNeedNum="7" dwResType="3" dwID="60002" dwNum="150"/>
+					<stItem wdIndex="8" dwNeedNum="7" dwResType="4" dwID="60008" dwNum="5"/>
+				</vecItemList>
+			</stSign>
+		</vecSignList>
+	</stSignTaskConfig>
+</config>

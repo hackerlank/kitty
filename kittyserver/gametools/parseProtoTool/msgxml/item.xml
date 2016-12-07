@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+	<proto name="ReqUseItem" desc="使用道具">
+		<member name="itemID" prefix="required" type="uint32" desc="道具id"/>
+		<member name="num" prefix="required" type="uint32" desc="道具数量"/>
+	</proto>
+	
+	<enum name="UseItemFailType" desc="使用道具失败原因">
+		<member name="Fail_Item_Illeay" value="0" desc="使用的道具非法"/>
+		<member name="Fail_Item_Not_Enough" value="1" desc="道具使用不够"/>
+		<member name="Fail_Item_Level_Limited" value="2" desc="等级不足，不能使用"/>
+		<member name="Fail_Item_Premise_Limited" value="3" desc="前提条件不满足，不能使用"/>
+	</enum>
+	
+	<proto name="AckUseItemReturn" desc="使用道具返回">
+		<member name="ret" prefix="required" type="bool" desc="使用成功或者失败(真表示成功)"/>
+		<member name="reason" prefix="required" type="UseItemFailType" desc="使用道具失败的原因"/>
+	</proto>
+	
+</protocol>
+

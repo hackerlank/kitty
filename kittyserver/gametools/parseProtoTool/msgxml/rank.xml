@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+    </import>
+
+    <enum name="RankType" desc="排行榜类型">
+        <member name="RT_Level" value="0" desc="等级排行榜"/>
+        <member name="RT_Sushi" value="1" desc="寿司游戏排行榜"/>
+        <member name="RT_Star" value="2" desc="星座游戏排行榜"/>
+        <member name="RT_VerifyLevel" value="3" desc="认证等级排行榜总榜"/>
+        <member name="RT_Contribute" value="4" desc="贡献值排行榜"/>
+        <member name="RT_Charisma" value="5" desc="魅力值排行榜"/>
+        <member name="RT_UnityBuild" value="6" desc="合建排行榜"/>
+        <member name="RT_Popular_Now" value="7" desc="人气值排行榜"/>
+		<member name="RT_Login" value="8" desc="最近登录"/>
+    </enum>
+		
+    <enum name="SexRankType" desc="性别子榜">
+        <member name="SRT_Defualt" value="0" desc="默认类型(总榜)"/>
+        <member name="SRT_Man" value="1" desc="男榜"/>
+        <member name="SRT_Female" value="2" desc="女榜"/>
+    </enum>
+
+    <enum name="TimeRankType" desc="时间子榜">
+        <member name="TRT_Defualt" value="0" desc="默认类型(总榜)"/>
+		<member name="TRT_Month" value="1" desc="月榜"/>
+        <member name="TRT_Week" value="2" desc="周榜"/>
+    </enum>
+
+    <enum name="AreaType" desc="区域类型">
+        <member name="RT_Default" value="1" desc="没设置区域"/>
+        <member name="RT_China" value="2" desc="中国"/>
+    </enum>
+    <proto name="MaxUnityBuild" desc="个人最高分数建筑">
+        <member name="totalpopular" prefix="required" type="uint32" desc="总计人气"/>
+        <member name="totalmaxpopular" prefix="required" type="uint32" desc="总计最大人气"/>
+        <member name="maxscore" prefix="required" type="uint32" desc="分数"/>
+        <member name="buildid" prefix="required" type="uint32"  desc="建筑id"/>
+        <member name="buildlv" prefix="required" type="uint32"  desc="合建等级"/>
+        <member name="otherid" prefix="required" type="uint64"  desc="合建者"/>
+    </proto>
+
+    <proto name="ReqRank" desc="请求排行榜">
+        <member name="id" prefix="required" type="RankType" desc="排行榜类型"/>
+        <member name="sex" prefix="optional" type="SexRankType" default="SRT_Defualt" desc="性别"/>
+        <member name="time" prefix="optional" type="TimeRankType" default="TRT_Defualt" desc="时间"/>
+        <member name="area" prefix="required" type="bool" default="false" desc="是否为区域榜(真为区域)"/>
+    </proto>
+
+    <proto name="RankInfo" desc="榜单记录">
+        <member name="head" prefix="required" type="playerShowbase" desc="排行榜显示"/>
+        <member name="value" prefix="required" type="uint32" desc="值"/>
+        <member name="rank" prefix="required" type="uint32" desc="排位"/>
+        <member name="isverify" prefix="required" type="bool" default="false" desc="是否认证"/>
+        <member name="ishot" prefix="required" type="bool" dafault="false" desc="是否热门"/>
+        <member name="total" prefix="optional" type="uint32" dafault="0" desc="总值"/>
+        <member name="week" prefix="optional" type="uint32" dafault="0" desc="周值"/>
+        <member name="month" prefix="optional" type="uint32" dafault="0" desc="月值"/>
+		<member  name="city" prefix="optional" type="string"  default="" desc="城市"/>
+		<member name="born" prefix="optional" type="string" default="" desc="出身年月"/>
+    </proto>
+
+    <proto name="AckRank" desc="排位返回">
+        <member name="id" prefix="required" type="RankType" desc="排行榜类型"/>
+        <member name="area" prefix="required" type="bool" default="false" desc="是否为区域榜(真为区域)"/>
+		 <member name="time" prefix="optional" type="TimeRankType" default="TRT_Defualt" desc="时间"/>
+        <member name="rank" prefix="optional" type="uint32" default="0" desc="自己的排位"/>
+        <member name="value" prefix="optional" type="uint32" default="0" desc="自己的分数"/>
+        <member name="isverify" prefix="required" type="bool" default="false" desc="是否认证"/>
+        <member name="ishot" prefix="required" type="bool" dafault="false" desc="是否热门"/>
+        <member name="rankinfo" prefix="repeated" type="RankInfo" desc="排行信息"/>
+		<member name="lastweekrank" prefix="optional" type="uint32" desc="上周排位"/>
+		<member name="lastmonthrank" prefix="optional" type="uint32" desc="上月排位"/>
+    </proto>
+    <proto name="UnitbuildRankInfo" desc="合建榜单记录">
+        <member name="rank" prefix="required" type="uint32" desc="排名"/>
+        <member name="headleft" prefix="required" type="playerShowbase" desc="左边玩家"/>
+        <member name="leftcity" prefix="optional" type="string"  default="" desc="城市"/>
+		<member name="leftborn" prefix="optional" type="string" default="" desc="出身年月"/>
+        <member name="lefttotalpopular" prefix="required" type="uint32" desc="左边玩家总共合建人气值"/>
+        <member name="lefttotalmaxpopular" prefix="required" type="uint32"  desc="左边玩家总共合建最大人气"/>
+        <member name="leftbuildid" prefix="required" type="uint32"  desc="左边玩家最高合建建筑id"/>
+        <member name="leftbuildlv" prefix="required" type="uint32"  desc="左边玩家最高合建建筑等级lv"/>
+        <member name="headright" prefix="required" type="playerShowbase" desc="右边玩家"/>
+        <member name="rightcity" prefix="optional" type="string"  default="" desc="城市"/>
+		<member name="rightborn" prefix="optional" type="string" default="" desc="出身年月"/>
+
+    </proto>
+   <proto name="AckUnitbuildRank" desc="合建榜单返回">
+        <member name="rankinfo" prefix="repeated" type="UnitbuildRankInfo" desc="合建榜单记录"/>
+        <member name="selfrank" prefix="required" type="uint32" desc="0,表示未入榜单"/>
+    </proto>
+
+</protocol>
+

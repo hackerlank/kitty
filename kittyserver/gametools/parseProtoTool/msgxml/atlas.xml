@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+	
+	<proto name="AtlasData" desc="图鉴数据">
+		<member name="type" prefix="required" type="uint32" desc="类型"/>
+		<member name="id" prefix="repeated" type="uint32" desc="id"/>
+	</proto>
+	
+	<proto name="ReqAtlas" desc="请求图鉴信息">
+	</proto>
+	
+	<proto name="AckAtlas" desc="刷新图鉴信息">
+		<member name="atlas" prefix="repeated" type="AtlasData" desc="已经开启了的图鉴"/>
+	</proto>
+	
+	<proto name="AckAddAtlas" desc="增加图鉴">
+		<member name="type" prefix="required" type="uint32" desc="图鉴类型id"/>
+		<member name="atlas" prefix="required" type="uint32" desc="图鉴id"/>
+	</proto>
+	
+	<proto name="AckResolveAtlas" desc="分解图鉴">
+		<member name="type" prefix="required" type="uint32" desc="图鉴类型id"/>
+		<member name="atlas" prefix="required" type="uint32" desc="图鉴id"/>
+	</proto>
+	
+</protocol>
+

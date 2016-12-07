@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+        <member name="produce" desc="生产道具建筑对应的proto"/>
+        <member name="composite" desc="合成道具建筑对应的proto"/>
+    </import>
+
+    <enum name="BuildStatueType" desc="建筑的几种状态，这里用位表示">
+        <member name="Build_Status_Default" value="0" desc="默认状态"/>
+        <member name="Build_Status_Build" value="1" desc="建造状态"/>
+        <member name="Build_Status_Finish" value="2" desc="建造cd完成状态"/>
+        <member name="Build_Status_Click_Active" value="4" desc="手动已激活但是道路没激活状态"/>
+        <member name="Build_Status_Normal" value="8" desc="手动已激活并且道路已激活状态"/>
+        <member name="Build_Status_Stop" value="16" desc="暂停产出状态"/>
+    </enum>
+
+    <proto name="Point" desc="地图坐标信息">
+        <member name="x" prefix="required" type="int32" desc="x坐标"/>
+        <member name="y" prefix="required" type="int32" desc="y坐标"/>
+    </proto>
+
+    <proto name="ProduceData" desc="产物存档值结构">
+        <member name="itemid" prefix="optional" type="uint32" desc="道具id"/>
+        <member name="value" prefix="optional" type="double" desc="值"/>
+    </proto>
+
+    <proto name="WareHouseBuildBase" desc="仓库中的建筑">
+        <member name="cellid" prefix="required" type="uint32" desc="格子id"/>
+        <member name="type" prefix="required" type="uint32" desc="建筑类型id"/>
+        <member name="level" prefix="required" type="uint32" desc="等级"/>
+        <member name="status" prefix="required" type="uint32" desc="建筑所处状态"/>
+        <member name="producetime" prefix="required" type="uint32" desc="产出cd时间"/>
+        <member name="durtime" prefix="required" type="uint32" desc="可用cd"/>	
+        <member name="num" prefix="required" type="uint32" desc="数量"/>
+        <member name="inbuildid" prefix="optional" type="uint64" default="0" desc="合建id"/>
+        <member name="inbuildlevel" prefix="optional" type="uint32" default="0" desc="合建等级"/>
+        <member name="friendid" prefix="optional" type="uint64" default="0" desc="合建者"/>
+    </proto>
+
+    <proto name="WareHouseBuildBaseForCli" desc="仓库中的建筑">
+        <member name="baseinfo" prefix="required" type="WareHouseBuildBase" desc="服务器信息"/>
+        <member name="othershow" prefix="required" type="playerShowbase" desc="合建的另一玩家"/>
+    </proto>
+
+    <proto name="WareHouseProduceInfo" desc="仓库中的生产道具的建筑数据">
+        <member name="cellid" prefix="required" type="uint32" desc="格子id"/>
+        <member name="produceinfo" prefix="required" type="ProduceInfo" desc="生产建筑产出道具信息"/>
+    </proto>
+
+    <proto name="WareHouseCompositeInfo" desc="仓库中的生产道具的建筑数据">
+        <member name="cellid" prefix="required" type="uint32" desc="格子id"/>
+        <member name="compositeinfo" prefix="required" type="CompositeInfo" desc="合成建筑产出道具信息"/>
+    </proto>
+
+    <proto name="WareHouseOtherInfo" desc="仓库中的生产别的的建筑数据">
+        <member name="cellid" prefix="required" type="uint32" desc="格子id"/>
+        <member name="producedata" prefix="repeated" type="ProduceData" desc="产出数值结构"/>
+    </proto>
+
+    <enum name="BuildFromType" desc="建筑来源类型">
+        <member name="BFT_Normal" value="0" desc="正常创建"/>
+        <member name="BFT_Warehouse" value="1" desc="仓库"/>
+    </enum>
+
+    <proto name="BuildBase" desc="建筑结构">
+        <member name="tempid" prefix="required" type="uint64" desc="建筑临时id"/>
+        <member name="type" prefix="required" type="uint32" desc="建筑类型id"/>
+        <member name="level" prefix="required" type="uint32" desc="等级"/>
+        <member name="point" prefix="required" type="Point" desc="地图坐标"/>
+        <member name="status" prefix="required" type="uint32" desc="建筑所处状态"/>
+        <member name="createtime" prefix="required" type="uint32" desc="开始建造时间"/>		
+        <member name="lastcdsec" prefix="required" type="uint32" desc="建造cd剩余秒数"/>
+        <member name="producetime" prefix="required" type="uint32" desc="产出cd时间"/>
+        <member name="rotationmark" prefix="required" type="bool" default="false" desc="翻转标签"/>
+        <member name="fromtype" prefix="optional" type="BuildFromType" default="BFT_Normal" desc="默认正常创建"/>
+        <member name="inbuildid" prefix="optional" type="uint64" default="0" desc="合建id"/>
+        <member name="inbuildlevel" prefix="optional" type="uint32" default="0" desc="合建等级"/>
+        <member name="friendid" prefix="optional" type="uint64" default="0" desc="合建者"/>
+        <member name="othershow" prefix="optional" type="playerShowbase" desc="合建的另一玩家"/>
+    </proto>
+
+    <proto name="ReqAllBuild" desc="请求刷新建筑基本信息">
+    </proto>
+
+    <proto name="AckFlushAllBuild" desc="刷新建筑基本信息">
+        <member name="buildinfo" prefix="repeated" type="BuildBase" desc="建筑基本信息"/>
+    </proto>
+
+    <proto name="ReqOneBuild" desc="请求刷新某个建筑基本信息">
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+    </proto>
+
+    <proto name="AckFlushOneBuild" desc="刷新某建筑基本信息">
+        <member name="updatecharid" prefix="required" type="uint64" desc="角色id"/>
+        <member name="buildinfo" prefix="required" type="BuildBase" desc="建筑基本信息"/>
+    </proto>
+
+    <proto name="ReqBuildUpGrade" desc="建筑升级">
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+        <member name="effectid" prefix="required" type="uint32" desc="需要升级的效果id"/>
+    </proto>
+
+    <proto name="EffectData" desc="建筑效果">
+        <member name="effectid" prefix="required" type="uint32" desc="效果id"/>
+        <member name="level" prefix="required" type="uint32" desc="效果等级"/>
+    </proto>
+
+    <proto name="BuildEffect" desc="建筑效果">
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+        <member name="effect" prefix="repeated" type="EffectData" desc="效果列表"/>
+    </proto>
+
+    <proto name="AckUpdateEffect" desc="更新建筑效果">
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+        <member name="effect" prefix="repeated" type="EffectData" desc="效果列表"/>
+    </proto>
+
+    <proto name="ReqBuildMovePlace" desc="建筑移位">
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+        <member name="point" prefix="required" type="Point" desc="新地图坐标"/>
+        <member name="moveflg" prefix="required" type="bool" default="true" desc="为真表示翻转"/>
+    </proto>
+
+    <proto name="ReqBuildBuilding" desc="建筑建造">
+        <member name="type" prefix="required" type="uint32" desc="建筑id"/>
+        <member name="point" prefix="required" type="Point" desc="新地图坐标"/>
+        <member name="moveflg" prefix="required" type="bool" default="true" desc="为真表示翻转"/>
+    </proto>
+
+    <proto name="ReqBuildRoad" desc="建造系类道路">
+        <member name="type" prefix="required" type="uint32" desc="建筑id"/>
+        <member name="point" prefix="repeated" type="Point" desc="buffer数据"/>
+    </proto>
+
+    <proto name="ReqClearRoad" desc="建造系类道路">
+        <member name="tempid" prefix="repeated" type="uint64" desc="道路id"/>
+    </proto>
+
+    <enum name="BuildSuccessCodeType" desc="成功类型">
+        <member name="Build_Up_Grade" value="0" desc="建筑升级成功"/>
+        <member name="Build_Move" value="1" desc="建筑移动成功"/>
+        <member name="Build_Building" value="2" desc="建筑建造成功"/>
+        <member name="Build_Rotation" value="3" desc="建筑旋转成功"/>
+    </enum>
+
+
+    <proto name="AckBuildOpReturnSuccess" desc="建筑操作成功返回">
+        <member name="updatecharid" prefix="required" type="uint64" desc="角色id"/>
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+        <member name="code" prefix="required" type="BuildSuccessCodeType" desc="建筑成功操作类型"/>
+        <member name="buildinfo" prefix="required" type="BuildBase" desc="刷新建筑基本信息"/>
+        <member name="oldpoint" prefix="required" type="Point" desc="旧坐标点(只有移动有效)"/>
+    </proto>
+
+    <enum name="BuildFailCodeType" desc="失败类型">
+        <member name="Build_Occcupy" value="0" desc="占位，跟别的原因配合使用"/>
+        <member name="Build_Error" value="2" desc="建筑错误"/>
+        <member name="Build_Full_Level" value="3" desc="建筑已经升级到满级了"/>
+        <member name="Build_Type_Enough" value="4" desc="此类建筑数量已达上限，不能在进行建造"/>
+    </enum>
+
+    <proto name="AckBuildOpReturnFail" desc="建筑操作失败返回">
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+        <member name="commoncode" prefix="required" type="ErrorCodeType" desc="建筑失败操作类型(公共错误)"/>
+        <member name="code" prefix="required" type="BuildFailCodeType" desc="建筑失败操作类型"/>
+        <member name="buildinfo" prefix="required" type="BuildBase" desc="刷新建筑基本信息"/>
+    </proto>
+
+    <proto name="ReqPickUpBuid" desc="把建筑收进仓库">
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+    </proto>
+
+    <proto name="AckRemoveBuid" desc="移除建筑">
+        <member name="updatecharid" prefix="required" type="uint64" desc="角色id"/>
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+    </proto>
+
+
+    <proto name="ReqPickOutBuid" desc="从仓库中拿出建筑">
+        <member name="cellid" prefix="required" type="uint32" desc="格子id"/>
+        <member name="point" prefix="required" type="Point" desc="建筑坐标"/>
+        <member name="moveflg" prefix="required" type="bool" default="true" desc="为真表示翻转"/>
+    </proto>
+
+    <proto name="ReqClickRewardBuid" desc="点击领取建筑产出">
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+    </proto>
+
+    <proto name="Worker" desc="工人">
+        <member name="id" prefix="required" type="uint32" desc="工人id"/>
+        <member name="starttime" prefix="required" type="uint32" desc="开工时间"/>
+        <member name="cd" prefix="required" type="uint32" desc="cd时间"/>
+        <member name="lastsec" prefix="required" type="uint32" desc="剩余cd"/>
+        <member name="build" prefix="required" type="uint32" desc="建筑id"/>
+    </proto>
+
+    <proto name="ReqWorker" desc="请求工人数据">
+    </proto>
+
+    <proto name="AckUpdateWorker" desc="更新工人数据">
+        <member name="worker" prefix="required" type="Worker" desc="工人数据"/>
+    </proto>
+
+    <proto name="AckWorker" desc="更新工人数据">
+        <member name="worker" prefix="repeated" type="Worker" desc="工人数据"/>
+    </proto>
+
+    <proto name="ReqResetWorker" desc="重置工人cd">
+        <member name="workerid" prefix="required" type="uint32" desc="工人id"/>
+    </proto>
+
+    <proto name="ReqRecycleItem" desc="回收物品">
+        <member name="tempid" prefix="required" type="uint64" desc="id"/>
+        <member name="itemid" prefix="required" type="uint32" desc="道具类型"/>
+        <member name="itemnum" prefix="required" type="uint32" desc="道具数量"/>
+    </proto>
+
+    <proto name="ProduceBase" desc="道具产出">
+        <member name="itemid" prefix="required" type="uint32" desc="道具类型"/>
+        <member name="value" prefix="required" type="double" desc="道具数量"/>
+    </proto>
+
+    <proto name="ReqBuildProduce" desc="请求道具产出">
+        <member name="tempid" prefix="repeated" type="uint64" desc="id"/>
+    </proto>
+
+    <proto name="BuildProduce" desc="道具产出">
+        <member name="tempid" prefix="required" type="uint64" desc="id"/>
+        <member name="produce" prefix="repeated" type="ProduceBase" desc="道具数量"/>
+    </proto>
+
+    <proto name="AckBuildProduce" desc="道具产出">
+        <member name="produce" prefix="repeated" type="BuildProduce" desc="id"/>
+    </proto>
+
+    <proto name="AckUpdateRubbish" desc="更新路上的垃圾">
+        <member name="updatecharid" prefix="required" type="uint64" desc="角色id"/>
+        <member name="rubbish" prefix="required" type="RubbishData" desc="垃圾和糖果信息"/>
+        <member name="optype" prefix="required" type="uint32" desc="操作类型(1:表示添加垃圾，2:表示系统删除垃圾 3:表示拾取删除)"/>
+    </proto>
+
+    <enum name="BufferSrcType" desc="buffer作用源类型">
+        <member name="BST_Default" value="0" desc="默认"/>
+        <member name="BST_Divine" value="1" desc="占卜"/>
+    </enum>
+
+    <proto name="BufferData" desc="buffer结构">
+        <member name="bufferid" prefix="required" type="uint32" desc="buffer表中id"/>
+        <member name="buffertype" prefix="required" type="BufferTypeID" desc="buffer的类型"/>
+        <member name="srctype" prefix="required" type="BufferSrcType" desc="buffer作用源类型"/>
+        <member name="begintime" prefix="required" type="uint32" desc="开始作用时间"/>
+        <member name="lasttime" prefix="required" type="uint32" desc="持续时间"/>
+    </proto>
+
+
+    <proto name="AckUpdateBuffer" desc="更新buffer">
+        <member name="bufferdata" prefix="repeated" type="BufferData" desc="buffer结构"/>
+    </proto>
+
+    <proto name="ReqUnLockBuild" desc="请求解锁建筑">
+        <member name="id" prefix="required" type="uint32" desc="建筑类型id"/>
+    </proto>
+
+    <proto name="AckUpdateUnLockBuild" desc="跟新解锁建筑">
+        <member name="id" prefix="repeated" type="uint32" desc="建筑类型id"/>
+    </proto>
+
+    <proto name="ReqClickActiveBuild" desc="请求点击激活建筑">
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+    </proto>
+
+    <proto name="ReqParseBuildCD" desc="购买建造cd">
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+    </proto>
+
+    <proto name="ReqSellWareHouseBuild" desc="建筑卖出">
+        <member name="cellid" prefix="required" type="uint32" desc="格子id"/>
+    </proto>
+
+</protocol>
+

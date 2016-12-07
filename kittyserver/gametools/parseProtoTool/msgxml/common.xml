@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+
+    <enum name="ErrorCodeType" desc="错误类型">
+        <member name="Error_Common_Occupy" value="0" desc="占位，跟别的原因配合使用"/>
+        <member name="Level_Not_Enough" value="3" desc="等级过低"/>
+        <member name="WareHouse_Is_Full" value="8" desc="仓库已满"/>
+        <member name="Build_In_CD" value="10" desc="建筑处于cd中"/>
+        <member name="Item_Not_Enough" value="11" desc="道具不够"/>
+        <member name="Email_Is_Enough" value="12" desc="邮箱已满"/>
+        <member name="Player_Not_Exist" value="13" desc="角色不存在"/>
+        <member name="Email_Is_Empty" value="14" desc="邮件内容为空"/>
+        <member name="Card_Is_Used" value="15" desc="卡牌正在使用中"/>
+        <member name="Card_Is_Not_Suit" value="16" desc="此建筑不能用卡牌"/>
+        <member name="WareHouse_Is_Max" value="17" desc="仓库以扩充到上限了"/>
+        <member name="Item_Is_EndTime" value="19" desc="道具已过期"/>
+        <member name="Address_Is_Error" value="20" desc="地址为空"/>
+        <member name="Build_No_UnLock" value="22" desc="建筑未解锁"/>
+        <member name="Build_Premise_Limit" value="23" desc="前提建筑不满足条件"/>
+        <member name="Not_Dress_Room" value="24" desc="请先建造试衣间"/>
+        <member name="BTP_Close" value="26" desc="工作槽未开通"/>
+        <member name="BTP_Busy" value="27" desc="工作槽处于繁忙"/>
+        <member name="BTP_Not_Produce_Item" value="28" desc="prodeceid在配表中找不到"/>
+        <member name="BTP_Not_Composite_Item" value="29" desc="此建筑不能产生道具"/>
+        <member name="BTP_Is_Open" value="30" desc="工作槽已经开通了"/>
+        <member name="BTP_Is_Not_Busy" value="31" desc="工作槽不处于工作状态"/>
+        <member name="BTP_Is_Not_Wait" value="32" desc="工作槽不处于等待状态"/>
+        <member name="BTP_Is_Max" value="33" desc="工作槽已达上限"/>
+        <member name="Gift_Exchange_Over" value="34" desc="礼品兑换完毕"/>
+        <member name="Flower_Not_Enough" value="35" desc="鲜花不足"/>
+        <member name="UnitBuild_Gift_Err" value="37" desc="合建送礼失败"/>
+		<member name="Star_Now" value="38" desc="你正在进行星座连线游戏，不能邀请"/>
+		<member name="Check_Not_Self" value="39" desc="不能搜索自己"/>
+		<member name="Check_Not_Exit" value="40" desc="搜索人不存在"/>
+		<member name="Star_Friend_Now" value="41" desc="朋友正在玩新手连线"/>
+        <member name="Buy_Login_OutTime" value="42" desc="查看最近登录已过期"/>
+        <member name="SellUnityBuilding" value="43" desc="合建建筑不可以删除"/>
+		<member name="Role_Not_EXIST" value="44" desc="角色不存在"/>
+		<member name="Gift_Not_Send" value="45" desc="实物礼品不能送人"/>
+		<member name="Gift_In_CD" value="46" desc="送礼处于cd中"/>
+		<member name="Item_In_Lock" value="47" desc="物品加锁，不能被购买"/>
+		<member name="Item_Forbid_Trade" value="48" desc="道具禁止交易"/>
+		<member name="Item_Forbid_Recycle" value="49" desc="道具禁止被系统回收"/>
+		<member name="Coin_Toy_Enough" value="50" desc="金币扭蛋次数已满"/>
+        <member name="Grid_Max" value="51" desc="摊位格子已经最大"/>
+        <member name="ActiveCode_Ready_Reward" value="52" desc="激活码已领取"/>
+        <member name="ActiveCode_Not_Exist" value="53" desc="激活码不存在"/>
+    </enum>
+
+
+    <enum name="BufferTypeID" desc="bufferID">
+        <member name="Buffer_Type_Default" value="0" desc="默认值"/>
+        <member name="Buffer_Type_CD" value="1" desc="缩短cd类"/>
+        <member name="Buffer_Type_Produce" value="2" desc="增加产出类"/>
+    </enum>
+
+    <proto name="AckReturnError" desc="返回失败">
+        <member name="reason" prefix="required" type="ErrorCodeType" desc="失败原因"/>
+		<member name="itemid" prefix="required" type="uint32" desc="缺少道具ID"/>
+    </proto>
+
+    <enum name="SuccessCodeType" desc="成功类型">
+        <member name="Sale_Cell_Op" value="3" desc="摊位格操作成功"/>
+    </enum>
+
+    <proto name="AckReturnSuccess" desc="返回成功">
+        <member name="code" prefix="required" type="SuccessCodeType" desc="成功类型"/>
+    </proto>
+
+    <enum name="AttrType" desc="属性类型类型">
+        <member name="Attr_Level" value="0" desc="等级"/>
+        <member name="Attr_Gold" value="1" desc="金币"/>
+        <member name="Attr_Gem" value="2" desc="钻石"/>
+        <member name="Attr_People" value="3" desc="人口数量"/>
+        <member name="Attr_Worker" value="4" desc="工人数"/>
+        <member name="Attr_Happy_Val" value="5" desc="愉悦度"/>
+        <member name="Attr_Friend_Val" value="6" desc="友情值"/>
+        <member name="Attr_Ware_Grid_Val" value="7" desc="仓库格子数量"/>
+        <member name="Attr_Carnival_Val" value="8" desc="嘉年华数值"/> 
+        <member name="Attr_Sweet_Val" value="9" desc="糖果罐数值"/> 
+        <member name="Attr_RandToy_Val" value="10" desc="扭蛋次数"/> 
+        <member name="Attr_Sall_Grid_Val" value="11" desc="摊位数值"/>
+        <member name="Attr_Coupons" value="12" desc="点券"/>
+        <member name="Attr_Token" value="13" desc="代币"/>
+        <member name="Attr_Max_Gold" value="14" desc="最大金币数"/>
+        <member name="Attr_Vip" value="15" desc="vip"/>
+        <member name="Attr_Charisma" value="16" desc="魅力值"/>
+        <member name="Attr_Fans" value="17" desc="粉丝数"/>
+        <member name="Attr_Game_Integral" value="18" desc="游戏积分"/>
+        <member name="Attr_Verify_Level" value="19" desc="认证等级"/>
+        <member name="Attr_Exp" value="20" desc="经验值"/>
+        <member name="Attr_Popular_Now" value="21" desc="当前人气值"/>
+        <member name="Attr_Popular_Max" value="22" desc="最大人气值"/>
+        <member name="Attr_Open_Grid_Time" value="23" desc="扩地次数"/>
+        <member name="Attr_Popular_Now_Temp" value="24" desc="当前人气值(正在建)"/>
+        <member name="Attr_Send_Flower_Cnt" value="25" desc="每天送花次数"/>
+        <member name="Attr_Contribute" value="26" desc="贡献值"/>
+        <member name="Attr_Ware_Level" value="27" desc="仓库等级"/>
+        <member name="Attr_Composite_Num" value="28" desc="合成数量"/>
+        <member name="Attr_finishorder_Num" value="29" desc="订单完成数量"/>
+        <member name="Attr_finishtrainorder_Num" value="31" desc="火车订单完成数量"/>
+        <member name="Attr_helptrainorder_Num" value="32" desc="帮助火车订单数量"/>
+        <member name="Attr_helpotherevent_Num" value="33" desc="帮助其他玩家好友事件数量"/>
+        <member name="Attr_Charisma_Rank100" value="35" desc="魅力月排名100"/>
+        <member name="Attr_Contribute_Rank100" value="36" desc="贡献月排名100"/>
+        <member name="Attr_GemCost_Rank100" value="37" desc="钻石消耗月排名100"/>
+        <member name="Attr_ReCharge_648" value="38" desc="充值648"/>
+        <member name="Attr_Gold_Pea" value="39" desc="金豆"/>
+        <member name="Attr_Max" value="100" desc="属性最大值"/>
+    </enum>
+    <enum name="SexType" desc="性别类型">
+        <member name="Male" value="0" desc="男性"/>
+        <member name="Female" value="1" desc="女性"/>
+    </enum>
+    <enum name="GUIDType" desc="唯一ID枚举">
+        <member name="GUIDType_SYSTEMNAME" value="0" desc="系统赋予名字"/>
+        <member name="GUIDType_UNITYBUILD" value="1" desc="合建"/>
+    </enum>
+
+
+    <proto name="AckUpdateAttrVal" desc="更新角色基本属性值">
+        <member name="updatechar" prefix="required" type="uint64" desc="角色id"/>
+        <member name="attrtype" prefix="required" type="AttrType" desc="属性类型"/>
+        <member name="attrval" prefix="required" type="uint32" desc="属性值"/>
+    </proto>
+
+    <proto name="RubbishData" desc="请求进入玩家的乐园">
+        <member name="roadid" prefix="required" type="uint64" desc="路实例id"/>
+        <member name="rubbish" prefix="required" type="uint32" desc="垃圾的类型id"/>
+    </proto>
+    <proto name ="Award" desc="奖励">
+        <member name="awardtype" prefix="optional" type="uint32" default ="0"  desc="奖励类型"/>
+        <member name="awardval" prefix="optional" type="uint32" default ="0" desc="奖励值"/>
+    </proto>
+    <proto name ="vecAward" desc="奖励列表">
+        <member  name="award" prefix="repeated" type="Award" desc="获得的奖励"/>
+    </proto>
+    <enum name="ReplaceType" desc="替换类型">
+        <member name="ReplaceType_NONE" value="0" desc="用原始字符替换，如名字"/>
+        <member name="ReplaceType_Language" value="1" desc="Localization.xlsx 的键值，注意多语言版本"/>
+    </enum>
+    <proto name ="ReplaceWord" desc="替换字符串">
+        <member  name="key" prefix="required" type="ReplaceType" desc="替换类型"/>
+        <member  name="value" prefix="required" type="string" desc="字符串"/>
+    </proto>
+	
+	<proto name="PicInfo" desc="照片信息">
+		<member  name="url" prefix="optional" type="string"  default="" desc="照片url"/>
+		<member name="key" prefix="optional" type="uint32" default="0" desc="验证码"/>
+    </proto>
+	
+    <proto name ="playerhead" desc="奖励列表">
+        <member  name="headid" prefix="optional" type="uint32" default="1" desc="图标id"/>
+        <member  name="value" prefix="optional" type="PicInfo" desc="图片信息"/>
+    </proto>
+    <proto name ="playerShowbase" desc="玩家显示基础结构">
+        <member name="PlayerId" prefix="required" type="uint64" desc="玩家id"/>
+        <member name="Playername" prefix="required" type="string" desc="玩家名称"/>
+        <member name="Playerlevel" prefix="required" type="uint32" desc="玩家等级"/>
+        <member name="Playersex" prefix="required" type="SexType" desc="玩家性别"/>
+        <member name="area" prefix="required" type="uint32" desc="玩家区域"/>
+        <member name="head" prefix="required" type="playerhead"  desc="玩家头像"/>
+		<member name="contribute" prefix="required" type="uint32" desc="贡献值"/>
+		<member name="charisma" prefix="required" type="uint32" desc="魅力值"/>
+		<member name="city" prefix="optional" type="string" desc="城市"/>
+		<member name="popularnow" prefix="optional" type="uint32" default="0" desc="当前人口值"/>
+		<member name="popularMax" prefix="optional" type="uint32" default="0" desc="当前人口最大值"/>
+    </proto>
+
+
+    <proto name ="Key64Val32Pair" desc="键64位值32位键值对">
+        <member  name="key" prefix="required" type="uint64" desc="键"/>
+        <member  name="val" prefix="required" type="uint32" desc="值"/>
+    </proto>
+	
+	 <proto name ="Key32Val32Pair" desc="键32位值32位键值对">
+        <member  name="key" prefix="required" type="uint32" desc="键"/>
+        <member  name="val" prefix="required" type="uint32" desc="值"/>
+    </proto>
+	
+	<proto name ="Key32ValStringPair" desc="键32位值string值对">
+        <member  name="key" prefix="required" type="uint32" desc="键"/>
+        <member  name="val" prefix="required" type="string" desc="值"/>
+    </proto>
+	
+	<proto name ="ReqContribute" desc="请求玩家贡献值">
+        <member name="charid" prefix="optional" type="uint64" desc="角色ID"/>
+    </proto>
+
+    <proto name ="AckUpdateContribute" desc="跟新玩家贡献值">
+        <member name="contribute" prefix="repeated" type="Key64Val32Pair" desc="贡献键值对"/>
+    </proto>
+
+</protocol>
+

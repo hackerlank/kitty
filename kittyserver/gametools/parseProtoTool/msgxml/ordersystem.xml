@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+
+    <enum name="OrderSystemResult" desc="操作结果">
+        <member name="OrderSystemResult_Suc" value="0" desc="操作成功"/>
+        <member name="OrderSystemResult_Lock" value="1" desc="订货栏位未解锁"/>
+        <member name="OrderSystemResult_NotEmpty" value="2" desc="订货栏位非空"/>
+        <member name="OrderSystemResult_NoPaket" value="3" desc="包裹满"/>
+        <member name="OrderSystemResult_NotArrive" value="4" desc="该栏位物品没有到达"/>
+        <member name="OrderSystemResult_MoneyLimitForOrdering" value="5" desc="钱不足预定货物"/>
+        <member name="OrderSystemResult_ItemLimit" value="6" desc="需求物品不足"/>
+        <member name="OrderSystemResult_ItemUnLock" value="7" desc="订货物品未解锁"/>
+        <member name="OrderSystemResult_PreUnOpen" value="8" desc="前一个栏位未开"/>
+        <member name="OrderSystemResult_AlreadyOpen" value="9" desc="该栏位已开"/>
+        <member name="OrderSystemResult_NoOpen" value="10" desc="该栏位未开"/>
+        <member name="OrderSystemResult_ItemIdErr" value="11" desc="非OrderGoods.xlsx里面的id"/>
+        <member name="OrderSystemResult_MoneyLimitForClearCD" value="12" desc="钱不足清除CD"/>
+        <member name="OrderSystemResult_NotWaitState" value="13" desc="订货栏不在等待状态"/>
+        <member name="OrderSystemResult_OtherErr" value="14" desc="其他错误"/>
+    </enum>
+    <enum name="OrderSystemState" desc="栏位状态">
+        <member name="OrderSystemState_Empty" value="0" desc="栏位空"/>
+        <member name="OrderSystemState_Running" value="1" desc="栏位等待完成"/>
+        <member name="OrderSystemState_Finish" value="2" desc="栏位已完成"/>
+    </enum>
+
+    <proto name="OrderSystemItem" desc="订货项">
+        <member name="colid" prefix="required" type="uint32" desc="栏位id"/>
+        <member name="state" prefix="required" type="OrderSystemState" desc="栏位状态"/>
+        <member name="itemid" prefix="required" type="uint32" desc="OrderGoods.xlsx里面的id"/>
+        <member name="timer" prefix="required" type="uint32" desc="到期时间"/>
+    </proto>
+    <proto name="ReqAddOrderSystem" desc="请求开启订货栏位">
+        <member name="colid" prefix="required" type="uint32" desc="栏位id"/>
+    </proto>
+    <proto name="AckAddOrderSystem" desc="请求开启订货栏位返回">
+        <member name="result" prefix="required" type="OrderSystemResult" desc="处理结果"/>
+    </proto>
+    <proto name="ReqRunOrderSystem" desc="请求订货">
+        <member name="colid" prefix="required" type="uint32" desc="栏位id"/>
+        <member name="itemid" prefix="required" type="uint32" desc="OrderGoods.xlsx里面的id"/>
+    </proto>
+    <proto name="AckRunOrderSystem" desc="请求订货返回">
+        <member name="result" prefix="required" type="OrderSystemResult" desc="处理结果"/>
+    </proto>
+    <proto name="ReqFinishOrderSystem" desc="请求收取订货">
+        <member name="colid" prefix="required" type="uint32" desc="栏位id,0 表示全部"/>
+    </proto>
+    <proto name="AckFinishOrderSystem" desc="请求收取订货返回">
+        <member name="result" prefix="required" type="OrderSystemResult" desc="处理结果"/>
+    </proto>
+   <proto name="ReqClearOrderSystemCD" desc="请求清除等待CD">
+        <member name="colid" prefix="required" type="uint32" desc="栏位id"/>
+    </proto>
+    <proto name="AckClearOrderSystemCD" desc="请求清除等待CD返回">
+        <member name="result" prefix="required" type="OrderSystemResult" desc="处理结果"/>
+    </proto>
+
+    <proto name="AckUpdateOrderSystem" desc="更新订货栏位状态">
+        <member name="subOrderSystem" prefix="required" type="OrderSystemItem" desc="订货项"/>
+    </proto>
+
+</protocol>
+

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+	
+	<proto name="ReqPaper" desc="请求图纸信息">
+	</proto>
+	
+	<proto name="PaperData" desc="刷新图纸信息">
+		<member name="paper" prefix="required" type="uint32" desc="所有获得的图纸id"/>
+		<member name="produceflg" prefix="required" type="bool" desc="是否生产"/>
+	</proto>
+	
+	<proto name="AckPaper" desc="刷新图纸信息">
+		<member name="paper" prefix="repeated" type="PaperData" desc="所有获得的图纸"/>
+	</proto>
+	
+	<proto name="AckUpdatePaper" desc="刷新图纸信息">
+		<member name="paper" prefix="required" type="PaperData" desc="单刷图纸"/>
+	</proto>
+	
+	<proto name="ReqOpPaper" desc="请求制作图纸">
+		<member name="paper" prefix="required" type="uint32" desc="时装图纸id"/>
+	</proto>
+	
+	<proto name="AckMakePaperSuccess" desc="图纸制作成功">
+		<member name="paper" prefix="required" type="PaperData" desc="图纸信息"/>
+	</proto>
+	
+</protocol>
+

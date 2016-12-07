@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+    <import>
+        <member name="build" desc="建筑对应的proto"/>
+        <member name="kittygarden" desc="乐园对应的proto"/>
+        <member name="produce" desc="道具产出对应的proto"/>
+        <member name="usecardbuild" desc="卡牌使用对应的proto"/>
+        <member name="dress" desc="时装使用对应的proto"/>
+        <member name="enterkitty" desc="逛乐园对应的proto"/>
+        <member name="common" desc="公共对应的proto"/>
+        <member name="event" desc="事件对应的proto"/>
+        <member name="burstevent" desc="事件对应的proto"/>
+        <member name="trainorder" desc="事件对应的proto"/>
+        <member name="ordersystem" desc="订货系统对应的proto"/>
+        <member name="composite" desc="合成道具建筑对应的proto"/>
+        <member name="order" desc="订单对应的proto"/>
+        <member name="unitbuild" desc="合建对应的proto"/>
+
+    </import>
+    <proto name="ReqVersion" desc="发送版本号">
+        <member name="clientVersion" prefix="required" type="float" desc="版本号"/>
+    </proto>
+
+    <proto name="AckVersion" desc="返回版本号">
+        <member name="version" prefix="required" type="float" desc="版本号"/>
+    </proto>
+
+    <enum name="PhoneType" desc="手机类型">
+        <member name="Android" value="0" desc="安卓手机"/>
+        <member name="Iphone" value="1" desc="苹果手机"/>
+    </enum>
+
+    <enum name="NetType" desc="玩家网络类型">
+        <member name="Tele" value="0" desc="电信"/>
+        <member name="NetCom" value="1" desc="网通"/>
+    </enum>
+
+    <enum name="UserPlateType" desc="用户所属平台">
+        <member name="debug" value="1000000" desc="调试"/>
+        <member name="tongyao" value="1000001" desc="通耀"/>
+    </enum>
+    <enum name="ELanguage" desc="语言">
+        <member name="Elang_Simplified_Chinese" value="0" desc="简体中文"/>
+        <member name="Elang_Traditional_Chinese" value="1" desc="繁体中文"/>
+        <member name="Elang_English" value="2" desc="英文"/>
+        <member name="Elang_Japan" value="3" desc="日语"/>
+        <member name="Elang_Korea" value="4" desc="韩语"/>
+        <member name="Elang_MAX" value="5" desc="最大值"/>
+    </enum>
+    <enum name="LoginFailReason" desc="登录失败原因">
+        <member name="AccountOdd" value="0" desc="账号异常"/>
+        <member name="VersionError" value="1" desc="版本错误"/>
+        <member name="NormalMain" value="2" desc="游戏正常维护中"/>
+        <member name="GatewayNotOpen" value="3" desc="网关服务器未开"/>
+        <member name="UserFull" value="4" desc="用户已满"/>
+        <member name="SendZoneError" value="5" desc="向区服务器发送指令失败"/>
+        <member name="TimeOut" value="6" desc="连接超时"/>
+        <member name="UuidError" value="7" desc="UUID错误"/>
+        <member name="NameIllega" value="8" desc="创建角色时，昵称非法"/>
+        <member name="NameAgain" value="9" desc="创建角色时,角色名重复"/>
+        <member name="NotRole" value="10" desc="创建角色后,无角色返回"/>
+        <member name="NoAccount" value="11" desc="无此账号"/>
+        <member name="PasswdError" value="12" desc="密码不正确"/>
+        <member name="TockenError" value="13" desc="Tocken正确"/>
+
+    </enum>
+    <enum name="RegisterResult" desc="注册结果">
+        <member name="RegisterResult_Suc" value="0" desc="注册成功"/>
+        <member name="RegisterResult_HasRegiter" value="1" desc="账号已经注册"/>
+        <member name="RegisterResult_AccountErr" value="2" desc="账号非法字符"/>
+        <member name="RegisterResult_Account_Short" value="3" desc="名字太短"/>
+        <member name="RegisterResult_Account_Long" value="4" desc="名字太长"/>
+    </enum>
+    <proto name="ReqRegister" desc="请求注册">
+        <member name="account" prefix="required" type="string" desc="用户名"/>
+        <member name="pwd" prefix="required" type="string" desc="密码"/>
+    </proto>
+    <proto name="AckRegister" desc="请求注册返回">
+        <member name="result" prefix="required" type="RegisterResult" desc="注册返回"/>
+    </proto>
+    <proto name="ReqChangepwd" desc="密码修改">
+        <member name="newpwd" prefix="required" type="string" desc="新密码"/>
+    </proto>
+    <proto name="AckReqChangepwd" desc="密码修改返回">
+        <member name="pwd" prefix="required" type="string" desc="修改密码返回"/>
+    </proto>
+    <proto name="ReqLogin" desc="请求登录">
+        <member name="account" prefix="required" type="string" desc="用户名"/>
+        <member name="platid" prefix="required" type="uint32" desc="平台编号"/>
+        <member name="tocken" prefix="required" type="string" desc="外部平台为tocken,debug平台为密码"/>
+    </proto>
+
+    <proto name="AckLoginFailReturn" desc="客户端登录失败返回">
+        <member name="failReason" prefix="required" type="LoginFailReason" desc="登录失败原因"/>
+    </proto>
+
+    <enum name="LoginRetType" desc="成功登录返回类型">
+        <member name="Normal" value="0" desc="正常登录"/>
+        <member name="Kick" value="1" desc="踢掉原来的登录账号"/>
+    </enum>
+
+
+    <proto name="AckLoginSuccessReturn" desc="登录成功返回">
+        <member name="loginTempID" prefix="required" type="uint32" desc="临时id"/>
+        <member name="gatewayIP" prefix="required" type="string" desc="网关ip"/>
+        <member name="gatewayPort" prefix="required" type="uint32" desc="网关端口"/>
+        <member name="keyArr" prefix="repeated" type="uint32" desc="秘钥"/>
+        <member name="loginRet" prefix="required" type="LoginRetType" desc="登录结果"/>
+    </proto>
+
+    <proto name="ReqLoginGateway" desc="登录网关">
+        <member name="account" prefix="required" type="string" desc="用户名"/>
+        <member name="platid" prefix="required" type="uint32" desc="玩家来自的平台"/>
+        <member name="lang" prefix="optional" type="ELanguage" default= "Elang_Simplified_Chinese" desc="玩家语言版本"/>
+    </proto>
+
+    <proto name="ReqReconnectGateway" desc="重连网关">
+        <member name="account" prefix="required" type="string" desc="用户名"/>
+        <member name="usertype" prefix="required" type="uint32" desc="玩家来自的平台"/>
+        <member name="lang" prefix="optional" type="ELanguage" default= "Elang_Simplified_Chinese" desc="玩家语言版本"/>
+    </proto>
+
+    <proto name="AckGameTime" desc="同步游戏时间">
+        <member name="gameTime" prefix="required" type="uint64" desc="游戏时间，精确到秒"/>
+    </proto>
+
+
+    <proto name="UserBaseInfo" desc="角色基本信息">
+        <member name="charId" prefix="required" type="uint64" desc="角色id"/>
+        <member name="name" prefix="required" type="string" desc="昵称"/>
+        <member name="sex" prefix="required" type="SexType" desc="性别"/>
+        <member name="head" prefix="optional" type="playerhead" desc="头像"/>
+        <member name="nextguideid" prefix="optional" type="uint32" default="0" desc="下一步引导id,0表示无引导"/>
+        <member name="hassetname" prefix="optional" type="uint32" default="0" desc="是否设置名字"/>
+        <member name="dress" prefix="required" type="DressData" desc="身上所穿时装"/>
+        <member name="buildinfo" prefix="repeated" type="BuildBase" desc="建筑基本信息"/>
+        <member name="kittygarden" prefix="required" type="KittyGarden" desc="kitty乐园"/>
+        <member name="produce" prefix="repeated" type="BuildProduce" desc="建筑产出"/>
+        <member name="compositeinfo" prefix="repeated" type="CompositeInfo" desc="合成建筑产出道具信息"/>
+        <member name="produceinfo" prefix="repeated" type="ProduceInfo" desc="生产建筑产出道具信息"/>
+        <member name="usecard" prefix="repeated" type="UseCardInfo" desc="正在使用中的卡牌"/>
+        <member name="buffer" prefix="repeated" type="BufferData" desc="全局buffer"/>
+        <member name="rubbish" prefix="repeated" type="RubbishData" desc="垃圾和糖果信息"/>
+        <member name="eventinit" prefix="required" type="Evententer" desc="事件"/>
+        <member name="burstevent" prefix="repeated" type="BurstEvent" desc="突发事件"/>
+        <member name="familyid" prefix="optional" type="uint64" default="0"   desc="家族id"/>
+        <member name="sushicnt" prefix="optional" type="uint64" default="0" desc="寿司游戏次数"/>
+        <member name="unlockbuild" prefix="repeated" type="uint32" desc="解锁建筑信息"/>
+        <member name="starcnt" prefix="repeated" type="uint64" desc="星座游戏次数"/>
+        <member name="todayfreeprivate" prefix="optional" type="uint32" default="0" desc="今日免费悄悄话次数"/>
+        <member name="taskguideid" prefix="optional" type="uint32" default="0" desc="任务引导id"/>
+        <member name="taskguidenextstep" prefix="optional" type="uint32" default="0" desc="任务引导下一步"/>
+        <member name="trainorder" prefix="repeated" type="TrainForClient"  desc="火车订单"/>
+        <member name="subOrderSystem" prefix="repeated" type="OrderSystemItem" desc="订货项"/>
+        <member name="gametime" prefix="required" type="uint64" desc="游戏时间，精确到秒"/>
+        <member name="giftpackflg" prefix="optional" type="bool" default="false" desc="礼品背包标识"/>
+        <member name="cashpackflg" prefix="optional" type="bool" default="false" desc="实物背包标识"/>
+        <member name="funiconid" prefix="repeated" type="uint32" desc="已经开的ICon"/>
+        <member name="buildeffect" prefix="repeated" type="BuildEffect" desc="建筑效果"/>
+        <member name="unitybuildcolinfo" prefix="repeated" type="UnitColInfoForCli" desc="所有合建栏位信息"/>
+        <member name="contributelist" prefix="repeated" type="Key64Val32Pair" desc="贡献键值对"/>
+        <member name="buyloginlast" prefix="optional" type="uint32" default="0" desc="购买查看最近登录时间"/>
+        <member name="attrval" prefix="repeated" type="Key32Val32Pair" desc="属性集合"/>
+        <member name="familyordernum" prefix="optional" type="uint32" default="0" desc="家族捐献次数"/>
+        <member name="activecode" prefix="required" type="string"  desc="激活码"/>
+    </proto>
+
+    <proto name="AckUserInfo" desc="返回给客户端角色进本信息">
+        <member name="hasUser" prefix="required" type="bool" desc="是否有角色，ture表示有角色"/>
+        <member name="userBase" prefix="required" type="UserBaseInfo" desc="角色基本信息"/>
+    </proto>
+    <proto name="ReqCreateRole" desc="创建角色">
+        <member name="name" prefix="required" type="string" desc="角色昵称"/>
+        <member name="sex" prefix="required" type="SexType" desc="性别"/>
+        <member name="heroId" prefix="required" type="uint32" desc="英雄id"/>
+    </proto>
+    <enum name="SwitchType" desc="接收世界聊天消息开关">
+        <member name="Open" value="0" desc="开启"/>
+        <member name="Close" value="1" desc="关闭"/>
+    </enum>
+
+    <proto name="ReqOpReceiveWorldChatCmd" desc="操作世界聊天消息开关">
+        <member name="switchFlg" prefix="required" type="SwitchType" desc="接收世界聊天消息开关"/>
+    </proto>
+
+    <enum name="NoticeType" desc="提示消息类型">
+        <member name="Notice_Kick_Out" value="0" desc="被踢下线"/>
+    </enum>
+
+    <proto name="AckNoticeClient" desc="消息提示">
+        <member name="noticeType" prefix="required" type="NoticeType" desc="消息提示类型"/>
+    </proto>
+
+    <proto name="AckFlushUserInfo" desc="刷新角色基本信息">
+        <member name="userBase" prefix="required" type="UserBaseInfo" desc="角色基本信息"/>
+    </proto>
+
+    <proto name="ReqLogout" desc="退出游戏">
+    </proto>
+
+    <proto name="AckLogout" desc="回应退出游戏">
+    </proto>
+
+    <proto name="AckForBid" desc="被封号">
+        <member name="optype" prefix="optional" type="uint32" default="0" desc="操作类型(0:表示封号 1:表示禁言)"/>
+        <member name="reason" prefix="optional" type="string" desc="角色基本信息"/>
+    </proto>
+
+    <proto name="AckReconnectInfo" desc="重连消息">
+        <member name="buildinfo" prefix="repeated" type="BuildBase" desc="建筑基本信息"/>
+        <member name="rubbish" prefix="repeated" type="RubbishData" desc="垃圾和糖果信息"/>
+        <member name="produce" prefix="repeated" type="BuildProduce" desc="建筑产出"/>
+        <member name="compositeinfo" prefix="repeated" type="CompositeInfo" desc="合成建筑产出道具信息"/>
+        <member name="produceinfo" prefix="repeated" type="ProduceInfo" desc="生产建筑产出道具信息"/>
+        <member name="usecard" prefix="repeated" type="UseCardInfo" desc="正在使用中的卡牌"/>
+        <member name="suborder" prefix="repeated" type="OrderItem" desc="订单项"/>
+        <member name="subOrderSystem" prefix="repeated" type="OrderSystemItem" desc="订货项"/>
+    </proto>
+
+</protocol>
+

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+
+	<import>
+		<member name="common" desc="公共对应的proto"/>
+		<member name="composite" desc="公共对应的proto"/>
+	</import>
+	
+	<proto name="ProduceCell" desc="生产功能槽">
+		<member name="placeid" prefix="required" type="uint32" desc="位置id"/>
+		<member name="produceid" prefix="required" type="uint32" desc="产生id(表格中的id)"/>
+		<member name="finishtime" prefix="required" type="uint32" desc="完成系统时间"/>
+		<member name="status" prefix="required" type="PlaceStatusType" desc="状态"/>
+		<member name="puttime" prefix="optional" type="uint32" default="0" desc="放进去的系统时间"/>
+	</proto>
+	
+	<proto name="ProduceInfo" desc="生产功能槽信息">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="cell" prefix="repeated" type="ProduceCell" desc="生成功能槽队列"/>
+	</proto>
+	
+	
+	<proto name="ReqProduceCell" desc="请求生产功能槽队列">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="placeid" prefix="required" type="uint32" default="0" desc="位置id(请求单个和多个)"/>
+	</proto>
+	
+	<proto name="AckProduceInfo" desc="回应生产功能槽队列">
+		<member name="produceinfo" prefix="required" type="ProduceInfo" desc="道具产出信息"/>
+	</proto>
+	
+	<proto name="AckProduceCell" desc="回应生产功能槽队列">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="cell" prefix="repeated" type="ProduceCell" desc="生成功能槽队列"/>
+	</proto>
+	
+	
+	<proto name="ReqProduceCellWork" desc="请求生产功能槽开始工作">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="placeid" prefix="required" type="uint32" default="0" desc="位置id"/>
+		<member name="produceid" prefix="required" type="uint32" desc="生产id"/>
+	</proto>
+	
+	<proto name="ReqProduceOp" desc="请求生产功能槽操作">
+		<member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
+		<member name="placeid" prefix="required" type="uint32" desc="位置id"/>
+		<member name="optype" prefix="required" type="BTPOpType" desc="操作类型"/>
+	</proto>
+	
+	<proto name="ReqAllConstructBuild" desc="请求所有建设类建筑信息">
+	</proto>
+	
+	<proto name="AckAllConstructBuild" desc="返回所有建设类建筑信息">
+		<member name="compositeinfo" prefix="repeated" type="CompositeInfo" desc="合成建筑产出道具信息"/>
+		<member name="produceinfo" prefix="repeated" type="ProduceInfo" desc="生产建筑产出道具信息"/>
+	</proto>
+	
+</protocol>
+

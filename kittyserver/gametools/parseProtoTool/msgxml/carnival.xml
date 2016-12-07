@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+
+	<proto name="ReqOpenCarnical" desc="请求开启嘉年华">
+	</proto>
+	
+	<proto name="AckOpenCarnical" desc="开启嘉年华">
+		<member name="updatecharid" prefix="required" type="uint64" desc="角色id"/>
+		<member name="ret" prefix="required" type="bool" desc="是否开启成功"/>
+	</proto>
+	
+	<proto name="CarnivalShopData" desc="嘉年华商城信息">
+		<member name="begintime" prefix="required" type="uint32" desc="开始时间"/>
+		<member name="item" prefix="required" type="uint32" desc="最终随机到的物品id"/>
+		<member name="randitem" prefix="repeated" type="uint32" desc="随机列表"/>
+		<member name="price" prefix="required" type="uint32" desc="价格"/>
+		<member name="good" prefix="optional" type="bool" default="false" desc="是否是好箱子"/>
+	</proto>
+	
+	
+	<proto name="AckUpdateCarnicalBox" desc="随机嘉年华宝盒">
+		<member name="begintime" prefix="required" type="uint32" desc="开始时间"/>
+		<member name="disapper" prefix="required" type="bool" desc="ture表示消失，false表示刷出"/>
+		<member name="good" prefix="optional" type="bool" default="false" desc="是否是好箱子"/>
+	</proto>
+	
+	<proto name="ReqClickCarnicalBox" desc="请求开启嘉年华宝盒">
+	</proto>
+	
+	<proto name="AckClickCarnicalBox" desc="回应开启嘉年华宝盒">
+		<member name="begintime" prefix="required" type="uint32" desc="刷出时间"/>
+		<member name="randitem" prefix="repeated" type="uint32" desc="随机列表"/>
+		<member name="price" prefix="required" type="uint32" desc="价格"/>
+		<member name="good" prefix="optional" type="bool" default="false" desc="是否是好箱子"/>
+	</proto>
+	
+	<proto name="ReqBuyCarnicalBox" desc="请求开启嘉年华宝盒">
+	</proto>
+	
+</protocol>
+

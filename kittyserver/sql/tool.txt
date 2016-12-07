@@ -1,0 +1,4 @@
+mysqldump -t yhsdata -h10.0.2.5 -P3306 -udebug -pdebug  --tables t_staticnpc > dataconfig.sql
+mysqldump -t yhsdata -h10.0.2.5 -P3306 -udebug -pdebug  --tables t_charbase --where="f_charid <= 100" >> dataconfig.sql
+mysql -h10.0.2.5 -P3306 -udebug -pdebug yhsdata < dataconfig.sql
+

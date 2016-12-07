@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+
+    </import>
+
+    <enum name ="PlayerEventType" desc ="玩家事件类型">
+        <member name="PlayerEvent_None" value="0" desc="无事件发生"/>
+        <member name="PlayerEvent_LoseBoy" value="1" desc="迷途小孩"/>  
+        <member name="PlayerEvent_GoldHill" value="2" desc="黄金矿山"/>
+        <member name="PlayerEvent_FixBuild" value="3" desc="设备维修"/> 
+        <member name="PlayerEvent_Plant"    value="4" desc="玩家种植"/>
+    </enum>
+    <proto name="PlayerEvent" desc="玩家事件">
+        <member name="EventID"  prefix="optional" type="uint32" default="0" desc="事件id"/>
+        <member name="EndTimer"  prefix="optional" type="uint32" default="0" desc="结束时间"/>
+    </proto>
+    <enum name ="PlayerOpEventResult" desc ="玩家事件类型">
+        <member name="PlayerOpEventResult_Suc" value="0" desc="成功"/>
+        <member name="PlayerOpEventResult_CaseNoExist" value="1" desc="没有操作"/>
+        <member name="PlayerOpEventResult_SelfPacketFull" value="2" desc="玩家包裹满"/>
+        <member name="PlayerOpEventResult_BoxFull" value="3" desc="糖果罐满"/>
+        <member name="PlayerOpEventResult_NOVisit" value="4" desc="没有访问 "/>
+        <member name="PlayerOpEventResult_BoxNotFull" value="5" desc="糖果罐未满 "/>
+        <member name="PlayerOpEventResult_BuildNotExsit" value="6" desc="建筑不存在"/>
+        <member name="PlayerOpEventResult_Cool" value="7" desc="操作冷却"/>
+        <member name="PlayerOpEventResult_OtherErr" value="8" desc="其它错误 "/>                                         
+
+    </enum>
+    <enum name ="EventProcess" desc ="事件的进程">
+        <member name="EventProcess_run" value="0" desc="事件正在进行"/>
+        <member name="EventProcess_final" value="1" desc="事件已经结束"/>
+    </enum>
+
+    <proto name ="SaveForEvent" desc="事件存档">
+        <member  name="EventID" prefix="required" type="uint32" desc="事件Id"/>
+        <member  name="IsRun" prefix="required" type="uint32" desc="0表示，已经结束，1表示正在进行"/>
+        <member  name="FlushTimer" prefix="required" type="uint32" desc="刷新时间"/>
+        <member  name="EndTimer" prefix="optional" type="uint32" default ="0" desc="结束时间"/> 
+        <member  name="BuildID" prefix="optional" type="uint32" default ="0" desc="相关建筑Id"/> 
+        <member  name="Value" prefix="optional" type="uint32" default ="0" desc="存储数据"/> 
+        <member  name="OpPlayer" prefix="repeated" type="uint64" desc="操作玩家"/>
+        <member  name="OpTimer" prefix="repeated" type="uint32" desc="操作时间"/>
+    </proto>
+    <proto name ="Builditype" desc="建筑类型">
+        <member name="isicon" prefix="required" type="uint32" desc="0表示建筑，1表示icon"/>
+        <member  name="buildid" prefix="required" type="uint64" desc="建筑的ID"/>
+    </proto>
+
+
+    <!--客户端请求操作建筑-->
+    <proto name ="opBuilding" desc="操作建筑">
+        <member  name="build" prefix="required" type="Builditype" desc="建筑的ID"/>
+    </proto>
+    <!--客户端请求操作建筑返回-->
+    <proto name ="AckopBuilding" desc="操作建筑返回">
+        <member name="result" prefix="required" type="PlayerOpEventResult" desc="处理结果"/>
+        <member name="charid" prefix="required" type="uint64" desc="家园的拥有者"/>
+        <member  name="build" prefix="required" type="Builditype" desc="建筑的ID"/>
+        <member name="eventid" prefix="optional" type="uint32" default = "0" desc="事件id"/>
+        <member  name="process" prefix="optional" type="EventProcess" default = "EventProcess_run" desc="事件状态"/>
+        <member  name="award" prefix="repeated" type="Award" desc="获得的奖励"/>
+        <member name="extraid" prefix="optional" type="uint32" default = "0" desc="可选项，对于垃圾类是垃圾的id"/>
+
+    </proto>
+    <!--糖果罐清空-->
+    <proto name ="ReqclearSweetBox" desc="清空糖果罐">
+        <member  name="type" prefix="required" type="uint32" desc="0,糖果罐"/>
+    </proto>
+    <proto name ="AckclearSweetBox" desc="清空糖果罐返回">
+        <member  name="type" prefix="required" type="uint32" desc="0,糖果罐"/>
+        <member name="result" prefix="required" type="PlayerOpEventResult" desc="处理结果"/>
+        <member  name="award" prefix="repeated" type="Award" desc="获得的奖励"/>
+    </proto>
+    <!--事件完成结算-->
+    <proto name ="returnEventAward" desc="事件完成结算通知">
+        <member name="charid" prefix="required" type="uint64" desc="家园的拥有者"/>
+        <member name="eventid" prefix="required" type="uint32" desc="事件id"/>
+        <member name="isMail" prefix="optional" type="uint32" default= "0" desc="0,表示已放包裹：1 表示已放邮件：玩家不在线，玩家包裹放不下"/>
+        <member name="award" prefix="repeated" type="Award" desc="获得的奖励"/>
+    </proto>
+    <!--事件绑定建筑通知--> 
+    <proto name ="EventBuildNotice" desc="事件绑定建筑通知">
+        <member name="charid" prefix="required" type="uint64" desc="家园的拥有者"/>
+        <member name="eventid" prefix="required" type="uint32" desc="事件id，0表示解除绑定"/>
+        <member name="build" prefix="required" type="Builditype" desc="建筑的ID"/>
+        <member name="data" prefix="optional" type="uint32" default= "0" desc="绑定内容"/>
+        <member name="totalreserverTimer" prefix="optional" type="uint32" default= "0" desc="事件结束剩余时间"/>
+        <member name="canop" prefix="optional" type="uint32" default= "0" desc="0 表示可操作，参考冷却时间 1，表示 不可操作"/>
+        <member name="reservetime" prefix="optional" type="uint32" default= "0" desc="冷却剩余时间"/>
+    </proto>
+    <proto name ="EventNotice" desc="家园事件开启通知">
+        <member name="charid" prefix="required" type="uint64" desc="家园的拥有者"/>
+        <member name="eventid" prefix="required" type="uint32" desc="事件id，0表示清除事件"/>
+    </proto>
+    <proto name ="Evententer" desc="家园事件开启通知">
+        <member name="eventbuild" prefix="repeated" type="EventBuildNotice" desc="事件绑定建筑"/>
+        <member name="eventinfo" prefix="required" type="EventNotice" desc="事件信息"/>
+    </proto>
+
+
+
+</protocol>
+

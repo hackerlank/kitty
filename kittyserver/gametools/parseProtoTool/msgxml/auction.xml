@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+
+	<proto name="ReqOpCenter" desc="请求进入游艺中心">
+		<member name="enter" prefix="required" type="bool" desc="真为进入"/>
+	</proto>
+	
+	<proto name="ReqOpRoom" desc="请求进入拍卖房间">
+		<member name="auctionid" prefix="required" type="uint32" desc="房间id"/>
+		<member name="enter" prefix="required" type="bool" desc="真为进入"/>
+	</proto>
+	
+	<proto name="ReqBid" desc="请求举牌">
+		<member name="auctionid" prefix="required" type="uint32" desc="房间id"/>
+	</proto>
+	
+	<proto name="ReqAutoBid" desc="请求设置自动举牌">
+		<member name="auctionid" prefix="required" type="uint32" desc="房间id"/>
+		<member name="cnt" prefix="required" type="uint32" desc="自动举牌次数"/>
+	</proto>
+	
+	<proto name="AckAuctionInfo" desc="拍卖情况">
+		<member name="auctionid" prefix="required" type="uint32" desc="房间id"/>
+		<member name="reward" prefix="required" type="uint32" desc="竞拍物品"/>
+		<member name="bidcnt" prefix="required" type="uint32" desc="举牌总次数"/>
+		<member name="cnt" prefix="required" type="uint32" desc="自己举牌次数"/>
+		<member name="lastbid" prefix="required" type="string" desc="最后一次举牌者昵称"/>
+		<member name="newbid" prefix="required" type="string" desc="正在举牌者昵称"/>
+		<member name="autobid" prefix="required" type="bool" desc="是否为自动举牌"/>
+		<member name="lastsec" prefix="required" type="uint32" desc="剩余秒数"/>
+		<member name="bidsec" prefix="required" type="uint32" desc="竞拍秒数"/>
+	</proto>
+	
+	<proto name="AuctionHistoryInfo" desc="历史拍卖情况">
+		<member name="playername" prefix="required" type="string" desc="玩家昵称"/>
+		<member name="vip" prefix="required" type="bool" desc="是否为VIP(真表示VIP)"/>
+		<member name="bidcnt" prefix="required" type="uint32" desc="举牌总次数"/>
+		<member name="reward" prefix="required" type="uint32" desc="道具id"/>
+	</proto>
+	
+	<proto name="AckAuctionHistory" desc="推送历史拍卖情况">
+		<member name="history" prefix="repeated" type="AuctionHistoryInfo" desc="历史拍卖情况"/>
+	</proto>
+	
+	<proto name="AuctionBrief" desc="拍卖房间简介">
+		<member name="auctionid" prefix="required" type="uint32" desc="房间id"/>
+		<member name="state" prefix="required" type="uint32" desc="状态(0:还没有开始，1:拍卖已经开始 2,3:结束)"/>
+		<member name="begintime" prefix="required" type="uint32" desc="开始时间"/>
+		<member name="reward" prefix="required" type="uint32" desc="竞拍物品"/>
+		<member name="lastsec" prefix="required" type="uint32" desc="倒计时"/>
+		<member name="autobid" prefix="required" type="bool" desc="是否自动投拍(真表示自动)"/>
+		<member name="owner" prefix="required" type="bool" desc="是否获得拥有权"/>
+		<member name="join" prefix="required" type="bool" desc="是否参与"/>
+		<member name="bidsec" prefix="required" type="uint32" desc="竞拍秒数"/>
+		<member name="lastbid" prefix="required" type="string" desc="最后一次举牌者昵称"/>
+	</proto>
+	
+	<proto name="AckAuctionBrief" desc="投放拍卖房间简介">
+		<member name="auctionbrief" prefix="repeated" type="AuctionBrief" desc="竞拍房间简介"/>
+	</proto>
+	
+	<proto name="AckAuctionEnd" desc="拍卖结束">
+		<member name="auctionid" prefix="required" type="uint32" desc="房间id"/>
+		<member name="reward" prefix="required" type="uint32" desc="竞拍物品"/>
+		<member name="ownerid" prefix="required" type="uint64" desc="最后赢家"/>
+		<member name="owner" prefix="required" type="string" desc="最后赢家"/>
+	</proto>
+	
+	<proto name="ReqBuyNormalGift" desc="请求购买常规礼品">
+		<member name="giftid" prefix="required" type="uint32" desc="礼品id"/>
+	</proto>
+	
+	<proto name="AckBuyNormalGift" desc="请求购买常规礼品">
+		<member name="giftid" prefix="required" type="uint32" desc="获得礼品id"/>
+	</proto>
+	
+	<proto name="AckAuctionCenterStatus" desc="更新拍卖广场状态">
+		<member name="state" prefix="required" type="uint32" desc="状态(0:还没有开始，1:拍卖已经开始 2,3:结束)"/>
+		<member name="begintime" prefix="required" type="uint32" desc="开始时间"/>
+		<member name="endtime" prefix="required" type="uint32" desc="结束时间"/>
+	</proto>
+	
+	<proto name="ExchangeGiftNum" desc="兑换礼品数量信息">
+		<member name="id" prefix="required" type="uint32" desc="id"/>
+		<member name="num" prefix="required" type="uint32" desc="数量"/>
+	</proto>
+	
+	<proto name="ReqExchangeGiftNum" desc="请求兑换礼品数量信息">
+	</proto>
+	
+	<proto name="AckExchangeGiftNum" desc="更新兑换礼品数量信息">
+		<member name="exchangegift" prefix="repeated" type="ExchangeGiftNum" desc="开始时间"/>
+	</proto>
+	
+</protocol>
+

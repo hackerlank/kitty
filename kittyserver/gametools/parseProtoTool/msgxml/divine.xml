@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+	
+	<enum name="DivineStatus" desc="错误类型">
+		<member name="DS_Begin" value="0" desc="占卜开始状态"/>
+		<member name="DS_Vertify" value="1" desc="等待验证状态"/>
+		<member name="DS_End" value="2" desc="占卜结束状态"/>
+	</enum>
+
+	<proto name="DivineData" desc="占卜的历史数据">
+		<member name="answer" prefix="required" type="uint32" desc="答案(1表示错误:2表示正确)"/>
+		<member name="lucklevel" prefix="required" type="uint32" desc="势态"/>
+		<member name="randorder" prefix="required" type="string" desc="随机顺序"/>
+		<member name="randtime" prefix="required" type="uint32" desc="每天随机到的次数"/>
+		<member name="firstkey" prefix="required" type="uint32" desc="第一个提示"/>
+		<member name="status" prefix="required" type="DivineStatus" desc="状态"/>
+		<member name="bufferid" prefix="optional" type="uint32" default="0" desc="奖励bufferid"/>
+	</proto>
+		
+	<proto name="ReqDivineInfo" desc="请求占卜信息">
+	</proto>
+	
+	<proto name="ReqDivineNotice" desc="请求占卜提示(第一个)">
+	</proto>
+	
+	<proto name="ReqDivine" desc="请求占卜信息">
+		<member name="notify" prefix="required" type="bool" desc="是否花钱买提示"/>
+	</proto>
+	
+	<proto name="AckDivine" desc="占卜信息">
+		<member name="divine" prefix="required" type="DivineData" desc="占卜信息"/>
+	</proto>
+	
+	<proto name="ReqDivineVerify" desc="请求占卜验证">
+		<member name="older" prefix="required" type="string" desc="顺序"/>
+	</proto>
+	
+</protocol>
+

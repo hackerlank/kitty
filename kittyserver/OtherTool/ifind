@@ -1,0 +1,17 @@
+#!/bin/bash
+
+line_count=1;
+
+find . \( -iname \*.[ch] -o -iname \*.cpp -o -iname \*.xml -o -iname \*.cc -o -iname \*.sql \) -exec grep --color -H -i -n $1 {} \; 
+#| while read line
+#do
+	#line="<$line_count>"$line
+	#echo "$line"
+	#printf "<%d>%s\n"  $line_count "$line"
+#	echo -n -e "\033[31m<$line_count>\033[0m"
+#	echo -e "\033[32m$line\033[0m"
+#	line_count=$[$line_count+1]
+#done
+#| grep -i --color $1
+# find . -iname \*.cpp -exec grep --color -H -i -n  $1 {} \;
+# find . -iname \*.xml -exec grep --color -H -i -n  $1 {} \;

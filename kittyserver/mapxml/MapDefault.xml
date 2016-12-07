@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MapDefaultData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <sMapInfo>
+        <sMapInfoItem ID="1" Name="HelloKittyHomeDefault">
+            <AreaList>
+                <MapAreaItem GridX="1" GridY="1" IsOpen="false" OpenItems="20010068_1,20010069_1,20010085_1" />
+                <MapAreaItem GridX="1" GridY="3" IsOpen="false" OpenItems="20010068_5,20010069_5" />
+                <MapAreaItem GridX="1" GridY="2" IsOpen="false" OpenItems="20010068_3,20010069_3" />
+                <MapAreaItem GridX="2" GridY="2" IsOpen="false" OpenItems="20010068_2,20010069_2,20010082_2" />
+                <MapAreaItem GridX="2" GridY="3" IsOpen="false" OpenItems="20010068_3,20010069_3,20010082_5" />
+                <MapAreaItem GridX="-4" GridY="5" IsOpen="false" OpenItems="20010068_8,20010069_8,20010085_8" />
+                <MapAreaItem GridX="-5" GridY="4" IsOpen="false" OpenItems="20010068_14,20010069_14,20010087_18" />
+                <MapAreaItem GridX="3" GridY="2" IsOpen="false" OpenItems="20010068_5,20010069_5,20010083_6" />
+                <MapAreaItem GridX="3" GridY="1" IsOpen="false" OpenItems="20010068_3,20010069_5,20010083_4" />
+                <MapAreaItem GridX="2" GridY="1" IsOpen="false" OpenItems="20010068_3,20010069_4,20010083_4" />
+                <MapAreaItem GridX="1" GridY="4" IsOpen="false" OpenItems="20010068_6,20010069_6,20010084_8" />
+                <MapAreaItem GridX="0" GridY="3" IsOpen="false" OpenItems="20010068_4,20010069_4,20010084_5" />
+                <MapAreaItem GridX="0" GridY="2" IsOpen="false" OpenItems="20010068_3,20010069_3,20010084_3" />
+                <MapAreaItem GridX="0" GridY="1" IsOpen="false" OpenItems="20010068_2,20010069_2,20010084_2" />
+                <MapAreaItem GridX="0" GridY="4" IsOpen="false" OpenItems="20010068_5,20010069_5,20010085_6" />
+                <MapAreaItem GridX="-1" GridY="5" IsOpen="false" OpenItems="20010068_7,20010069_7,20010085_7" />
+                <MapAreaItem GridX="-2" GridY="6" IsOpen="false" OpenItems="20010068_12,20010069_12,20010085_15" />
+                <MapAreaItem GridX="-1" GridY="6" IsOpen="false" OpenItems="20010068_12,20010069_12,20010085_15" />
+                <MapAreaItem GridX="0" GridY="5" IsOpen="false" OpenItems="20010068_8,20010069_8,20010085_10" />
+                <MapAreaItem GridX="-3" GridY="5" IsOpen="false" OpenItems="20010068_12,20010069_12,20010085_12" />
+                <MapAreaItem GridX="-4" GridY="4" IsOpen="false" OpenItems="20010068_10,20010069_10,20010085_12" />
+                <MapAreaItem GridX="-5" GridY="3" IsOpen="false" OpenItems="20010068_12,20010069_10,20010085_16" />
+                <MapAreaItem GridX="0" GridY="-4" IsOpen="true" OpenItems="20010068_6,20010069_10,20010085_10" />
+                <MapAreaItem GridX="1" GridY="-4" IsOpen="false" OpenItems="20010068_18,20010069_18,20010086_18" />
+                <MapAreaItem GridX="2" GridY="-4" IsOpen="false" OpenItems="20010068_16,20010069_16,20010085_20" />
+                <MapAreaItem GridX="5" GridY="-4" IsOpen="false" OpenItems="20010068_12,20010069_12,20010083_10" />
+                <MapAreaItem GridX="5" GridY="-3" IsOpen="false" OpenItems="20010068_18,20010069_18,20010086_18" />
+                <MapAreaItem GridX="6" GridY="-3" IsOpen="false" OpenItems="20010068_16,20010069_16,20010086_18" />
+                <MapAreaItem GridX="6" GridY="-1" IsOpen="false" OpenItems="20010068_14,20010069_14,20010087_16" />
+                <MapAreaItem GridX="4" GridY="-3" IsOpen="false" OpenItems="20010068_10,20010069_12,20010087_10" />
+                <MapAreaItem GridX="3" GridY="-3" IsOpen="false" OpenItems="20010068_4,20010069_4,20010087_4" />
+                <MapAreaItem GridX="5" GridY="-1" IsOpen="false" OpenItems="20010068_10,20010069_12,20010087_12" />
+                <MapAreaItem GridX="5" GridY="0" IsOpen="false" OpenItems="20010068_12,20010069_12,20010087_10" />
+                <MapAreaItem GridX="-5" GridY="-2" IsOpen="false" OpenItems="20010068_8,20010069_10,20010087_10" />
+                <MapAreaItem GridX="-3" GridY="6" IsOpen="false" OpenItems="20010068_6,20010069_6,20010082_8" />
+                <MapAreaItem GridX="-2" GridY="5" IsOpen="false" OpenItems="20010068_14,20010069_12,20010087_8" />
+                <MapAreaItem GridX="-3" GridY="4" IsOpen="false" OpenItems="20010068_14,20010069_12,20010087_15" />
+                <MapAreaItem GridX="-4" GridY="3" IsOpen="false" OpenItems="20010068_12,20010069_12,20010087_16" />
+                <MapAreaItem GridX="-5" GridY="2" IsOpen="false" OpenItems="20010068_14,20010069_12,20010083_15" />
+                <MapAreaItem GridX="3" GridY="-4" IsOpen="false" OpenItems="20010068_12,20010069_12,20010085_15" />
+                <MapAreaItem GridX="4" GridY="-4" IsOpen="false" OpenItems="20010068_12,20010069_12,20010085_12" />
+                <MapAreaItem GridX="-3" GridY="-4" IsOpen="false" OpenItems="20010068_15,20010069_15,20010085_18" />
+                <MapAreaItem GridX="-4" GridY="-3" IsOpen="false" OpenItems="20010068_12,20010069_12,20010087_14" />
+                <MapAreaItem GridX="-2" GridY="-3" IsOpen="true" OpenItems="NoData" />
+                <MapAreaItem GridX="-1" GridY="-3" IsOpen="true" OpenItems="NoData" />
+                <MapAreaItem GridX="0" GridY="-3" IsOpen="true" OpenItems="NoData" />
+                <MapAreaItem GridX="1" GridY="-3" IsOpen="false" OpenItems="NoData" />
+                <MapAreaItem GridX="2" GridY="-3" IsOpen="false" OpenItems="20010068_2,20010069_2,20010083_3" />
+                <MapAreaItem GridX="2" GridY="-2" IsOpen="false" OpenItems="20010068_2,20010069_2,20010084_3" />
+                <MapAreaItem GridX="-3" GridY="-3" IsOpen="false" OpenItems="20010068_1,20010069_1,20010083_1" />
+                <MapAreaItem GridX="4" GridY="0" IsOpen="false" OpenItems="20010068_5,20010069_5,20010085_6" />
+                <MapAreaItem GridX="4" GridY="1" IsOpen="false" OpenItems="20010068_6,20010069_5,20010087_7" />
+                <MapAreaItem GridX="2" GridY="-1" IsOpen="false" OpenItems="20010068_2,20010069_2,20010085_2" />
+                <MapAreaItem GridX="-1" GridY="1" IsOpen="true" OpenItems="20010068_2,20010069_2,20010088_2" />
+                <MapAreaItem GridX="-1" GridY="2" IsOpen="true" OpenItems="20010068_4,20010069_4,20010088_5" />
+                <MapAreaItem GridX="-1" GridY="3" IsOpen="true" OpenItems="20010068_6,20010069_5,20010088_8" />
+                <MapAreaItem GridX="-1" GridY="4" IsOpen="true" OpenItems="20010068_8,20010069_5,20010088_8" />
+                <MapAreaItem GridX="-2" GridY="4" IsOpen="false" OpenItems="20010068_8,20010069_8,20010088_10" />
+                <MapAreaItem GridX="-3" GridY="3" IsOpen="false" OpenItems="20010068_9,20010069_9,20010088_12" />
+                <MapAreaItem GridX="-2" GridY="3" IsOpen="false" OpenItems="20010068_8,20010069_6,20010088_10" />
+                <MapAreaItem GridX="-2" GridY="2" IsOpen="false" OpenItems="20010068_5,20010069_5,20010086_6" />
+                <MapAreaItem GridX="-3" GridY="2" IsOpen="false" OpenItems="20010068_8,20010069_8,20010088_10" />
+                <MapAreaItem GridX="-4" GridY="2" IsOpen="false" OpenItems="20010068_10,20010069_9,20010088_12" />
+                <MapAreaItem GridX="-1" GridY="-4" IsOpen="true" OpenItems="20010068_12,20010069_12,20010085_12" />
+                <MapAreaItem GridX="-5" GridY="1" IsOpen="false" OpenItems="20010068_9,20010069_10,20010088_12" />
+                <MapAreaItem GridX="-2" GridY="-4" IsOpen="true" OpenItems="20010068_15,20010069_15,20010084_12" />
+                <MapAreaItem GridX="-4" GridY="-4" IsOpen="false" OpenItems="20010068_18,20010069_18,20010086_18" />
+                <MapAreaItem GridX="-5" GridY="0" IsOpen="false" OpenItems="20010068_14,20010069_14,20010087_12" />
+                <MapAreaItem GridX="-4" GridY="-1" IsOpen="false" OpenItems="20010068_3,20010069_3,20010086_6" />
+                <MapAreaItem GridX="-3" GridY="-1" IsOpen="false" OpenItems="20010068_8,20010069_8,20010087_10" />
+                <MapAreaItem GridX="-5" GridY="-1" IsOpen="false" OpenItems="20010068_18,20010069_14,20010087_16" />
+                <MapAreaItem GridX="-4" GridY="-2" IsOpen="false" OpenItems="20010068_4,20010069_4,20010086_5" />
+                <MapAreaItem GridX="-3" GridY="-2" IsOpen="false" OpenItems="20010068_8,20010069_8,20010086_8" />
+                <MapAreaItem GridX="-2" GridY="-2" IsOpen="true" OpenItems="NoData" />
+                <MapAreaItem GridX="-2" GridY="-1" IsOpen="true" OpenItems="NoData" />
+                <MapAreaItem GridX="1" GridY="-2" IsOpen="false" OpenItems="NoData" />
+                <MapAreaItem GridX="1" GridY="-1" IsOpen="false" OpenItems="NoData" />
+                <MapAreaItem GridX="0" GridY="-1" IsOpen="true" OpenItems="NoData" />
+                <MapAreaItem GridX="-1" GridY="-1" IsOpen="true" OpenItems="NoData" />
+                <MapAreaItem GridX="-1" GridY="-2" IsOpen="true" OpenItems="NoData" />
+                <MapAreaItem GridX="0" GridY="-2" IsOpen="true" OpenItems="NoData" />
+                <MapAreaItem GridX="4" GridY="-1" IsOpen="false" OpenItems="20010068_6,20010069_5,20010088_6" />
+            </AreaList>
+            <GateList />
+        </sMapInfoItem>
+    </sMapInfo>
+</MapDefaultData>

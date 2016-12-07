@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+	<import>
+        <member name="common" desc="common对应的proto"/>
+	</import>
+
+	<enum name="GiftStatus" desc="礼物状态">
+		<member name="GS_Accept" value="0" desc="新接收"/>
+		<member name="GS_InWare" value="1" desc="在库"/>
+		<member name="GS_BeAceepted" value="2" desc="受理"/>
+		<member name="GS_WaitDelivery" value="3" desc="等待配送"/>
+		<member name="GS_Delivery" value="4" desc="配送中"/>
+		<member name="GS_Commit" value="5" desc="确认收货"/>
+		<member name="GS_Del" value="6" desc="销毁"/>
+	</enum>
+	
+	<proto name="GiftInfo" desc="单件礼品信息">
+		<member name="id" prefix="required" type="uint64" desc="实例id"/>
+		<member name="type" prefix="required" type="uint32" desc="类型id"/>
+		<member name="num" prefix="optional" type="uint32" default="0" desc="实物数量"/>
+		<member name="status" prefix="required" type="GiftStatus" desc="状态"/>
+		<member name="endtime" prefix="required" type="uint32" desc="截止时间"/>
+		<member name="sender" prefix="optional" type="uint64" default="0" desc="赠送者ID"/>
+		<member name="sendername" prefix="optional" type="string" default="" desc="赠送者昵称"/>
+		<member name="sendertime" prefix="optional" type="uint32" default="0" desc="赠送时间"/>
+	</proto>
+	
+	<proto name="GiftOrder" desc="礼品订单信息">
+		<member name="id" prefix="required" type="uint32" desc="收货地址id"/>
+		<member name="deliverycompany" prefix="required" type="string" desc="快递公司"/>
+		<member name="deliverynum" prefix="required" type="string" desc="快递单号"/>
+		<member name="giftid" prefix="optional" type="uint64" desc="礼品单号"/>
+	</proto>
+	
+	<proto name="GiftCashInfo" desc="单件实物礼品信息">
+		<member name="gift" prefix="required" type="GiftInfo" desc="礼品信息"/>
+		<member name="order" prefix="required" type="GiftOrder" desc="订单信息"/>
+	</proto>
+	
+	<proto name="GiftContain" desc="礼品容器">
+		<member name="gift" prefix="repeated" type="GiftInfo" desc="礼品信息"/>
+		<member name="giftcash" prefix="repeated" type="GiftCashInfo" desc="实物礼品信息"/>
+	</proto>
+
+	<proto name="ReqUpdate" desc="请求刷新">
+		<member name="type" prefix="optional" type="bool" default="true" desc="false:礼品,true:竞拍实物"/>
+		<member name="id" prefix="optional" type="uint64" default="0" desc="0:所有,其他值:id对应的实例信息"/>
+	</proto>
+	
+	<proto name="AckUpdateGiftInfo" desc="刷新单件礼品信息">
+		<member name="flg" prefix="optional" type="bool" default="false" desc="是否有新增加的礼品(默认为无)"/>
+		<member name="gift" prefix="repeated" type="GiftInfo" desc="实例"/>
+	</proto>
+	
+	<proto name="AckUpdateGiftCashInfo" desc="刷新单件礼品兑换信息">
+		<member name="flg" prefix="optional" type="bool" default="false" desc="是否有新增加的实物(默认为无)"/>
+		<member name="gift" prefix="repeated" type="GiftCashInfo" desc="实例"/>
+	</proto>
+	
+	<enum name="GiftOpType" desc="礼物状态">
+		<member name="GOT_Recycle" value="0" desc="回收"/>
+		<member name="GOT_Give" value="1" desc="赠送"/>
+		<member name="GOT_Click_Exchange" value="2" desc="点击查看兑换背包"/>
+		<member name="GOT_Click_Cash" value="3" desc="点击查看实物背包"/>
+	</enum>
+	
+	<proto name="ReqOpGift" desc="请求礼品操作">
+		<member name="optype" prefix="required" type="GiftOpType" desc="操作类型"/>
+		<member name="accepter" prefix="optional" type="uint64" default="0" desc="接受者"/>
+		<member name="id" prefix="repeated" type="uint64" desc="实例id"/>
+	</proto>
+	
+	<proto name="ReqCashGift" desc="请求兑换实物礼品">
+		<member name="addressid" prefix="required" type="uint32" desc="地址编号"/>
+		<member name="id" prefix="repeated" type="uint64" desc="实例id"/>
+	</proto>
+	
+	<proto name="AddressInfo" desc="地址信息">
+		<member name="id" prefix="optional" type="uint32" default="0" desc="id"/>
+		<member name="phone" prefix="optional" type="string" default="" desc="手机号码"/>
+		<member name="address" prefix="optional" type="string" default="" desc="地址"/>
+		<member name="addressee" prefix="optional" type="string" default="" desc="收件人"/>
+	</proto>
+	
+	<proto name="ReqAddress" desc="请求地址信息">
+		<member name="id" prefix="optional" type="uint32" default="0" desc="id"/>
+	</proto>
+	
+	<proto name="ReqChangeAddress" desc="更改地址信息">
+		<member name="address" prefix="optional" type="AddressInfo" desc="地址"/>
+	</proto>
+	
+	<proto name="AckAddressInfo" desc="回应地址信息">
+		<member name="address" prefix="repeated" type="AddressInfo" desc="地址"/>
+	</proto>
+	
+	<proto name="CashData" desc="兑换信息">
+		<member name="gifttypeid" prefix="repeated" type="uint32" desc="礼品类型id"/>
+	</proto>
+	
+	<proto name="CashGiftInfo" desc="请求确认收到实物">
+		<member name="id" prefix="required" type="uint64" desc="兑换id"/>
+		<member name="gift" prefix="required" type="uint64" desc="礼品id"/>
+	</proto>
+	
+	<proto name="ReqCommitGift" desc="请求确认收到实物">
+		<member name="gift" prefix="required" type="uint64" desc="礼品id"/>
+	</proto>
+	
+	<proto name="ReqPhyCondInfo" desc="请求礼品实物信息">
+		<member name="id" prefix="required" type="uint32" desc="道具id"/>
+	</proto>
+	
+	
+	<proto name="PhyCondInfo" desc="礼品实物信息">
+		<member name="id" prefix="required" type="uint32" desc="道具id"/>
+		<member name="length" prefix="optional" type="uint32" default="10" desc="长"/>
+		<member name="width" prefix="optional" type="uint32" default="10" desc="宽"/>
+		<member name="height" prefix="optional" type="uint32" default="10" desc="高"/>
+		<member name="cnt" prefix="optional" type="uint32" default="0" desc="库存数量"/>
+		<member name="des" prefix="optional" type="string" default="" desc="描述"/>
+	</proto>
+	
+	<proto name="AckPhyCondInfo" desc="请求礼品实物信息">
+		<member name="phycondinfo" prefix="required" type="PhyCondInfo" desc="礼品实物信息"/>
+	</proto>
+	
+	<proto name="ReqSendFlower" desc="请求送花">
+		<member name="accepter" prefix="required" type="uint64" desc="接受者"/>
+		<member name="flowerid" prefix="required" type="uint32" desc="鲜花id"/>
+		<member name="flowercnt" prefix="required" type="uint32" desc="鲜花数量"/>
+	</proto>
+	
+	<proto name="ReqSendVirtualGift" desc="请求送虚拟商城的礼品">
+		<member name="accepter" prefix="required" type="uint64" desc="接受者"/>
+		<member name="colid" prefix="optional" type="uint32" default="0" desc="合建栏位ID"/>
+		<member name="id" prefix="required" type="uint32" desc="礼品id"/>
+		<member name="cnt" prefix="required" type="uint32" desc="数量"/>
+	</proto>
+	
+	<proto name="ReqSendRet" desc="送礼品返回">
+        <member name="ret" prefix="optional" type="bool" default="false" desc="反馈"/>
+	</proto>
+	
+	 <enum name="AdType" desc="广告播放形式">
+        <member name="AT_Marquee" value="1" desc="跑马灯"/>
+        <member name="AT_Achieve" value="2" desc="成就式"/>
+		<member name="AT_ExpScreen" value="3" desc="爆屏式"/>
+    </enum>
+	
+	<proto name="AckAdMsg" desc="广播消息">
+		<member name="sender" prefix="required" type="playerShowbase"  desc="赠送者"/>
+		<member name="accepter" prefix="required" type="playerShowbase"  desc="接受者"/>
+		<member name="id" prefix="optional" type="uint32" default="0" desc="礼品id"/>
+		<member name="cnt" prefix="optional" type="uint32" default="0" desc="礼品数量"/>
+        <member name="adtype" prefix="optional" type="AdType" default="AT_Marquee" desc="广播类型"/>
+        <member name="cotinuetimes" prefix="optional" type="uint32" default="0" desc="连击倍数"/>
+	</proto>
+	
+	
+	<proto name="GiftConfig" desc="礼品配置数据">
+		<member name="giftid" prefix="required" type="uint32"  desc="礼品ID"/>
+		<member name="gifttype" prefix="required" type="uint32"  desc="礼品类型"/>
+		<member name="pricetype" prefix="required" type="uint32"  desc="价格id"/>
+		<member name="price" prefix="required" type="uint32" desc="价格"/>
+		<member name="recycletype" prefix="required" type="uint32" desc="回收类型"/>
+		<member name="recycle" prefix="required" type="uint32" desc="回收价格"/>
+		<member name="senderprofittype" prefix="required" type="uint32"  desc="赠送者收益类型"/>
+		<member name="senderprofit" prefix="required" type="uint32"  desc="赠送者收益"/>
+		<member name="accepterprofittype" prefix="required" type="uint32"  desc="接受者收益类型"/>
+		<member name="accepterprofit" prefix="required" type="uint32" desc="接受者收益"/>
+		<member name="begintime" prefix="required" type="uint32" desc="开始时间"/>
+		<member name="endtime" prefix="required" type="uint32" desc="结束时间"/>
+		<member name="num" prefix="required" type="uint32" desc="总数量"/>
+		<member name="sellnum" prefix="required" type="uint32" desc="已卖出数量"/>
+		<member name="storenum" prefix="required" type="uint32" desc="库存"/>
+		<member name="adtype" prefix="required" type="AdType" desc="广告类型"/>
+		<member name="dec" prefix="required" type="string" desc="描述"/>
+	</proto>
+	
+</protocol>
+

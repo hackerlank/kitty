@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+        <member name="event" desc="事件对应的proto"/>
+
+    </import>
+    <enum name="RlationTypeServer" desc="关系存储类型">
+        <member name="RlationTypeServer_Friend" value="0" desc="好友关系"/>
+    </enum>
+    <enum name="RlationTypeClient" desc="关系客户显示类型">
+        <member name="RlationTypeClient_None" value="0" desc="无关系"/>
+        <member name="RlationTypeClient_IsFriend" value="1" desc="好友"/>
+        <member name="RlationTypeClient_IsFans" value="2" desc="粉丝"/>
+        <member name="RlationTypeClient_IsFriend2" value="3" desc="互为好友"/>
+    </enum>
+    <proto name="MemberRelation" desc="客户端显示成员">
+        <member name="playershow" prefix="required" type="playerShowbase" desc="玩家显示结构"/>
+        <member name="TypeRalation" prefix="required" type="RlationTypeClient" desc="关系类型"/>
+        <member name="Event" prefix="optional" type="PlayerEvent" desc="当前事件"/>
+        <member name="LoginOutTimer" prefix="required" type="uint32" desc="离线时间，0表示在线"/>
+        <member name="hastrainhelp" prefix="optional" type="bool" default ="false" desc="是否有寻求帮助的火车"/>
+
+    </proto>
+    <!-- 服务器客户端通信协议-->
+    <!--请求加入好友-->
+    <proto name="ReqAddFriend" desc="客户端请求加入好友">
+        <member name="PlayerId" prefix="required" type="uint64" desc="玩家id"/>
+    </proto>
+    <enum name="ReqAddFriendReSult" desc="客户端请求加入好友返回结果">
+        <member name="ReqAddFriendReSult_Suc" value="0" desc="成功"/>
+        <member name="ReqAddFriendReSult_NoPerson" value="1" desc="没有这个人"/>
+        <member name="ReqAddFriendReSult_IsFriendAlready" value="2" desc="已经是你的好友"/>
+        <member name="ReqAddFriendReSult_Full" value="3" desc="你的好友满"/>
+        <member name="ReqAddFriendReSult_Other" value="4" desc="其他错误"/>
+    </enum>
+    <proto name="AckAddFriend" desc="返回客户端请求加入好友">
+        <member name="ReSult" prefix="required" type="ReqAddFriendReSult" desc="请求结果"/>
+        <member name="AckMember" prefix="required" type="MemberRelation" desc="玩家详情"/>
+    </proto>
+    <!--请求剔除好友-->
+    <proto name="ReqKickFriend" desc="客户端请求踢出好友">
+        <member name="PlayerId" prefix="required" type="uint64" desc="玩家id"/>
+    </proto>
+    <enum name="ReqKickFriendReSult" desc="客户端请求踢出好友返回结果">
+        <member name="ReqKickFriendReSult_Suc" value="0" desc="成功"/>
+        <member name="ReqKickFriendReSult_NoFriend" value="1" desc="不是你的好友"/>
+        <member name="ReqKickFriendReSult_Other" value="2" desc="其他错误"/>
+    </enum>
+    <proto name="AckKickFriend" desc="返回客户端请求踢出好友">
+        <member name="ReSult" prefix="required" type="ReqKickFriendReSult" desc="请求结果"/>
+        <member name="AckMember" prefix="required" type="MemberRelation" desc="玩家详情"/>
+    </proto>
+    <!--请求列表-->
+    <enum name="ReqListType" desc="请求列表类型">
+        <member name="FriendList" value="0" desc="请求好友"/>
+        <member name="FansList" value="1" desc="请求粉丝"/>
+        <member name="RadomList" value="2" desc="随机玩家"/>
+    </enum>
+    <proto name="ReqRelationList" desc="请求列表">
+        <member name="ListType" prefix="required" type="ReqListType" desc="请求类型"/>
+        <member name="PageMax" prefix="required" type="uint32" desc="每页数量"/>
+        <member name="PageNo" prefix="required" type="uint32" desc="当前页"/>
+    </proto>
+    <proto name="AckRelationList" desc="请求列表返回">
+        <member name="ListType" prefix="required" type="ReqListType" desc="请求类型"/>
+        <member name="AllPageNo" prefix="required" type="uint32" desc="总页数"/>
+        <member name="PageNo" prefix="required" type="uint32" desc="当前页"/>
+        <member name="PageMax" prefix="required" type="uint32" desc="每页数量"/>
+        <member name="vecMember" prefix="repeated" type="MemberRelation" desc="玩家列表信息"/> 
+    </proto>
+    <!--好友，粉丝上下线-->
+    <enum name="FriendLineState" desc="上下线定义">
+        <member name="FriendLineState_OnLine" value="0" desc="上线"/>
+        <member name="FriendLineState_OffLine" value="1" desc="下线"/>
+        <member name="FriendLineState_AddFriend" value="2" desc="有人加你为好友"/>
+        <member name="FriendLineState_KickFriend" value="3" desc="有人把你从好友里踢出"/>
+        <member name="FriendLineState_EventHappen" value="4" desc="有事件发生"/>
+        <member name="FriendLineState_EventClose" value="5" desc="事件被关闭"/>
+    </enum>
+
+    <proto name="FriendFansChangeLine" desc="好友，粉丝上下线">
+        <member name="linestate" prefix="required" type="FriendLineState" desc="通告类型"/>
+        <member name="Member" prefix="required" type="MemberRelation" desc="玩家详情"/>
+    </proto>
+    <proto name="ReqGetOnePerson" desc="单个玩家">
+        <member name="PlayerId" prefix="required" type="uint64" desc="玩家id"/>
+    </proto>
+    <proto name="AckGetOnePerson" desc="请求单个玩家返回">
+        <member name="Person" prefix="optional" type="MemberRelation" desc="玩家详情"/>
+    </proto>
+
+</protocol>
+

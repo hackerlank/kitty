@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+	
+    <proto name="ReqTest" desc="请求测试">
+		<member name="num" prefix="required" type="uint32" desc="数字"/>
+    </proto>
+	
+	<proto name="AckTest" desc="反馈测试">
+		<member name="num" prefix="required" type="uint32" desc="数字"/>
+    </proto>
+	
+</protocol>
+

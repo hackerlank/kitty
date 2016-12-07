@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+
+	<import>
+        <member name="common" desc="common对应的proto"/>
+		<member name="chat" desc="chat对应的proto"/>
+	</import>
+	
+	<proto name="PictureInfo" desc="照片信息">
+		<member  name="photo" prefix="optional" type="PicInfo" desc="照片url"/>
+		<member name="id" prefix="optional" type="uint32" default="1" desc="编号"/>
+    </proto>
+	
+	<proto name="ReqAddPicture" desc="上传照片">
+		<member name="id" prefix="optional" type="uint32" default="0" desc="编号"/>
+    </proto>
+	
+	<proto name="AckAddPicture" desc="回应上传照片">
+		<member  name="upurl" prefix="optional" type="string" desc="上传url"/>
+		<member  name="picture" prefix="optional" type="PictureInfo" desc="照片"/>
+    </proto>
+	
+	<proto name="ReqMovePicture" desc="移动照片">
+		<member  name="src" prefix="optional" type="uint32" desc="位置id"/>
+		<member  name="des" prefix="optional" type="uint32" desc="位置id"/>
+    </proto>
+	
+	<proto name="AckMovePicture" desc="移动照片回应">
+		<member  name="picture" prefix="repeated" type="PictureInfo" desc="照片"/>
+    </proto>
+	
+	<proto name="ReqSetPictureHead" desc="设置头像">
+		 <member name="head" prefix="required" type="playerhead" desc="头像"/>
+    </proto>
+	
+	<proto name="AckPicture" desc="回应上传照片">
+		<member  name="picture" prefix="repeated" type="PictureInfo" desc="照片"/>
+    </proto>
+	
+	<enum name="MarryStatue" desc="婚姻状态">
+        <member name="MS_Secrecy" value="0" desc="保密"/>
+        <member name="MS_Married" value="1" desc="已婚"/>
+        <member name="MS_Unmarried" value="2" desc="未婚"/>
+		<member name="MS_Divorce" value="3" desc="离异"/>
+		<member name="MS_Widowed" value="4" desc="丧偶"/>
+    </enum>
+	
+	<enum name="MonthlySalary" desc="月薪状态">
+        <member name="MS_1" value="0" desc="5000或者以下"/>
+        <member name="MS_2" value="1" desc="5000到10000"/>
+        <member name="MS_3" value="2" desc="10000到20000"/>
+		<member name="MS_4" value="3" desc="20000到50000"/>
+		<member name="MS_5" value="4" desc="50000以上"/>
+    </enum>
+	
+	<enum name="VerifyType" desc="认证类型">
+        <member name="VT_Wechat" value="1" desc="微信认证"/>
+    </enum>
+	
+	<proto name="VociceData" desc="请求修改玩家的语音介绍">
+		<member  name="voice" prefix="optional" type="bytes"  default="" desc="语音内容"/>
+		<member  name="sec" prefix="optional" type="uint32"  default="0" desc="秒数"/>
+    </proto>
+	
+	<proto name="PersonalInfo" desc="个人资料">
+		<member name="city" prefix="optional" type="string" default="" desc="城市"/>
+		<member name="marrystatue" prefix="optional" type="uint32" default="0" desc="婚姻状态"/>
+		<member name="height" prefix="optional" type="uint32" default="0" desc="身高cm"/>
+		<member name="bodyweight" prefix="optional" type="uint32" default="0" desc="体重kg"/>
+		<member name="salary" prefix="optional" type="uint32" default="0" desc="月薪"/>
+		<member name="birthday" prefix="optional" type="string" default="" desc="出生年月"/>
+		<member name="wechat" prefix="optional" type="string" default="" desc="微信号"/>
+		<member name="qq" prefix="optional" type="string" default="" desc="qq号"/>
+		<member  name="verfiy" prefix="optional" type="bool" default="false" desc="是否认证"/>
+		<member  name="verfiytime" prefix="optional" type="uint32" default="0" desc="认证时间"/>
+		<member name="present" prefix="optional" type="string" default="" desc="自我介绍"/>
+		<member  name="voice" prefix="optional" type="VociceData" desc="语音介绍"/>
+		<member  name="picture" prefix="repeated" type="PictureInfo" desc="照片"/>
+		<member  name="verifylist" prefix="repeated" type="Key32Val32Pair" desc="认证"/>
+		<member  name="longitude" prefix="optional" type="double" default="0" desc="经度"/>
+		<member  name="latitude" prefix="optional" type="double" default="0" desc="纬度"/>
+    </proto>
+	
+	<proto name="OtherInfo" desc="个人资料不存档部分">
+		<member name="likecnt" prefix="optional" type="uint32"  default="0" desc="点赞数量"/>
+		<member name="islike" prefix="optional" type="bool"  default="false" desc="是否点赞"/>
+		<member name="isonline" prefix="optional" type="bool"  default="false" desc="是否在线"/>
+		<member name="isatten" prefix="optional" type="bool"  default="false" desc="是否关注"/>
+		<member name="lastonlinetime" prefix="optional" type="uint32"  default="0" desc="最后登录时间"/>
+		<member name="leavemessage" prefix="repeated" type="ClientChatMessage" desc="留言消息"/>
+		<member name="isbuywechat" prefix="optional" type="bool" default="false" desc="是否购买查看微信"/>
+    </proto>
+	
+	<proto name="AckOtherInfo" desc="刷新个人资料不存档部分">
+		<member name="charid" prefix="optional" type="uint64" default="0" desc="角色ID"/>
+		<member  name="otherinfo" prefix="optional" type="OtherInfo"  desc="个人资料"/>
+    </proto>
+	
+	<proto name="ReqEditPersonInalInfo" desc="请求编辑个人资料">
+		<member  name="personalinfo" prefix="optional" type="PersonalInfo"  desc="个人资料"/>
+    </proto>
+	
+	<proto name="ReqPersonInalInfo" desc="请求个人资料">
+		<member name="charid" prefix="optional" type="uint64" default="0" desc="角色ID"/>
+    </proto>
+	
+	<proto name="AckPersonalInfo" desc="更新自己个人资料">
+		<member name="charid" prefix="optional" type="uint64" default="0" desc="角色ID"/>
+		<member  name="personalinfo" prefix="optional" type="PersonalInfo"  desc="个人资料"/>
+		<member  name="otherinfo" prefix="optional" type="OtherInfo"  desc="个人资料"/>
+    </proto>
+	
+	<proto name="ReqOpLike" desc="操作点赞">
+		<member name="charid" prefix="optional" type="uint64" default="0" desc="角色ID"/>
+		<member  name="opadd" prefix="optional" type="bool"  default="true" desc="点赞和取消点赞"/>
+    </proto>
+	
+	<proto name="AckOpLike" desc="操作点赞">
+		<member name="charid" prefix="optional" type="uint64" default="0" desc="角色ID"/>
+		<member  name="opadd" prefix="optional" type="bool"  default="true" desc="点赞和取消点赞"/>
+		<member  name="ret" prefix="optional" type="bool"  default="true" desc="结果"/>
+    </proto>
+	
+	<proto name="ReqModifyPresent" desc="请求修改玩家的自我介绍">
+		<member name="present" prefix="optional" type="string" default="" desc="自我介绍"/>
+    </proto>
+	
+	<proto name="AckPresent" desc="修改玩家的自我介绍">
+		<member name="charid" prefix="required" type="uint64" desc="角色ID"/>
+		<member name="present" prefix="optional" type="string" default="" desc="自我介绍"/>
+    </proto>
+	
+	<proto name="ReqModifyVoice" desc="请求修改玩家的语音介绍">
+		<member  name="voice" prefix="optional" type="VociceData"  desc="语音介绍"/>
+    </proto>
+	
+	<proto name="AckVoice" desc="修改玩家的语音介绍">
+		<member name="charid" prefix="required" type="uint64" desc="角色ID"/>
+		<member  name="voice" prefix="optional" type="VociceData" desc="语音介绍"/>
+    </proto>
+	
+	<proto name="SuperFan" desc="请求上传照片">
+		<member name="superfan" prefix="optional" type="playerShowbase" desc="超级粉丝"/>
+		<member  name="contribute" prefix="optional" type="uint32" default="0" desc="贡献值"/>
+    </proto>
+	
+	<proto name="RoomInfo" desc="乐园信息">
+		<member name="selfhead" prefix="optional" type="playerShowbase" desc="自身头像"/>
+		<member  name="family" prefix="optional" type="string"  default="" desc="家族"/>
+		<member name="charisma" prefix="optional" type="uint32" default="0" desc="魅力值"/>
+		<member name="contribute" prefix="optional" type="uint32" default="0" desc="贡献度"/>
+		<member name="fans" prefix="optional" type="uint32" default="0" desc="粉丝数"/>
+        <member name="compositenum" prefix="optional" type="uint32" default="0" desc="合成数量"/>
+        <member name="finishorder_Num" prefix="optional" type="uint32" default="0"  desc="订单完成数量"/>
+        <member name="finishtrainorder_Num" prefix="optional" type="uint32" default="0" desc="火车订单完成数量"/>
+        <member name="helptrainorder_Num" prefix="optional" type="uint32" default="0" desc="帮助火车订单数量"/>
+        <member name="helpotherevent_Num" prefix="optional" type="uint32" default="0" desc="帮助其他玩家好友事件数量"/>
+		<member name="buildnum" prefix="optional" type="uint32" default="0" desc="建筑数量"/>
+		<member  name="friends" prefix="optional" type="uint32" default="0" desc="好友"/>
+		<member name="visitfriend" prefix="repeated" type="playerShowbase" desc="最近访问我的玩家，小于等于10个"/>
+		<member name="superfan" prefix="repeated" type="SuperFan" desc="超级粉丝"/>
+    </proto>
+
+	<proto name="ReqEnterRoom" desc="请求查看乐园信息">
+        <member name="charid" prefix="required" type="uint64" desc="角色ID"/>
+    </proto>
+	
+	<proto name="ReqOutRoom" desc="请求离开乐园信息">
+        <member name="charid" prefix="required" type="uint64" desc="角色ID"/>
+    </proto>
+
+    <proto name="AckEnterRoom" desc="回复乐园信息">
+		<member name="charid" prefix="required" type="uint64" desc="角色ID"/>
+        <member name="roominfo" prefix="required" type="RoomInfo" desc="空间信息"/>
+    </proto>
+	
+	<proto name="ReqRoomAndPersonalInfo" desc="乐园和个人资料信息">
+		<member name="charid" prefix="required" type="uint64" desc="角色ID"/>
+    </proto>
+	
+	 <proto name="AckRoomAndPersonalInfo" desc="回复乐园和个人资料信息">
+		<member name="charid" prefix="optional" type="uint64"  default="0" desc="角色ID"/>
+        <member name="roominfo" prefix="optional" type="RoomInfo" desc="空间信息"/>
+		<member  name="personalinfo" prefix="optional" type="PersonalInfo"  desc="个人资料"/>
+		<member  name="otherinfo" prefix="optional" type="OtherInfo"  desc="个人资料"/>
+		<member  name="code" prefix="optional" type="ErrorCodeType" default="Error_Common_Occupy" desc="错误码"/>
+    </proto>
+	
+	<proto name="ReqNoCenter" desc="请求霓虹广场">
+		<member  name="searchtype" prefix="optional" type="uint32" default="0" desc="搜索类型(0表示默认，1表示男，2表示女)"/>
+    </proto>
+	
+	<enum name="NeonCenterType" desc="霓虹广场类型">
+        <member name="NCT_Verity" value="0" desc="认证"/>
+        <member name="NCT_Hot" value="1" desc="热门"/>
+    </enum>
+	
+	<proto name="NeonCenterCell" desc="霓虹广场单位数据">
+		<member  name="headinfo" prefix="required" type="playerShowbase" desc="头像信息"/>
+		<member  name="value" prefix="required" type="uint32" desc="值"/>
+    </proto>
+	
+	<proto name="NeonCenterData" desc="霓虹广场数据">
+		<member  name="type" prefix="required" type="NeonCenterType" desc="类型"/>
+		<member  name="data" prefix="repeated" type="NeonCenterCell" desc="数据"/>
+    </proto>
+	
+	<proto name="AckNoCenter" desc="回应来访记录">
+		<member  name="searchtype" prefix="optional" type="uint32" default="0" desc="搜索类型(0表示默认，1表示男，2表示女)"/>
+		<member  name="data" prefix="repeated" type="NeonCenterData" desc="数据"/>
+    </proto>
+	
+	<proto name="NeonUserInfo" desc="乐园信息">
+		<member name="selfhead" prefix="optional" type="playerShowbase" desc="头像"/>
+		<member  name="city" prefix="optional" type="string"  default="" desc="城市"/>
+		<member name="born" prefix="optional" type="string" default="" desc="出身年月"/>
+		<member name="logintime" prefix="optional" type="uint32" default="0" desc="登录时间"/>
+		<member name="verifytime" prefix="optional" type="uint32" default="0" desc="认证时间"/>
+        <member name="wechat" prefix="optional" type="string" default="" desc="微信"/>
+    </proto>
+	
+	<enum name="NeonTypeMark" desc="霓虹广场标签">
+        <member name="NTM_Verity" value="0" desc="最近认证"/>
+        <member name="NTM_Login" value="1" desc="最近登录"/>
+    </enum>
+	
+	<proto name="ReqNeonMark" desc="请求霓虹广场标签">
+		<member  name="neonmark" prefix="optional" type="NeonTypeMark" desc="标签类型"/>
+    </proto>
+	
+	<proto name="AckNeonMark" desc="回应霓虹广场标签">
+		<member name="buytime" prefix="optional" type="uint32" default="0" desc="购买时间"/>
+		<member name="neonmark" prefix="optional" type="NeonTypeMark" desc="标签类型"/>
+		<member name="userinfo" prefix="repeated" type="NeonUserInfo" desc="数据"/>
+    </proto>
+	
+	<proto name="ReqBuyloginLast" desc="请求购买查看最近登录">
+    </proto>
+	
+	<proto name="ReqViewWechat" desc="请求查看微信号">
+		<member name="charid" prefix="optional" type="uint64"  default="0" desc="角色ID"/>
+    </proto>
+	
+	<proto name="AckViewWechat" desc="成功查看微信号">
+    </proto>
+	
+
+</protocol>
+

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+    </import>
+ <!---数据结构定义开始-->
+    <enum name="SignInResult" desc="操作结果">
+        <member name="SignInResult_Suc" value="0" desc="操作成功"/>
+        <member name="SignInResult_FullPacket" value="1" desc="包裹无空格"/>
+        <member name="SignInResult_HasSign" value="2" desc="今天已经签到"/>
+        <member name="SignInResult_GetAward" value="3" desc="这个奖励已经领取"/>
+        <member name="SignInResult_AwardIDErr" value="4" desc="这个奖励不存在"/>
+        <member name="SignInResult_SignDaysLimit" value="5" desc="这个奖励累计签到天数不够"/>
+        <member name="SignInResult_OtherERR" value="6" desc="其他错误"/>
+    </enum>
+    <proto name="SignInData" desc="签到数据">
+        <member name="beginday" prefix="required" type="uint32" desc="起始天数"/>
+        <member name="continuedays" prefix="required" type="uint32" desc="连续签到的天数"/>
+        <member name="monthdays" prefix="required" type="uint32" desc="本月累计签到天数"/>
+        <member name="totalaward" prefix="repeated" type="uint32" desc="已经领取的累计奖励"/>
+        <member name="timer" prefix="required" type="uint32" desc="最近检测时间"/>
+        <member name="lastsigntimer" prefix="required" type="uint32" desc="最近签到的时间,对于客户端来讲，如果大于0，就是今天已经签到"/>
+
+    </proto>
+    <!---数据结构定义结束-->
+     <!---消息定义开始-->
+    <proto name="ReqGetSignInData" desc="请求签到数据">
+    </proto>
+    <proto name="AckGetSignInData" desc="请求签到数据返回">
+        <member name="info" prefix="required" type="SignInData" desc="签到数据"/>
+    </proto>
+    <proto name="ReqSignIn" desc="请求签到">
+    </proto>
+    <proto name="AckSignIn" desc="请求签到返回">
+        <member name="result" prefix="required" type="SignInResult" desc="处理结果"/>
+    </proto>
+
+    <proto name="ReqGetTotalAward" desc="请求累计奖励">
+        <member name="id" prefix="required" type="uint32" desc="奖励Id"/>
+    </proto>
+    <proto name="AckGetTotalAward" desc="请求累计奖励返回">
+        <member name="result" prefix="required" type="SignInResult" desc="处理结果"/>
+    </proto>
+    <!---消息定义结束--> 
+
+
+</protocol>
+

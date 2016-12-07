@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol>	
+    <import>
+        <member name="common" desc="公共对应的proto"/>
+        <member name="build" desc="公共对应的proto"/>
+
+    </import>
+    <!---数据结构定义开始-->
+    <enum name="TrainOrderResult" desc="操作结果">
+        <member name="TrainOrderResult_Suc" value="0" desc="操作成功"/>
+        <member name="TrainOrderResult_ItemLimitForLoad" value="1" desc="货物装载数量不足"/>
+        <member name="TrainOrderResult_NoTrain" value="2" desc="没有这列列车"/>
+        <member name="TrainOrderResult_NoTrainPos" value="3" desc="没有这个车厢号"/>
+        <member name="TrainOrderResult_TrainPosFull" value="4" desc="这个车厢号已经被装载"/>
+        <member name="TrainOrderResult_TrainPosNoPersonAck" value="5" desc="这个车厢号无人应答，无法确认"/>
+        <member name="TrainOrderResult_TrainsNoAskHelp" value="6" desc="这列火车没有寻求帮助"/>
+        <member name="TrainOrderResult_TrainPosOtherAskHelp" value="7" desc="该列火车已经寻求帮助"/>
+        <member name="TrainOrderResult_TrainNoArrive" value="8" desc="该列火车尚未到达"/>
+        <member name="TrainOrderResult_TrainPosGet" value="9" desc="该车厢号物品已经被收货"/>
+        <member name="TrainOrderResult_PacketFull" value="10" desc="包裹不足无法收货"/>
+        <member name="TrainOrderResult_OpenLimitResource" value="11" desc="列车开启资源不足"/>
+        <member name="TrainOrderResult_NoLoad" value="12" desc="列车不在装载状态"/>
+        <member name="TrainOrderResult_TrainExist" value="13" desc="列车已经存在"/>
+        <member name="TrainOrderResult_NotRuning" value="14" desc="列车不在运行中"/>
+        <member name="TrainOrderResult_ClearCDLimitResource" value="15" desc="清除运行Cd资源不足"/>
+        <member name="TrainOrderResult_LowLevel" value="16" desc="等级不足"/>
+        <member name="TrainOrderResult_OtherERR" value="17" desc="其他错误"/>
+
+    </enum>
+    <enum name="CarriageLoadState" desc="装载车厢状态">
+        <member name="CarriageLoadState_empty" value="0" desc="装载车厢空"/>
+        <member name="CarriageLoadState_full" value="1" desc="装载车厢满"/>
+    </enum>
+    <proto name="CarriageLoad" desc="装载车厢">
+        <member name="pos" prefix="required" type="uint32" desc="车厢号(大于0有效)"/>
+        <member name="needitem" prefix="required" type="Award" desc="需求物品"/>
+        <member name="state" prefix="required" type="CarriageLoadState" desc="装载车厢状态"/>
+    </proto>
+    <proto name="CarriageLoadAward" desc="装载车厢奖励预览">
+        <member name="pos" prefix="required" type="uint32" desc="车厢号(大于0有效)"/>
+        <member name="getaward" prefix="required" type="vecAward" desc="装箱获得奖励"/>
+    </proto>
+    <enum name="CarriageAwardState" desc="奖励车厢状态">
+        <member name="CarriageAwardState_NoGet" value="0" desc="奖励车厢没有领取"/>
+        <member name="CarriageAwardState_Get" value="1" desc="奖励车厢已经领取"/>
+    </enum>
+    <proto name="CarriageAward" desc="奖励车厢">
+        <member name="pos" prefix="required" type="uint32" desc="车厢号(大于0有效)"/>
+        <member name="Awarditem" prefix="required" type="Award" desc="需求物品"/>
+        <member name="state" prefix="required" type="CarriageAwardState" desc="奖励车厢状态"/>
+    </proto>
+    <enum name="TrainHelpState" desc="装载帮助状态"> 
+        <member name="TrainHelpState_NONE" value="0" desc="无状态"/>
+        <member name="TrainHelpState_Req" value="1" desc="询问帮助状态"/>
+        <member name="TrainHelpState_Ack" value="2" desc="有人回应状态"/>
+        <member name="TrainHelpState_Confirm" value="3" desc="完成确认状态"/>
+    </enum>
+    <proto name="TrainHelp" desc="装载帮助">
+        <member name="pos" prefix="required" type="uint32" desc="火车对应帮助车厢(大于0有效)"/>
+        <member name="friendid" prefix="required" type="uint64" desc="应答的玩家id"/>
+        <member name="state" prefix="required" type="TrainHelpState" desc="帮助状态"/>
+    </proto>
+    <enum name="TrainState" desc="火车状态">
+        <member name="TrainState_Load" value="0" desc="火车装载状态"/>
+        <member name="TrainState_Running" value="1" desc="火车运输状态"/>
+        <member name="TrainState_Arrive" value="2" desc="火车到达状态"/>
+    </enum>
+    <proto name="Train" desc="一列火车">
+        <member name="trainid" prefix="required" type="uint32" desc="火车列次(大于0有效)"/>
+        <member name="state" prefix="required" type="TrainState" desc="火车状态"/>
+        <member name="timer" prefix="required" type="uint32" desc="状态时间，仅状态为TrainState_Running有效，其他情况设置为0"/>
+        <member name="location" prefix="required" type="string" desc="地名"/>
+        <member name="helpinfo" prefix="required" type="TrainHelp" desc="装载帮助信息"/>
+        <member name="carriageload" prefix="repeated" type="CarriageLoad" desc="装载车厢"/>
+        <member name="carriageaward" prefix="repeated" type="CarriageAward" desc="奖励车厢"/>
+        <member name="isfirst" prefix="optional" type="bool" default="false" desc="该字段服务器使用，客户端无用"/>
+        <member name="level" prefix="optional" type="uint32" default="1" desc="等级"/>
+
+    </proto>
+    <proto name="TrainForClient" desc="一列火车">
+        <member name="basetrain" prefix="required" type="Train" desc="火车基本信息"/>
+        <member name="helphead" prefix="required" type="playerShowbase" desc="帮助人的头像"/>
+        <member name="loadawardshow" prefix="repeated" type="CarriageLoadAward" desc="装载奖励预览"/>
+    </proto>
+    <!---数据结构定义结束-->
+    <!---消息定义开始-->
+    <proto name="ReqLoadCarriage" desc="请求装货">
+        <member name="trainid" prefix="required" type="uint32" desc="列次(大于0有效)"/>
+        <member name="trainpos" prefix="required" type="uint32" desc="车厢号(大于0有效)"/>
+    </proto>
+    <proto name="AckLoadCarriage" desc="请求装货返回">
+        <member name="result" prefix="required" type="TrainOrderResult" desc="处理结果"/>
+        <member name="trainid" prefix="required" type="uint32" desc="列次(大于0有效)"/>
+        <member name="trainpos" prefix="required" type="uint32" desc="车厢号(大于0有效)"/>
+        <member name="getaward" prefix="required" type="vecAward" desc="装箱获得奖励"/>
+
+    </proto>
+
+    <proto name="ReqAskHelpLoadCarriage" desc="请求帮助装货">
+        <member name="trainid" prefix="required" type="uint32" desc="列次(大于0有效)"/>
+        <member name="trainpos" prefix="required" type="uint32" desc="车厢号(大于0有效)"/>
+    </proto>
+    <proto name="AckAskHelpLoadCarriage" desc="请求帮助装货返回">
+        <member name="result" prefix="required" type="TrainOrderResult" desc="处理结果"/>
+    </proto>
+
+    <proto name="ReqAnswerHelpLoadCarriage" desc="车主确认帮助装货">
+        <member name="trainid" prefix="required" type="uint32" desc="列次(大于0有效)"/>
+    </proto>
+    <proto name="AckAnswerHelpLoadCarriage" desc="车主确认帮助装货返回">
+        <member name="result" prefix="required" type="TrainOrderResult" desc="处理结果"/>
+    </proto>
+
+    <proto name="ReqGetTrainAward" desc="获取火车运达奖励">
+        <member name="trainid" prefix="required" type="uint32" desc="列次(大于0有效)"/>
+        <member name="trainpos" prefix="required" type="uint32" desc="车厢号(大于0有效)"/>
+    </proto>
+    <proto name="AckGetTrainAward" desc="取火车运达奖励返回">
+        <member name="result" prefix="required" type="TrainOrderResult" desc="处理结果"/>
+        <member name="trainid" prefix="required" type="uint32" desc="列次(大于0有效)"/>
+        <member name="trainpos" prefix="required" type="uint32" desc="车厢号(大于0有效)"/>
+    </proto>
+
+    <proto name="ReqOpenNewTrain" desc="请求开启新火车，针对需要扣除资源的，自动开启的不用发">
+        <member name="trainid" prefix="required" type="uint32" desc="列次(大于0有效)"/>
+    </proto>
+    <proto name="AckOpenNewTrain" desc="开启新火车返回">
+        <member name="result" prefix="required" type="TrainOrderResult" desc="处理结果"/>
+    </proto>
+
+    <proto name="AckUpdateTrain" desc="火车状态更新">
+        <member name="owerid" prefix="required" type="uint64" desc="列车拥有者"/>
+        <member name="traininfo" prefix="required" type="TrainForClient" desc="火车详情"/>
+    </proto>
+    <proto name="ReqClearTrainCD" desc="请求用钻石清除火车运行CD">
+        <member name="trainid" prefix="required" type="uint32" desc="列次(大于0有效)"/>
+    </proto>
+    <proto name="AckReqClearTrainCD" desc="请求用钻石清除火车运行CD返回">
+        <member name="result" prefix="required" type="TrainOrderResult" desc="处理结果"/>
+    </proto>
+
+    <!---消息定义结束--> 
+
+
+</protocol>
+

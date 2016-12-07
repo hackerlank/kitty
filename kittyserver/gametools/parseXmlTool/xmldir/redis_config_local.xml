@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+	<map var="redismap" key="id">
+		<memdb id="0" ip="192.168.2.24" port="6379"/>
+		<memdb id="1" ip="192.168.2.24" port="6379"/>
+		<memdb id="2" ip="192.168.2.24" port="6379"/>
+		<memdb id="3" ip="192.168.2.24" port="6379"/>
+		<memdb id="4" ip="192.168.2.24" port="6379"/>
+		<memdb id="5" ip="192.168.2.24" port="6379"/>
+		<memdb id="6" ip="192.168.2.24" port="6379"/>
+		<memdb id="7" ip="192.168.2.24" port="6379"/>
+		<memdb id="8" ip="192.168.2.24" port="6379"/>
+		<memdb id="9" ip="192.168.2.24" port="6379"/>
+		<memdb id="10" ip="192.168.2.24" port="6379"/>
+	</map>
+</Config>
+
