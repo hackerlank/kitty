@@ -131,7 +131,7 @@ bool BurstEventManager::loop(const bool online)
     DWORD eventNum = m_owner->m_buildManager.getRoadNum();
     eventNum /= 10;
     eventNum = eventNum ? eventNum - 1 : 0;
-    eventNum = eventNum > 3 ? 3 : eventNum;
+    eventNum = /*eventNum > 3 ? 3 : eventNum*/ eventNum > 2 ? 2 : eventNum;
     DWORD addNum = 1;
     if(online)
     {
@@ -170,20 +170,28 @@ bool BurstEventManager::loop(const bool online)
 
 bool BurstEventManager::opEvent(const HelloKittyMsgData::ReqOpBurstEvent *cmd)
 {
-    HelloKittyMsgData::BurstEvent *event = getEvent(cmd->tempid());
-    if(!event || event->status() != HelloKittyMsgData::BES_Accept)
+    bool ret = false;
+    do
     {
-        return false;
-    }
-    if(cmd->optype() == HelloKittyMsgData::BEOT_Submit)
-    {
-        return checkTarget(cmd->tempid());
-    }
-    else
-    {
-        return delEvent(cmd->tempid(),HelloKittyMsgData::BES_Del_Other);
-    }
-    return false;
+        HelloKittyMsgData::BurstEvent *event = getEvent(cmd->tempid());
+        if(!event || event->status() != HelloKittyMsgData::BES_Accept)
+        {
+            break;
+        }
+        if(cmd->optype() == HelloKittyMsgData::BEOT_Submit)
+        {
+            ret = checkTarget(cmd->tempid());
+        }
+        else
+        {
+            ret = delEvent(cmd->tempid(),HelloKittyMsgData::BES_Del_Other);
+        }
+        if(ret)
+        {
+            loop();
+        }
+    }while(false);
+    return ret;
 }
 
 bool BurstEventManager::checkTarget(const QWORD tempid)

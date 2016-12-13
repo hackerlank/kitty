@@ -1046,9 +1046,11 @@ namespace pb
     {
         key = burstEventReward ? burstEventReward->id() : 0;
         parseDWORDToDWORDMap(burstEventReward->needitem(),randItemMap);
-        //parseDWORDToDWORDMap(burstEventReward->reward(),rewardMap);
+        parseDWORDToDWORDMap(burstEventReward->reward(),rewardMap);
+#if 0
         rewardMap[HelloKittyMsgData::Attr_Gold] = burstEventReward->goldreward();//金币和经验选一
         rewardMap[HelloKittyMsgData::Attr_Exp] = burstEventReward->expreward();
+#endif
         auto iter = levelGradeRewardMap.find(burstEventReward->levelgrade());
         if(iter == levelGradeRewardMap.end())
         {
