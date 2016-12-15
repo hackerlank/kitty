@@ -453,7 +453,6 @@ void SceneUser::onlineInit(const bool reconnectFlg,SceneTask* _gate)
         handle->setSortSet("loginrank",charid,"login",charbase.onlinetime);
     }
 
-    
     //保存数据
     save();
 

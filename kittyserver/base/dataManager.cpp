@@ -1237,80 +1237,36 @@ namespace pb
     bool Conf_t_order::init()
     {
         key = order ? order->id() : 0; 
-        std::vector<std::string> temp;
-        parseTagString(order->needitem(),",",temp); 
-        for(auto it = temp.begin(); it != temp.end();it++)
-        {
-            std::vector<std::string> subtemp;
-            parseTagString(*it,"_",subtemp);
-            if(subtemp.size() == 2)
-            {
-                DWORD resType = atoi(subtemp[0].c_str());
-                DWORD value   = atoi(subtemp[1].c_str()); 
-                if(resType == 0 || value  == 0)
-                {
-                    Fir::logger->debug("[配置错误],读取rubbish rewardowerower (%lu)",key); 
-                    continue;
-
-
-                }
-                HelloKittyMsgData::Award *pneed = needitem.add_award();
-                if(pneed)
-                {
-                    pneed->set_awardtype(resType);
-                    pneed->set_awardval(value);
-                }
-
-            }
-
-        }
-        temp.clear();
-        parseTagString(order->award(),",",temp); 
-        for(auto it = temp.begin(); it != temp.end();it++)
-        {
-            std::vector<std::string> subtemp;
-            parseTagString(*it,"_",subtemp);
-            if(subtemp.size() == 2)
-            {
-                DWORD resType = atoi(subtemp[0].c_str());
-                DWORD value   = atoi(subtemp[1].c_str()); 
-                if(resType == 0 || value  == 0)
-                {
-                    Fir::logger->debug("[配置错误],读取rubbish rewardowerower (%lu)",key); 
-                    continue;
-
-
-                }
-                HelloKittyMsgData::Award *paward = awarditem.add_award();
-                if(paward)
-                {
-                    paward->set_awardtype(resType);
-                    paward->set_awardval(value);
-                }
-
-            }
-
-        }
+        parseDWORDToDWORDMap(order->needitem(),needItemMap);
+        parseDWORDToDWORDMap(order->award(),awardItemMap);
         if(key > 0)
         {
             m_maplevelOrder[order->maxlv()].push_back(key);
         }
         return key;
     }
-    void Conf_t_order::getOrderIdbyLv(DWORD level,std::vector<QWORD> &vecOrder)
+    DWORD Conf_t_order::getOrderIdbyLv(DWORD level,const std::set<DWORD> &exceptKeySet)
     {
-        if(m_maplevelOrder.empty())
-            return ;
-        auto it = m_maplevelOrder.lower_bound(level);
-        if(it == m_maplevelOrder.end())//最后那个池子
+        DWORD ret = 0;
+        do
         {
-            auto iterlast = m_maplevelOrder.rbegin();
-            vecOrder = iterlast->second;
-        }
-        else
-        {
-            vecOrder = const_cast<std::vector<QWORD>&>(it->second);
-        }
+            if(m_maplevelOrder.empty())
+            {
+                break;
+            }
+            auto it = m_maplevelOrder.lower_bound(level);
+            const std::vector<QWORD> &vecOrder = (it == m_maplevelOrder.end()) ? m_maplevelOrder.rbegin()->second : it->second;
+            DWORD rand = zMisc::randBetween(0,vecOrder.size()-1);
+            ret = vecOrder[rand];
+            DWORD cnt = 0;
+            while(exceptKeySet.find(ret) != exceptKeySet.end() && cnt <= 10)
+            {
+                rand = zMisc::randBetween(0,vecOrder.size()-1);
+                ret = vecOrder[rand];
+                ++cnt;
+            }
+        }while(false);
+        return ret;
     }
 
     bool Conf_t_ExchangeGift::init()

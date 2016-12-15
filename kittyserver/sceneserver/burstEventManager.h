@@ -29,6 +29,8 @@ class BurstEventManager
         bool fullMessage(HelloKittyMsgData::UserBaseInfo &binary);
         //重置
         void reset();
+        bool delEvent(const DWORD colID);
+        bool newEvent(const DWORD colID);
     private:
         //检查事件是否达到目标
         bool checkTarget(const QWORD tempid);
@@ -37,6 +39,8 @@ class BurstEventManager
     private:
         SceneUser *m_owner;
         std::map<QWORD,HelloKittyMsgData::BurstEvent> m_eventMap;
+        std::map<DWORD,QWORD> m_colIDMap;
+        std::set<DWORD> m_npcKeySet;
 };
 
 

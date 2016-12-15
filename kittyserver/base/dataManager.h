@@ -842,11 +842,23 @@ namespace pb
             Conf_t_order(const pb::order::t_order *_order) : order(_order) {};
             Conf_t_order() : order(NULL) {};
             bool init();
-            static void getOrderIdbyLv(DWORD level,std::vector<QWORD> &vecOrder);
+            static DWORD getOrderIdbyLv(DWORD level,const std::set<DWORD> &exceptKeySet);
+            const std::map<DWORD,DWORD>& getRandItemMap() const
+            {
+                return needItemMap;
+            }
+            const std::map<DWORD,DWORD>& getRewardMap() const
+            {
+                return awardItemMap;
+            }
         public:
             const pb::order::t_order *order;
+            std::map<DWORD,DWORD> needItemMap;
+            std::map<DWORD,DWORD> awardItemMap;
+#if 0
             HelloKittyMsgData::vecAward needitem;
             HelloKittyMsgData::vecAward awarditem;
+#endif
             static std::map<DWORD,std::vector<QWORD>> m_maplevelOrder;
 
     };
