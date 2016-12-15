@@ -342,6 +342,7 @@ void OrderManager::timerCheck()
         InitOrderItem(ritem,i == 0);
         ritem.set_colid(i+1);
         m_vecOrder.push_back(ritem);
+        m_rUser.m_burstEventManager.newEvent(ritem.colid());
     }
 
 #if 0
@@ -663,6 +664,8 @@ void OrderManager::ReqFinishOrder(HelloKittyMsgData::AckFinishOrder& ack,DWORD c
         m_rUser.m_taskManager.target(arg);
         m_rUser.m_store_house.addOrConsumeItem(HelloKittyMsgData::Attr_finishorder_Num,1,"add for ReqFinishOrder",true);
 
+        m_rUser.m_burstEventManager.delEvent(colid);
+        m_rUser.m_burstEventManager.newEvent(colid); 
 
     }
 }
@@ -766,6 +769,7 @@ void OrderManager::load(const HelloKittyMsgData::Serialize& binary)
 {
     for (int i = 0; i < binary.suborder_size(); i++) {
         m_vecOrder.push_back(binary.suborder(i));
+        m_rUser.m_burstEventManager.newEvent(binary.suborder(i).colid());
     }
 
 }

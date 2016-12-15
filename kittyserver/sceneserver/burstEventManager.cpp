@@ -21,6 +21,7 @@ void BurstEventManager::reset()
 
 bool BurstEventManager::save(HelloKittyMsgData::Serialize& binary)
 {
+#if 0
     for(auto iter = m_eventMap.begin();iter != m_eventMap.end();++iter)
     {
         HelloKittyMsgData::BurstEvent *temp = binary.add_burstevent();
@@ -29,11 +30,13 @@ bool BurstEventManager::save(HelloKittyMsgData::Serialize& binary)
             *temp = iter->second;
         }
     }
+#endif
     return true;
 }
 
 bool BurstEventManager::load(const HelloKittyMsgData::Serialize& binary)
 {
+#if 0
     reset();
     const std::map<QWORD,QWORD>& oldNewKeyMap = m_owner->m_buildManager.getOldNewKeyMap();
     for(int index = 0;index < binary.burstevent_size();++index)
@@ -44,10 +47,12 @@ bool BurstEventManager::load(const HelloKittyMsgData::Serialize& binary)
         {
             temp.set_tempid(iter->second);
             m_eventMap.insert(std::pair<QWORD,HelloKittyMsgData::BurstEvent>(temp.tempid(),temp));
+            m_npcKeySet.insert(temp.rewardkey());
+            m_colIDMap.insert(std::pair<DWORD,QWORD>(temp.rewardkey(),temp.tempid()));
             m_owner->m_buildManager.opBurstEventMap(temp.tempid(),temp.npckey(),true);
         }
     }
-    loop(true);
+#endif
     return true;
 }
 
@@ -102,6 +107,45 @@ bool BurstEventManager::updateBurstEvent(const QWORD eventID)
     return true;
 }
 
+bool BurstEventManager::newEvent(const DWORD colID)
+{
+    bool ret = false;
+    do
+    {
+        if(m_colIDMap.find(colID) != m_colIDMap.end())
+        {
+            break;
+        }
+        DWORD now = SceneTimeTick::currentTime.sec();
+        DWORD npcKey = pb::Conf_t_BurstEventNpc::randExceptNpc(m_owner->charbase.level,m_npcKeySet);
+        if(!npcKey)
+        {
+            break;
+        }
+        BuildBase* road = m_owner->m_buildManager.getEmptyRoad();
+        if(!road)
+        {
+            break;
+        }
+        DWORD rewardKey = colID;
+        Fir::logger->debug("[刷出突发事件]:(%lu,%s,%lu,%u,%u)",m_owner->charid,m_owner->charbase.nickname,road->getID(),npcKey,rewardKey);
+        HelloKittyMsgData::BurstEvent temp;
+        temp.set_tempid(road->getID());
+        temp.set_npckey(npcKey);
+        temp.set_rewardkey(rewardKey);
+        temp.set_status(HelloKittyMsgData::BES_Accept);
+        temp.set_begintime(now);
+        m_eventMap.insert(std::pair<QWORD,HelloKittyMsgData::BurstEvent>(temp.tempid(),temp));
+        updateBurstEvent(temp.tempid());
+        m_npcKeySet.insert(npcKey);
+        m_colIDMap.insert(std::pair<DWORD,QWORD>(rewardKey,temp.tempid()));
+        m_owner->m_buildManager.opBurstEventMap(temp.tempid(),npcKey,true);
+        ret = true;
+    }while(false);
+    return ret;
+}
+
+
 bool BurstEventManager::loop(const bool online)
 {
     Fir::logger->debug("[刷出突发事件loop]");
@@ -131,17 +175,19 @@ bool BurstEventManager::loop(const bool online)
     DWORD eventNum = m_owner->m_buildManager.getRoadNum();
     eventNum /= 10;
     eventNum = eventNum ? eventNum - 1 : 0;
-    eventNum = /*eventNum > 3 ? 3 : eventNum*/ eventNum > 2 ? 2 : eventNum;
+    eventNum = eventNum > 2 ? 2 : eventNum;
     DWORD addNum = 1;
+    eventNum = 5;
     if(online)
     {
         DWORD hour = (m_owner->charbase.onlinetime - m_owner->charbase.offlinetime) / 3600; 
         addNum = hour;
     }
+    addNum = eventNum;
     for(int cnt = 0;m_eventMap.size() < eventNum && addNum && cnt < 10;++cnt)
     {
         DWORD npcKey = pb::Conf_t_BurstEventNpc::randExceptNpc(m_owner->charbase.level,npcKeySet);
-        DWORD rewardKey = pb::Conf_t_BurstEventReward::randExceptReward(m_owner->charbase.level,rewardKeySet);
+        DWORD rewardKey = pb::Conf_t_order::getOrderIdbyLv(m_owner->charbase.level,rewardKeySet); 
         if(npcKey && rewardKey)
         {
             BuildBase* road = m_owner->m_buildManager.getEmptyRoad();
@@ -201,7 +247,7 @@ bool BurstEventManager::checkTarget(const QWORD tempid)
     {
         return false;
     }
-    const pb::Conf_t_BurstEventReward *rewardConf = tbx::BurstEventReward().get_base(temp->rewardkey());
+    const pb::Conf_t_order *rewardConf = tbx::order().get_base(temp->rewardkey());
     if(!rewardConf || !m_owner->m_store_house.hasEnoughSpace(rewardConf->getRewardMap()))
     {
         m_owner->opErrorReturn(HelloKittyMsgData::WareHouse_Is_Full);
@@ -272,8 +318,16 @@ bool BurstEventManager::delEvent(const QWORD tempid,const HelloKittyMsgData::Bur
     m_owner->m_buildManager.opBurstEventMap(temp->tempid(),temp->npckey(),false);
     temp->set_status(delType);
     updateBurstEvent(temp->tempid());
+    m_colIDMap.erase(temp->rewardkey());
+    m_npcKeySet.erase(temp->rewardkey());
     m_eventMap.erase(tempid);
     return true;
+}
+
+bool BurstEventManager::delEvent(const DWORD colID)
+{
+    auto iter = m_colIDMap.find(colID);
+    return iter != m_colIDMap.end() ? delEvent(iter->second,HelloKittyMsgData::BES_Del_Finish) : false;
 }
 
 

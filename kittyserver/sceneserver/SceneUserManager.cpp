@@ -188,7 +188,6 @@ void SceneUserManager::oneHour()
     {
         SceneUser* u = itr->second;
         if(NULL == u) continue;
-        u->m_burstEventManager.loop();
         u->m_trade.recycleItem();
     }	
 }
