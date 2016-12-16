@@ -1046,8 +1046,9 @@ namespace pb
     {
         key = burstEventReward ? burstEventReward->id() : 0;
         parseDWORDToDWORDMap(burstEventReward->needitem(),randItemMap);
-        parseDWORDToDWORDMap(burstEventReward->reward(),rewardMap);
+
 #if 0
+        parseDWORDToDWORDMap(burstEventReward->reward(),rewardMap);
         rewardMap[HelloKittyMsgData::Attr_Gold] = burstEventReward->goldreward();//金币和经验选一
         rewardMap[HelloKittyMsgData::Attr_Exp] = burstEventReward->expreward();
 #endif
@@ -1100,6 +1101,7 @@ namespace pb
     }
 
     std::map<DWORD,std::set<DWORD>> Conf_t_BurstEventNpc::levelGradeNpcMap;
+    std::vector<DWORD> Conf_t_BurstEventNpc::npcIDVec;
     bool Conf_t_BurstEventNpc::init()
     {
         key = burstEventNpc ? burstEventNpc->id() : 0;
@@ -1116,12 +1118,21 @@ namespace pb
             std::set<DWORD> &levelGradeSet = const_cast<std::set<DWORD>&>(iter->second);
             levelGradeSet.insert(burstEventNpc->id());
         }
+        npcIDVec.push_back(burstEventNpc->id());
         return key;
     }
 
 
     DWORD Conf_t_BurstEventNpc::randExceptNpc(const DWORD level,const std::set<DWORD>&exceptNpcSet)
     {
+        for(auto iter = npcIDVec.begin();iter != npcIDVec.end();++iter)
+        {
+            if(exceptNpcSet.find(*iter) == exceptNpcSet.end())
+            {
+                return *iter;
+            }
+        }
+        return 0;
         //DWORD levelGrade = level / 5 + 1;
         DWORD levelGrade = level;
         levelGrade = zMisc::randBetween(1,levelGrade);

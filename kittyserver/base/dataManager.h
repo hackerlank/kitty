@@ -752,6 +752,7 @@ namespace pb
         public:
             const pb::BurstEventNpc::t_BurstEventNpc *burstEventNpc;
             static std::map<DWORD,std::set<DWORD>> levelGradeNpcMap;
+            static std::vector<DWORD> npcIDVec;
     };
 
     //扩充仓库格子

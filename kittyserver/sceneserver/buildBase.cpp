@@ -19,9 +19,9 @@ BuildBase::BuildBase(SceneUser* owner,const DWORD typeID,const DWORD level,const
     m_rationMark = false;
     m_cardID = 0;
     m_useCardTime = 0;
-    //++generateID;
+    ++generateID;
     //m_id = generateID;
-    m_id = hashRankKey(SceneService::getMe().getServerID(),SceneTimeTick::currentTime.msecs()); 
+    m_id = hashRankKey(SceneService::getMe().getServerID(),SceneTimeTick::currentTime.msecs()) + generateID; 
     m_fromType = HelloKittyMsgData::BFT_Normal;
     initConfBase();
     m_break = false;
@@ -40,9 +40,9 @@ BuildBase::BuildBase(SceneUser* owner,const pb::Conf_t_building *buildConf,const
     m_rationMark = false;
     m_cardID = 0;
     m_useCardTime = 0;
-    //++generateID;
+    ++generateID;
     //m_id = generateID;
-    m_id = hashRankKey(SceneService::getMe().getServerID(),SceneTimeTick::currentTime.msecs());
+    m_id = hashRankKey(SceneService::getMe().getServerID(),SceneTimeTick::currentTime.msecs()) + generateID;
     confBase = buildConf;
     m_fromType = HelloKittyMsgData::BFT_Normal;
     m_break = false;

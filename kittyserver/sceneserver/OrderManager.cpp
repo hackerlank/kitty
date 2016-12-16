@@ -9,7 +9,7 @@
 #include "RedisMgr.h"
 #include "buffer.h"
 #include "key.h"
-const DWORD COOLTIMER = 15*60;
+const DWORD COOLTIMER = /*15*60*/0;
 
 
 
@@ -133,7 +133,7 @@ void OrderManager::getawardbyItemExtra(HelloKittyMsgData::OrderItem & ritem)
         const pb::Conf_t_produceItem *pproduce = tbx::produceItem().get_base(pb::Conf_t_produceItem::getIdByItem(rinfo.key()));
         if(pproduce == NULL)
             continue;
-        QWORD buildID = m_rUser.m_buildManager.getAnyBuildById(pproduce->produceItem->buildid());
+        QWORD buildID = m_rUser.m_buildManager.getAnyBuildById(/*pproduce->produceItem->buildid()*/ritem.buildid());
         BuildBase* pbase= m_rUser.m_buildManager.getBuild(buildID);
         if(pbase == NULL)
             continue;
@@ -695,6 +695,10 @@ void OrderManager::ReqFlushOrder(HelloKittyMsgData::AckFlushOrder &ack,DWORD col
         InitOrderItem(FlushItem);
         DWORD dwNow = SceneTimeTick::currentTime.sec();
         FlushItem.set_flushtime(dwNow);
+        m_rUser.m_burstEventManager.delEvent(colid);
+        m_rUser.m_burstEventManager.newEvent(colid); 
+
+
 
 
     }
@@ -768,8 +772,11 @@ void OrderManager::ReqClearCD(HelloKittyMsgData::AckClearCD &ack,DWORD colid)
 void OrderManager::load(const HelloKittyMsgData::Serialize& binary)
 {
     for (int i = 0; i < binary.suborder_size(); i++) {
-        m_vecOrder.push_back(binary.suborder(i));
-        m_rUser.m_burstEventManager.newEvent(binary.suborder(i).colid());
+        if(binary.suborder(i).buildid())
+        {
+            m_vecOrder.push_back(binary.suborder(i));
+            m_rUser.m_burstEventManager.newEvent(binary.suborder(i).colid());
+        }
     }
 
 }
