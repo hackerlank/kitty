@@ -25,7 +25,8 @@ OrderManager::~OrderManager()
 
 bool OrderManager::hasBuild()
 {
-    return m_rUser.m_buildManager.getAnyBuildById(ParamManager::getMe().GetSingleParam(eParam_Order_NeedBulid)) > 0 ; 
+    DWORD val = ParamManager::getMe().GetSingleParam(eParam_Order_NeedBulid);
+    return val ? m_rUser.m_buildManager.getAnyBuildById(val) > 0 : true;
 }
 
 
@@ -318,7 +319,7 @@ DWORD OrderManager::getOrderNum()
     std::vector<DWORD> rvec = ParamManager::getMe().GetVecParam(eParam_Order_Num);
     for(DWORD cnt = 0;cnt < rvec.size() && cnt + 2 < rvec.size();)
     {
-        if(rvec[cnt] < m_rUser.charbase.level && rvec[cnt+1] >= m_rUser.charbase.level)
+        if(rvec[cnt] <= m_rUser.charbase.level && rvec[cnt+1] >= m_rUser.charbase.level)
         {
             return rvec[cnt+2];
         }
