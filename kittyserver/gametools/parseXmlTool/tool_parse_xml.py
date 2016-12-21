@@ -158,11 +158,13 @@ def create_cpp_vector_code(var_name,var_type,objectMap,tab_char):
     no_suffix = vec_type[0 : -len("_t")]
     if no_suffix in object_map.keys():
         code += tab_char + "load_vector< %s >(\"%s\", \"%s\", _%s, xml, node);\n" %(vec_type,var_name,no_suffix,var_name)
+    '''    
     elif vec_type == "Fir::VarType":
         code += tab_char + "load_vartype_vector(\"%s\", _%s, xml, node);\n" %(var_name,var_name)
     else:
         code += tab_char + "_%s = error;\n" %(var_name)
         print "暂不支持容器嵌套, 请使用节点嵌套容器! 错误的vector:", var_name
+     '''
     return code
 
 #创建c++中map部分
@@ -371,7 +373,7 @@ def create_cpp_vector_func(tab_char):
     code += tab_char + "\t\tvec_node = xml.next(vec_node, \"vector\");\n"
     code += tab_char + "\t}\n"
     code += tab_char + "}\n\n" 
-
+    '''
     code += tab_char + "static void load_vartype_vector(std::string vec_name, std::vector<%s> &var, %s &xml, %s *node)\n" %("Fir::VarType","const Fir::XMLParser","const Fir::XMLParser::Node") 
     code += tab_char + "{\n"
     code += tab_char + "\t%s *vec_node = xml.child(node, \"vector\");\n" %("const Fir::XMLParser::Node")
@@ -390,6 +392,7 @@ def create_cpp_vector_func(tab_char):
     code += tab_char + "\t\tvec_node = xml.next(vec_node, \"vector\");\n"
     code += tab_char + "\t}\n"
     code += tab_char + "}\n\n" 
+    '''
     return code
 
 
