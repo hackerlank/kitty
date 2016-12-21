@@ -152,7 +152,7 @@ void SceneUser::infoLevel(const DWORD oldExp,const DWORD oldLevel)
         m_managertrain.checkNewTrain();
         triggerTaskGuid(pb::Conf_t_Guide::TIGGERTYPE_LEVEL,charbase.level);
         checkFunOpen(pb::Conf_t_openfun::eOpen_Level,charbase.level);
-
+        m_orderManager.timerCheck();
 
     }
 

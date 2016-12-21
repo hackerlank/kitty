@@ -52,7 +52,14 @@ bool BuildTypeCompositeItem::load(const HelloKittyMsgData::CompositeInfo& binary
     }
     for(int index = 0;index < binary.itemlist_size();++index)
     {
-        m_itemList.push_back(binary.itemlist(index));
+        if(binary.itemlist(index))
+        {
+            m_itemList.push_front(binary.itemlist(index));
+        }
+        else
+        {
+            m_itemList.push_back(binary.itemlist(index));
+        }
     }
     checkCdInit();
     return true;
@@ -249,16 +256,14 @@ void BuildTypeCompositeItem::updateItem()
 
 bool BuildTypeCompositeItem::fullItem()
 {
-    bool ret = true;
     for(auto iter = m_itemList.begin();iter != m_itemList.end();++iter)
     {
-        if(!(*iter))
+        if(!*iter)
         {
-            ret = false;
-            break;
+            return false;
         }
     }
-    return ret;
+    return true;
 }
 
 
@@ -398,28 +403,26 @@ bool BuildTypeCompositeItem::getItem(const DWORD cnt)
     bool ret = false;
     do
     {
-        if(cnt > m_itemList.size() || cnt <= 0)
+        DWORD itemID = m_itemList.front();
+        if(!itemID)
         {
             break;
         }
-        if(!m_itemList[cnt - 1])
-        {
-            break;
-        }
-        const pb::Conf_t_itemInfo *confBase = tbx::itemInfo().get_base(m_itemList[cnt - 1]);
+        const pb::Conf_t_itemInfo *confBase = tbx::itemInfo().get_base(itemID);
         if(!confBase)
         {
             break;
         }
         char reMark[100] = {0};
         snprintf(reMark,sizeof(reMark),"道具合成(%lu,%u,%u,%u)获得",m_id,m_typeID,m_level,cnt);
-        if(!m_owner->m_store_house.addOrConsumeItem(m_itemList[cnt - 1],1,reMark,true))
+        if(!m_owner->m_store_house.addOrConsumeItem(itemID,1,reMark,true))
         {
             m_owner->opErrorReturn(HelloKittyMsgData::WareHouse_Is_Full);
             break;
         }
-        m_owner->opItemResourMap(Item_Composite,m_itemList[cnt - 1],1,true);
-        m_itemList[cnt - 1] = 0;
+        m_owner->opItemResourMap(Item_Composite,itemID,1,true);
+        m_itemList.pop_front();
+        m_itemList.push_back(0);
         HelloKittyMsgData::CompositeCell *cell = findStatusCell(HelloKittyMsgData::Place_Status_Stop);
         if(cell)
         {
@@ -550,11 +553,11 @@ bool BuildTypeCompositeItem::checkCd()
 bool BuildTypeCompositeItem::putItem(const DWORD itemID)
 {
     bool ret = false;
-    for(DWORD cnt = 0;cnt < m_itemList.size();++cnt)
+    for(auto iter = m_itemList.begin();iter != m_itemList.end();++iter)
     {
-        if(!m_itemList[cnt])
+        if(!*iter)
         {
-            m_itemList[cnt] = itemID;
+            *iter = itemID;
             ret = true;
             break;
         }

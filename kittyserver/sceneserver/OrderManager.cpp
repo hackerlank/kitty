@@ -779,6 +779,7 @@ void OrderManager::load(const HelloKittyMsgData::Serialize& binary)
             m_rUser.m_burstEventManager.newEvent(binary.suborder(i).colid());
         }
     }
+    timerCheck();
 
 }
 

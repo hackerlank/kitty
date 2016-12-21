@@ -128,7 +128,7 @@ bool SceneUser::loop()
         m_eventmanager.timerCheck();   
         m_buildManager.loop();
         loopCarnivalBox();
-        m_orderManager.timerCheck();
+        //m_orderManager.timerCheck();
         m_kittyGarden.loop();
         m_managertrain.timerCheck();
         m_managerordersystem.timerCheck();

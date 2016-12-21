@@ -77,7 +77,7 @@ class BuildTypeCompositeItem : public BuildBase
         //合并功能槽
         std::list<HelloKittyMsgData::CompositeCell> m_compositeList;
         //滞留产品
-        std::vector<DWORD> m_itemList;
+        std::deque<DWORD> m_itemList;
 };
 
 #endif
