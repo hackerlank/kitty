@@ -78,6 +78,7 @@
         <member name="inbuildlevel" prefix="optional" type="uint32" default="0" desc="合建等级"/>
         <member name="friendid" prefix="optional" type="uint64" default="0" desc="合建者"/>
         <member name="othershow" prefix="optional" type="playerShowbase" desc="合建的另一玩家"/>
+        <member name="buildlevel" prefix="optional" type="uint32" desc="建筑等级"/>
     </proto>
 
     <proto name="ReqAllBuild" desc="请求刷新建筑基本信息">
@@ -94,6 +95,10 @@
     <proto name="AckFlushOneBuild" desc="刷新某建筑基本信息">
         <member name="updatecharid" prefix="required" type="uint64" desc="角色id"/>
         <member name="buildinfo" prefix="required" type="BuildBase" desc="建筑基本信息"/>
+    </proto>
+
+    <proto name="ReqUpGrade" desc="建筑升级">
+        <member name="tempid" prefix="required" type="uint64" desc="建筑实例id"/>
     </proto>
 
     <proto name="ReqBuildUpGrade" desc="建筑升级">
