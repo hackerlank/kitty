@@ -65,6 +65,36 @@ bool BuildManager::gmUpGrade(const DWORD level)
 }
 #endif
 
+bool BuildManager::upBuildGrade(const QWORD tempid)
+{
+    
+    BuildBase *build = getBuild(tempid);
+    if(!build)
+    {
+        return false;
+    }
+
+    QWORD key = hashKey(build->getTypeID(),build->getBuildLevel()+1);
+    const pb::Conf_t_building *tempConf = tbx::building().get_base(key);
+    if(!tempConf)
+    {
+        return false;
+    }
+    DWORD now = SceneTimeTick::currentTime.sec();
+    HelloKittyMsgData::AckRemoveBuid removeBuild;
+    removeBuild.set_updatecharid(m_owner->charid);
+    removeBuild.set_tempid(tempid);
+    std::string ret;
+    encodeMessage(&removeBuild,ret);
+    m_owner->broadcastMsgInMap(ret.c_str(),ret.size());
+    build->SetCreateTimer(now);
+    build->setLastCDSec(tempConf->buildInfo->time());
+    build->setMark(HelloKittyMsgData::Build_Status_Build);
+    build->opSuccessReturn(HelloKittyMsgData::Build_Building);
+    return true;
+}
+
+
 bool BuildManager::upGrade(const QWORD tempid,const DWORD effectID)
 {
     

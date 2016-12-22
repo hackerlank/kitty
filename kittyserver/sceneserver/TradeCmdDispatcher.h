@@ -61,6 +61,9 @@ class TradeCmdHandle : public zCmdHandle
 
             SceneTask::scene_user_dispatcher.func_reg<HelloKittyMsgData::ReqBuildUpGrade>(ProtoCmdCallback<SceneUser,HelloKittyMsgData::ReqBuildUpGrade>::ProtoFunction(this,&TradeCmdHandle::buildUpGrade));
 
+            SceneTask::scene_user_dispatcher.func_reg<HelloKittyMsgData::ReqUpGrade>(ProtoCmdCallback<SceneUser,HelloKittyMsgData::ReqUpGrade>::ProtoFunction(this,&TradeCmdHandle::upGrade));
+
+
             SceneTask::scene_user_dispatcher.func_reg<HelloKittyMsgData::ReqBuildMovePlace>(ProtoCmdCallback<SceneUser,HelloKittyMsgData::ReqBuildMovePlace>::ProtoFunction(this,&TradeCmdHandle::move));
 
             SceneTask::scene_user_dispatcher.func_reg<HelloKittyMsgData::ReqPickOutBuid>(ProtoCmdCallback<SceneUser,HelloKittyMsgData::ReqPickOutBuid>::ProtoFunction(this,&TradeCmdHandle::pickoutBuild));
@@ -342,8 +345,12 @@ class TradeCmdHandle : public zCmdHandle
 
         //.......................建筑解析函数开始......................
 
-        //升级
+        //升级(升星)
         bool buildUpGrade(SceneUser* user, const HelloKittyMsgData::ReqBuildUpGrade* cmd);
+
+        //升级
+        bool upGrade(SceneUser* user, const HelloKittyMsgData::ReqUpGrade* cmd);
+
         //建筑
         bool build(SceneUser* user, const HelloKittyMsgData::ReqBuildBuilding* cmd);
         //移动

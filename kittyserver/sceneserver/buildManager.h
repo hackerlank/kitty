@@ -88,6 +88,8 @@ class BuildManager
         QWORD getAnyBuildById(const std::vector<DWORD> &vecId,bool bExp);
         void   destroyBuild(QWORD BuildId);
         DWORD  getBuildNum();
+        bool upBuildGrade(const QWORD tempid);
+        QWORD getTypeBuild(const DWORD typeID);
 
         //判断是否为道路
         bool isRoad(const QWORD tempid);

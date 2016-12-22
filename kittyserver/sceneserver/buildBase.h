@@ -58,6 +58,10 @@ class BuildBase
         {
             return m_level;
         }
+        inline DWORD getBuildLevel() const
+        {
+            return m_buildLevel;
+        }
         inline DWORD getProduceTime() const
         {
             return m_produceTime;
@@ -230,7 +234,7 @@ class BuildBase
         QWORD m_id;
         //类型id
         DWORD m_typeID;
-        //等级
+        //等级(星级)
         DWORD m_level;
         //坐标
         Point m_point;
@@ -255,6 +259,8 @@ class BuildBase
         //cd剩余秒数
         DWORD m_lastCDSec;
         std::map<DWORD,DWORD> m_effectMap;
+        //建筑等级
+        DWORD m_buildLevel;
     public:
         //合建信息
         QWORD m_inBuildID;

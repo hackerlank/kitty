@@ -132,6 +132,7 @@ void GMCmdHandle::initGmFunMap()
     INITGMFUN(ReqAddPicture,"addpicture","id");
     INITGMFUN(GetName,"name","");
     INITGMFUN(recharge,"recharge","rmb activeID");
+    INITGMFUN(upLevel,"uplevel","type");
 }
 
 bool GMCmdHandle::addContribute(SceneUser* user,const std::vector<std::string> &commandVec)
@@ -209,6 +210,29 @@ bool GMCmdHandle::getPid(SceneUser* user,const std::vector<std::string> &command
     Fir::logger->debug("[GM命令] 当前服务器进程为 %u(%lu,%s)",pid,user->charid,user->charbase.nickname);
     return true;
 }
+
+bool GMCmdHandle::upLevel(SceneUser* user,const std::vector<std::string> &commandVec)
+{
+    if(!user || commandVec.size() < 2)
+    {
+        return false;
+    }
+    DWORD type = 0;
+    std::string command;
+    try
+    {
+        command = commandVec[1];
+        type = atol(commandVec[1].c_str());
+    }
+    catch(...)
+    {
+        Fir::logger->debug("[GM命令] 命令格式错误%s(%lu,%s)",command.c_str(),user->charid,user->charbase.nickname);
+        return false;
+    }
+    QWORD tempID = user->m_buildManager.getTypeBuild(type);
+    return user->m_buildManager.upBuildGrade(tempID);
+}
+
 
 bool GMCmdHandle::buildLevel(SceneUser* user,const std::vector<std::string> &commandVec)
 {

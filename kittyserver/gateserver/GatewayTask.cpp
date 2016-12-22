@@ -916,6 +916,7 @@ void GatewayTask::initProtoDispatch()
     s_protoNameToServerTypeMap[HelloKittyMsgData::ReqPurchaseAdvertiseCD::descriptor()] = SCENESSERVER;
     //建筑
     s_protoNameToServerTypeMap[HelloKittyMsgData::ReqBuildUpGrade::descriptor()] = SCENESSERVER;
+    s_protoNameToServerTypeMap[HelloKittyMsgData::ReqUpGrade::descriptor()] = SCENESSERVER;
     s_protoNameToServerTypeMap[HelloKittyMsgData::ReqBuildMovePlace::descriptor()] = SCENESSERVER;
     s_protoNameToServerTypeMap[HelloKittyMsgData::ReqBuildBuilding::descriptor()] = SCENESSERVER;
     s_protoNameToServerTypeMap[HelloKittyMsgData::ReqOneBuild::descriptor()] = SCENESSERVER;

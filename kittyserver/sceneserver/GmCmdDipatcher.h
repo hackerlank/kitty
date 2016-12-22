@@ -154,6 +154,7 @@ class GMCmdHandle : public zCmdHandle
         static bool ReqAddPicture(SceneUser* user,const std::vector<std::string> &commandVec);
         //充值
         static bool recharge(SceneUser* user,const std::vector<std::string> &commandVec);
+        static bool upLevel(SceneUser* user,const std::vector<std::string> &commandVec);
 };
 
 #endif

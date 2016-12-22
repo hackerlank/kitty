@@ -629,12 +629,14 @@ bool BuildTypeCompositeItem::unlock()
     DWORD cellID = m_compositeList.size() + 1;
     QWORD key = hashKey(m_typeID,cellID);
     const pb::Conf_t_Composite *tempConf = tbx::Composite().get_base(key);
-    if(!tempConf)
+    key = hashKey(getTypeID(),getBuildLevel()+1);
+    const pb::Conf_t_building *conf = tbx::building().get_base(key);
+    if(!tempConf || !conf)
     {
         return false;
     }
     char remark[100] = {0};
-    snprintf(remark,sizeof(remark),"解锁合成工作槽(%lu,%u,%u,%u)",m_id,m_typeID,m_level,cellID);
+    snprintf(remark,sizeof(remark),"升级解锁合成工作槽(%lu,%u,%u,%u)",m_id,m_typeID,m_level,cellID);
     if(!(m_owner->checkMaterialMap(tempConf->getMaterialMap(),true) && m_owner->reduceMaterialMap(tempConf->getMaterialMap(),remark)))
     {
         return false;
@@ -647,7 +649,8 @@ bool BuildTypeCompositeItem::unlock()
     temp.set_status(HelloKittyMsgData::Place_Status_Empty);
     temp.set_puttime(0);
     m_compositeList.push_back(temp);
-    update(&temp);
+    m_owner->m_buildManager.upBuildGrade(m_id);
+    //update(&temp);
     return true;
 }
 
