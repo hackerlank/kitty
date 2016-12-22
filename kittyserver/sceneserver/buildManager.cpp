@@ -835,6 +835,29 @@ DWORD BuildManager::getBuildLevel(const DWORD typeID)
     return level;
 }   
 
+QWORD BuildManager::getTypeBuild(const DWORD typeID)
+{
+    QWORD tempid = 0;
+    auto iter = m_buildTypeMap.find(typeID);
+    if(iter == m_buildTypeMap.end())
+    {
+        return tempid;
+    }
+
+    std::vector<QWORD> vec;
+    const std::set<QWORD> &tempSet = iter->second;
+    for(auto temp = tempSet.begin();temp != tempSet.end();++temp)
+    {
+        vec.push_back(*temp);
+    }
+    if(vec.empty())
+    {
+        return tempid;
+    }
+    DWORD rate = zMisc::randBetween(0,vec.size()-1);
+    return vec[rate];
+}   
+
 DWORD BuildManager::getBuildLevelNum(const DWORD level)
 {
     DWORD num = 0;

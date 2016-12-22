@@ -31,15 +31,18 @@ BuildBase::BuildBase(SceneUser* owner,const DWORD typeID,const DWORD level,const
     m_inBuildID = inBuildID;
     m_inBuildLevel = inBuildLevel;
     m_friendID = friendID;
+    m_buildLevel = 1;
 }
 
-BuildBase::BuildBase(SceneUser* owner,const pb::Conf_t_building *buildConf,const Point &point,const QWORD inBuildID,const DWORD inBuildLevel,const QWORD friendID) : m_owner(owner),m_typeID(buildConf->buildInfo->dependid()),m_level(buildConf->buildInfo->level()),m_point(point)
+BuildBase::BuildBase(SceneUser* owner,const pb::Conf_t_building *buildConf,const Point &point,const QWORD inBuildID,const DWORD inBuildLevel,const QWORD friendID) : m_owner(owner),m_typeID(buildConf->buildInfo->dependid()),m_point(point)
 {
+    m_level = 1;
     m_mark = HelloKittyMsgData::Build_Status_Build;
     m_produceTime = SceneTimeTick::currentTime.sec();
     m_rationMark = false;
     m_cardID = 0;
     m_useCardTime = 0;
+    m_buildLevel = buildConf->buildInfo->level();
     ++generateID;
     //m_id = generateID;
     m_id = hashRankKey(SceneService::getMe().getServerID(),SceneTimeTick::currentTime.msecs()) + generateID;
@@ -56,6 +59,7 @@ BuildBase::BuildBase(SceneUser* owner,const pb::Conf_t_building *buildConf,const
 
 BuildBase::BuildBase(SceneUser* owner,const HelloKittyMsgData::BuildBase &buildBase) : m_owner(owner),m_typeID(buildBase.type()),m_level(buildBase.level()),m_point(buildBase.point().x(),buildBase.point().y()),m_mark(buildBase.status()),m_produceTime(buildBase.producetime()),m_rationMark(buildBase.rotationmark()),m_dwCreateTimer(buildBase.createtime()),m_lastCDSec(buildBase.lastcdsec())
 {
+    m_buildLevel = buildBase.buildlevel() ? buildBase.buildlevel() : 1;
     m_cardID = 0;
     m_useCardTime = 0;
     //++generateID;
@@ -94,6 +98,7 @@ void BuildBase::save(HelloKittyMsgData::BuildBase *buildBase,const bool saveFlg)
     buildBase->set_producetime(m_produceTime);
     buildBase->set_rotationmark(m_rationMark);
     buildBase->set_lastcdsec(m_lastCDSec);
+    buildBase->set_buildlevel(m_buildLevel);
     HelloKittyMsgData::Point *point = buildBase->mutable_point();
     point->set_x(m_point.x);
     point->set_y(m_point.y);
@@ -127,11 +132,11 @@ bool BuildBase::flush()
 
 bool BuildBase::initConfBase()
 {
-    QWORD key = hashKey(m_typeID,1);
+    QWORD key = hashKey(m_typeID,m_buildLevel);
     confBase = tbx::building().get_base(key);
     if(!confBase)
     {
-        Fir::logger->error("[初始化建筑错误]:在配表中找不到对应的建筑信息 %u,%u",m_typeID,m_level);
+        Fir::logger->error("[初始化建筑错误]:在配表中找不到对应的建筑信息 %u,%u",m_typeID,m_buildLevel);
         return false;
     }
     return true;
@@ -287,11 +292,11 @@ bool BuildBase::upGrade(const DWORD effectID)
 
 bool BuildBase::subLevel(const DWORD level)
 {
-    if(m_level <= level)
+    if(m_buildLevel <= level)
     {
         return false;
     }
-    m_level -= level;
+    m_buildLevel -= level;
     initConfBase();
     return true;
 }

@@ -27,6 +27,16 @@ bool TradeCmdHandle::requireOneBuild(SceneUser* user, const HelloKittyMsgData::R
     return user->m_buildManager.flushOneBuild(cmd->tempid());
 }
 
+bool TradeCmdHandle::upGrade(SceneUser* user, const HelloKittyMsgData::ReqUpGrade* cmd) 
+{
+    if (!user || !cmd)
+    {
+        return false;
+    }
+    return user->m_buildManager.upBuildGrade(cmd->tempid());
+}
+ 
+
 bool TradeCmdHandle::buildUpGrade(SceneUser* user, const HelloKittyMsgData::ReqBuildUpGrade* cmd) 
 {
     if (!user || !cmd)
